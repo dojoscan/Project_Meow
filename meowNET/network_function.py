@@ -65,46 +65,46 @@ def meow_net(x):
 def deep_meow_net(x):
 
     # conv1 1x5
-    W_conv1 = weight_variable([5, 1, 3, 64])
-    b_conv1 = bias_variable([64])
+    W_conv1 = weight_variable([5, 1, 3, 32])
+    b_conv1 = bias_variable([32])
     h_conv1 = tf.nn.relu(conv2d(x, W_conv1) + b_conv1)
 
     # conv2 5x1
-    W_conv2 = weight_variable([1, 5, 64, 64])
-    b_conv2 = bias_variable([64])
+    W_conv2 = weight_variable([1, 5, 32, 32])
+    b_conv2 = bias_variable([32])
     h_conv2 = tf.nn.relu(conv2d(h_conv1, W_conv2) + b_conv2)
 
     # max pool 1
     h_pool1 = max_pool_2x2(h_conv2)
 
     # conv3 1x5
-    W_conv3 = weight_variable([5, 1, 64, 64])
-    b_conv3 = bias_variable([64])
+    W_conv3 = weight_variable([5, 1, 32, 32])
+    b_conv3 = bias_variable([32])
     h_conv3 = tf.nn.relu(conv2d(h_pool1, W_conv3) + b_conv3)
 
     # conv4 5x1
-    W_conv4 = weight_variable([1, 5, 64, 64])
-    b_conv4 = bias_variable([64])
+    W_conv4 = weight_variable([1, 5, 32, 32])
+    b_conv4 = bias_variable([32])
     h_conv4 = tf.nn.relu(conv2d(h_conv3, W_conv4) + b_conv4)
 
     # max pool 2
     h_pool2 = max_pool_2x2(h_conv4)
 
     # conv5 1x5
-    W_conv5 = weight_variable([5, 1, 64, 64])
-    b_conv5 = bias_variable([64])
+    W_conv5 = weight_variable([5, 1, 32, 32])
+    b_conv5 = bias_variable([32])
     h_conv5 = tf.nn.relu(conv2d(h_pool2, W_conv5) + b_conv5)
 
     # conv6 5x1
-    W_conv6 = weight_variable([1, 5, 64, 64])
-    b_conv6 = bias_variable([64])
+    W_conv6 = weight_variable([1, 5, 32, 32])
+    b_conv6 = bias_variable([32])
     h_conv6 = tf.nn.relu(conv2d(h_conv5, W_conv6) + b_conv6)
 
     # max pool 3
     h_pool3 = max_pool_2x2(h_conv6)
 
     # conv7 3x3
-    W_conv7 = weight_variable([3, 3, 64, 10])
+    W_conv7 = weight_variable([3, 3, 32, 10])
     b_conv7 = bias_variable([10])
     h_conv7 = tf.nn.relu(conv2d(h_pool3, W_conv7) + b_conv7)
 

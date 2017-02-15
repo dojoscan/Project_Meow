@@ -10,14 +10,14 @@ import time
 # DIFFERENT OPTIMISER
 
 TRAIN = True
-LEARNING_RATE = 0.0001
+LEARNING_RATE = 0.001
 NR_ITERATIONS = 10000
 PRINT_FREQ = 100
 BATCH_SIZE = 128
 NO_CLASSES = 10
 PATH_TO_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/train/images/"
 PATH_TO_LABELS = "/Users/Donal/Dropbox/CIFAR10/Data/train/labels.txt"
-PATH_TO_TEST_IMAGES="/Users/Donal/Dropbox/CIFAR10/Data/test/images/"
+PATH_TO_TEST_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/test/images/"
 PATH_TO_LOGS = "/Users/Donal/Dropbox/CIFAR10/optimizer accuracy/"
 #PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
 #PATH_TO_LABELS ="C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/labels.txt"
@@ -30,11 +30,11 @@ if TRAIN:
     y_ = tf.one_hot(batch[1], NO_CLASSES, dtype=tf.int32)
 
     # build CNN graph
-    h_pool3 = nf.meow_net(x)
+    h_pool3 = nf.deep_meow_net(x)
 
     # build training graph
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(h_pool3, y_))
-    train_step = tf.train.GradientDescentOptimizer(LEARNING_RATE).minimize(cross_entropy)
+    train_step = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
     correct_prediction = tf.equal(tf.argmax(h_pool3, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     summary_op = tf.summary.scalar("Accuracy", accuracy)
@@ -59,7 +59,7 @@ if TRAIN:
         sess.run(train_step)
 
     print("Final train accuracy = %g" % sess.run(accuracy))
-    save_path = saver.save(sess, cwd + "/checkpoint/meow_run_0.ckpt")
+    #save_path = saver.save(sess, cwd + "/checkpoint/meow_run_0.ckpt")
 
 else:
     # build test graph
