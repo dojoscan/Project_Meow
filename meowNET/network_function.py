@@ -25,9 +25,10 @@ def max_pool_4x4(x):
     return tf.nn.max_pool(x, ksize=[1, 4, 4, 1],
                             strides=[1, 1, 1, 1], padding='VALID')
 
-def max_pool_2x2(x):
+def max_pool_2x2_WxH(x):
     return tf.nn.max_pool(x, ksize=[1, 2, 2, 1],
-                            strides=[1, 1, 1, 1], padding='VALID')
+                          strides=[1, 1, 1, 1], padding='VALID')
+
 def normalization(x):
     return tf.nn.local_response_normalization(x)
 
@@ -103,7 +104,7 @@ def deeper_meow_net(x):
     h_conv9 = tf.nn.relu(conv2d(h_block4, W_conv9) + b_conv9)
 
     # max pool W_o x H_o
-    h_pool5 = max_pool_2x2(h_conv9)
+    h_pool5 = max_pool_2x2_WxH(h_conv9)
     h_pool5 = tf.squeeze(h_pool5)
 
     return h_pool5

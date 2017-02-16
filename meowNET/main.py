@@ -31,7 +31,7 @@ if TRAIN:
     y_ = tf.one_hot(batch[1], NO_CLASSES, dtype=tf.int32)
 
     # build CNN graph
-    h_pool3 = nf.deep_norm_meow_net(x)
+    h_pool3 = nf.deeper_meow_net(x)
 
     # build training graph
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(h_pool3, y_))
