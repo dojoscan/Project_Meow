@@ -38,23 +38,29 @@ if TRAIN:
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     summary_op = tf.summary.scalar("Accuracy", accuracy)
 
+    # saver for creating checkpoints
     saver = tf.train.Saver()
     sess = tf.Session()
 
+    # start input queue threads
     coordinate = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
+
     sess.run(tf.global_variables_initializer())
     summary_writer = tf.summary.FileWriter(PATH_TO_LOGS, graph=tf.get_default_graph())
 
-    # run training
+    # training
     print('Training initiated')
     start_time = time.clock()
     for i in range(NR_ITERATIONS):
         if i % PRINT_FREQ == 0:
+            # evaluate forward pass for mini-batch
             train_accuracy, summary = sess.run([accuracy, summary_op], feed_dict={batch_size: BATCH_SIZE})
             print("step %d, train accuracy = %g, time taken = %g seconds" % (i, train_accuracy, time.clock()-start_time))
+            # write accuracy to log file
             summary_writer.add_summary(summary, i)
             start_time = time.clock()
+        # evaluate backward pass for mini-batch
         sess.run(train_step, feed_dict={batch_size: BATCH_SIZE})
 
     print("Final train accuracy = %g" % sess.run(accuracy, feed_dict={batch_size: BATCH_SIZE}))
@@ -62,6 +68,7 @@ if TRAIN:
 
 else:
 
+    # get prob. dist. over classes
     class_prob = tf.nn.softmax(h_pool3)
 
     saver = tf.train.Saver()
@@ -69,6 +76,8 @@ else:
 
     # restore from checkpoint
     saver.restore(sess, cwd + "/checkpoint/meow_run_0.ckpt")
+
+    # start queues
     coordinate = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
     sess.run(tf.global_variables_initializer())

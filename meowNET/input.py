@@ -47,7 +47,7 @@ def create_batch(path_to_images, path_to_labels, batch_size, train):
     """
     Args:
         path_to_images: full path to input images folder
-        path_to_labels: full path to input labels folder
+        path_to_labels: full path to input labels
         batch_size: number of examples in mini-batch
         train: boolean for training or testing mode
     Returns:

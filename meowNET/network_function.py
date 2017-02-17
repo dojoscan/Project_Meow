@@ -1,6 +1,8 @@
 import tensorflow as tf
 
-KEEP_PROP=0.5
+KEEP_PROP = 0.5
+
+# variables
 
 def weight_variable(shape):
     initial = tf.truncated_normal(shape, stddev=0.1)
@@ -9,6 +11,8 @@ def weight_variable(shape):
 def bias_variable(shape):
     initial = tf.constant(0.1, shape=shape)
     return tf.Variable(initial)
+
+# operations
 
 def conv2d(x, W):
     return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME')
@@ -32,6 +36,8 @@ def max_pool_2x2_WxH(x):
 def normalization(x):
     return tf.nn.local_response_normalization(x)
 
+# blocks
+
 def conv_pool(x,D1i,D1o,D2o):
     # conv1 1x5
     W_conv1 = weight_variable([5, 1, D1i, D1o])
@@ -43,21 +49,17 @@ def conv_pool(x,D1i,D1o,D2o):
     b_conv2 = bias_variable([D2o])
     h_conv2 = tf.nn.relu(conv2d(h_conv1, W_conv2) + b_conv2)
 
-    # normalization
-    #h_norm1 = normalization(h_conv2)
-
     # max pool 1
     h_pool1 = max_pool_2x2(h_conv2)
 
     return h_pool1
 
-################### NETWORK ARCHITECTURES ######################
+# architectures
 
 def meow_net(x):
 
-    h_block1=conv_pool(x,3,32,32)
-
-    h_block2=conv_pool(h_block1,32,64,64)
+    h_block1 = conv_pool(x, 3, 32, 32)
+    h_block2 = conv_pool(h_block1, 32, 64, 64)
 
     # conv5 3x3
     W_conv5 = weight_variable([3, 3, 64, 10])
@@ -72,11 +74,9 @@ def meow_net(x):
 
 def deep_meow_net(x):
 
-    h_block1=conv_pool(x,3,32,32)
-
-    h_block2=conv_pool(h_block1,32,32,32)
-
-    h_block3=conv_pool(h_block2,32,32,32)
+    h_block1 = conv_pool(x,3,32,32)
+    h_block2 = conv_pool(h_block1,32,32,32)
+    h_block3 = conv_pool(h_block2,32,32,32)
 
     # conv7 3x3
     W_conv7 = weight_variable([3, 3, 32, 10])
@@ -91,16 +91,13 @@ def deep_meow_net(x):
 
 def deeper_meow_net(x):
 
-    h_block1=conv_pool(x,3,16,16)
-
-    h_block2=conv_pool(h_block1,16,16,16)
-
-    h_block3=conv_pool(h_block2,16,16,16)
-
-    h_block4=conv_pool(h_block3,16,16,16)
+    h_block1 = conv_pool(x, 3, 32, 32)
+    h_block2 = conv_pool(h_block1, 32, 32, 32)
+    h_block3 = conv_pool(h_block2, 32, 32, 32)
+    h_block4 = conv_pool(h_block3, 32, 32, 32)
 
     # conv7 3x3
-    W_conv9 = weight_variable([3, 3, 16, 10])
+    W_conv9 = weight_variable([3, 3, 32, 10])
     b_conv9 = bias_variable([10])
     h_conv9 = tf.nn.relu(conv2d(h_block4, W_conv9) + b_conv9)
 
@@ -112,12 +109,10 @@ def deeper_meow_net(x):
 
 def deep_norm_meow_net(x):
 
-    h_norm1=normalization(x)
-    h_block1=conv_pool(h_norm1,3,32,32)
-
-    h_block2=conv_pool(h_block1,32,32,32)
-
-    h_block3=conv_pool(h_block2,32,32,32)
+    h_norm1 = normalization(x)
+    h_block1 = conv_pool(h_norm1, 3, 32, 32)
+    h_block2 = conv_pool(h_block1, 32, 32, 32)
+    h_block3 = conv_pool(h_block2, 32, 32, 32)
 
     # conv7 3x3
     W_conv7 = weight_variable([3, 3, 32, 10])
@@ -134,26 +129,23 @@ def deep_norm_meow_net(x):
 
 def deep_dropout_meow_net(x):
 
-    h_block1=conv_pool(x,3,32,32)
+    h_block1 = conv_pool(x, 3, 32, 32)
 
     # dropout
     keep_prop = tf.constant(KEEP_PROP, dtype=tf.float32)
     h_drop = tf.nn.dropout(h_block1, keep_prop)
 
-    h_block2=conv_pool(h_drop,32,32,32)
-
-    h_block3=conv_pool(h_block2,32,32,32)
+    h_block2 = conv_pool(h_drop, 32, 32, 32)
+    h_block3 = conv_pool(h_block2, 32, 32, 32)
 
     # conv7 3x3
     W_conv7 = weight_variable([3, 3, 32, 10])
     b_conv7 = bias_variable([10])
     h_conv7 = tf.nn.relu(conv2d(h_block3, W_conv7) + b_conv7)
 
-
     # max pool W_o x H_o
     h_pool4 = max_pool_4x4(h_conv7)
     h_pool4 = tf.squeeze(h_pool4)
-
 
     return h_pool4
 
