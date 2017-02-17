@@ -51,6 +51,7 @@ def conv_pool(x,D1i,D1o,D2o):
 
     return h_pool1
 
+################### NETWORK ARCHITECTURES ######################
 
 def meow_net(x):
 
