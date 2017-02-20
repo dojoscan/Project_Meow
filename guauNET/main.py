@@ -10,8 +10,7 @@ NR_ITERATIONS = 10000
 PRINT_FREQ = 100
 BATCH_SIZE = 128
 NO_CLASSES = 10
-PATH_TO_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/train/images/"
-PATH_TO_LABELS = "/Users/Donal/Dropbox/CIFAR10/Data/train/labels.txt"
+TFREC_FILENAME = '/Users/Donal/Dropbox/CIFAR10/Data/train/CIFAR10.tfrecords'
 PATH_TO_TEST_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/test/images/"
 PATH_TO_LOGS = "/Users/Donal/Desktop/"
 #PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
@@ -22,7 +21,7 @@ cwd = os.getcwd()
 
 # build input graph
 batch_size = tf.placeholder(dtype=tf.int32)
-batch = input.create_batch(PATH_TO_IMAGES, PATH_TO_LABELS, batch_size, TRAIN)
+batch = input.get_batch(TFREC_FILENAME, batch_size)
 x = batch[0]
 y_ = tf.one_hot(batch[1], NO_CLASSES, dtype=tf.int32)
 
@@ -33,7 +32,7 @@ if TRAIN:
 
     # build training graph
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=h_pool3, labels=y_))
-    train_step = tf.train.GradientDescentOptimizer(LEARNING_RATE).minimize(cross_entropy)
+    train_step = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
     correct_prediction = tf.equal(tf.argmax(h_pool3, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     summary_op = tf.summary.scalar("Accuracy", accuracy)
