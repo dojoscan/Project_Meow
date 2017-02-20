@@ -34,7 +34,8 @@ def max_pool_2x2_WxH(x):
                           strides=[1, 1, 1, 1], padding='VALID')
 
 def normalization(x):
-    return tf.nn.local_response_normalization(x)
+    #return tf.nn.local_response_normalization(x)
+    return tf.nn.batch_normalization(x,mean=0,variance=1,offset=0.1,scale=0.99,variance_epsilon=0.00001)
 
 # blocks
 
