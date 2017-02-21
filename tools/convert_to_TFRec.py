@@ -25,12 +25,8 @@ for index in range(num_examples):
     if index % 100 == 0:
         print('Converting image no. ' + str(index))
     img = np.array(Image.open(image_list[index]))
-    height = img.shape[0]
-    width = img.shape[1]
     img_raw = img.tostring()
     example = tf.train.Example(features=tf.train.Features(feature={
-        'height': _int64_feature(height),
-        'width': _int64_feature(width),
         'image_raw': _bytes_feature(img_raw),
         'label': _int64_feature(int(labels[index]))}))
     writer.write(example.SerializeToString())

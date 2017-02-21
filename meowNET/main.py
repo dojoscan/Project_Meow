@@ -3,22 +3,27 @@ import network_function as nf
 import input
 import os
 import time
+import numpy as np
 
-TRAIN = True
+TRAIN = False
 #LEARNING_RATE = 0.001
-INITIAL_LEARNING_RATE=0.001
+INITIAL_LEARNING_RATE = 0.001
 NR_ITERATIONS = 10000
 PRINT_FREQ = 100
 BATCH_SIZE = 128
 NO_CLASSES = 10
-#PATH_TO_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/train/images/"
-#PATH_TO_LABELS = "/Users/Donal/Dropbox/CIFAR10/Data/train/labels.txt"
-#PATH_TO_TEST_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/test/images/"
-#PATH_TO_LOGS = "/Users/Donal/Desktop/"
-PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
-PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/labels.txt"
-PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
-PATH_TO_LOGS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/meow_logs/"
+USER = 'DONAL'
+if USER == 'DONAL':
+    PATH_TO_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/train/images/"
+    PATH_TO_LABELS = "/Users/Donal/Dropbox/CIFAR10/Data/train/labels.txt"
+    PATH_TO_TEST_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/test/images/"
+    PATH_TO_LOGS = "/Users/Donal/Desktop/"
+    PATH_TO_TEST_OUTPUT = "/Users/Donal/Desktop/predictions.txt"
+else:
+    PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
+    PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/labels.txt"
+    PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
+    PATH_TO_LOGS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/meow_logs/"
 cwd = os.getcwd()
 
 # build input graph
@@ -26,7 +31,7 @@ batch_size = tf.placeholder(dtype=tf.int32)
 batch = input.create_batch(PATH_TO_IMAGES, PATH_TO_LABELS, batch_size, TRAIN)
 x = batch[0]
 y_ = tf.one_hot(batch[1], NO_CLASSES, dtype=tf.int32)
-global_step=tf.Variable(0,trainable= False)
+global_step = tf.Variable(0, trainable=False)
 # build CNN graph
 h_pool3 = nf.squeeze_net(x)
 
@@ -60,7 +65,7 @@ if TRAIN:
             # evaluate forward pass for mini-batch
             train_accuracy, lr, summary = sess.run([accuracy,learning_rate, summary_op], feed_dict={batch_size: BATCH_SIZE})
             print("step %d, train accuracy = %g, time taken = %g seconds" % (i, train_accuracy, time.clock()-start_time))
-            print("learning rate = %g" % (lr))
+            print("learning rate = %g" % lr)
             # write accuracy to log file
             summary_writer.add_summary(summary, i)
             start_time = time.clock()
@@ -87,6 +92,9 @@ else:
     sess.run(tf.global_variables_initializer())
 
     # run testing
-    p_c = sess.run(class_prob, feed_dict={batch_size: 5})
-    print(p_c)
+    p_c = sess.run(class_prob, feed_dict={batch_size: 349})
+
+    # write predictions to txt
+    output_file = open(PATH_TO_TEST_OUTPUT, 'w')
+    np.savetxt(output_file, p_c)
 

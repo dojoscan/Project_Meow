@@ -200,18 +200,18 @@ def fire(x,input_depth,s1x1,e1x1,e3x1):
     h_s = tf.nn.relu(conv2d(x, W_s) + b_s)
 
     #Expand Layer
-    W_e1x1=weight_variable([1, 1, s1x1, e1x1])
+    W_e1x1 = weight_variable([1, 1, s1x1, e1x1])
     b_e1x1 = bias_variable([e1x1])
-    h_e1x1=tf.nn.bias_add(conv2d(h_s,W_e1x1),b_e1x1)
-    h_e1x1=tf.nn.relu(h_e1x1)
+    h_e1x1 = tf.nn.bias_add(conv2d(h_s, W_e1x1), b_e1x1)
+    h_e1x1 = tf.nn.relu(h_e1x1)
 
-    W_e3x1=weight_variable([3,1 , s1x1, e3x1])
+    W_e3x1 = weight_variable([3, 1, s1x1, e3x1])
     b_e3x1 = bias_variable([e3x1])
-    h_e3x1=tf.nn.bias_add(conv2d(h_s,W_e3x1),b_e3x1)
-    W_e1x3=weight_variable([1,3, e3x1, e3x1])
+    h_e3x1 = tf.nn.bias_add(conv2d(h_s, W_e3x1), b_e3x1)
+    W_e1x3 = weight_variable([1, 3, e3x1, e3x1])
     b_e1x3 = bias_variable([e3x1])
-    h_e1x3=tf.nn.bias_add(conv2d(h_e3x1,W_e1x3),b_e1x3)
-    h_e1x3=tf.nn.relu(h_e1x3)
+    h_e1x3 = tf.nn.bias_add(conv2d(h_e3x1, W_e1x3), b_e1x3)
+    h_e1x3 = tf.nn.relu(h_e1x3)
 
-    return tf.concat([h_e1x1, h_e1x3],3)
+    return tf.concat([h_e1x1, h_e1x3], 3)
 
