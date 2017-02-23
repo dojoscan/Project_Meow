@@ -3,7 +3,10 @@ LEARNING_RATE = 0.001
 NR_ITERATIONS = 100
 PRINT_FREQ = 100
 BATCH_SIZE = 128
-NO_CLASSES = 10
+NO_CLASSES = 9
+IMAGE_WIDTH = 414
+IMAGE_HEIGHT = 125
+NR_ANCHOR_PER_CELL=9
 classes = {'Car': '0', 'Van': '1','Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4','Cyclist': '5','Tram': '6','Misc': '7','DontCare': '8'}
 USER = 'DONAL'
 if USER == 'DONAL':
