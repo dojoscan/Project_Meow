@@ -45,8 +45,8 @@ start_time = time.clock()
 for i in range(p.NR_ITERATIONS):
     if i % p.PRINT_FREQ == 0:
         # run inference graph
-        train_accuracy, summary = sess.run([train_accuracy, merged_summaries], feed_dict={batch_size: p.BATCH_SIZE})
-        print("step %d, train accuracy = %g, time taken = %g seconds" % (i, train_accuracy, time.clock()-start_time))
+        accuracy, summary = sess.run([train_accuracy, merged_summaries], feed_dict={batch_size: p.BATCH_SIZE})
+        print("step %d, train accuracy = %g, time taken = %g seconds" % (i, accuracy, time.clock()-start_time))
         # write accuracy to log file
         summary_writer.add_summary(summary, i)
         start_time = time.clock()
@@ -54,5 +54,5 @@ for i in range(p.NR_ITERATIONS):
     sess.run(train_step, feed_dict={batch_size: p.BATCH_SIZE})
 
 print("Final train accuracy = %g" % sess.run(train_accuracy, feed_dict={batch_size: p.BATCH_SIZE}))
-save_path = saver.save(sess, cwd + "/checkpoint/meow_run_0.ckpt")
-print("Model saved in file: %s" % cwd+"/checkpoint/meow_run_0.ckpt")
+save_path = saver.save(sess, p.PATH_TO_CKPT)
+print("Model saved in file: %s" % p.PATH_TO_CKPT)

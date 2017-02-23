@@ -23,7 +23,7 @@ saver = tf.train.Saver()
 sess = tf.Session()
 
 # restore from checkpoint
-saver.restore(sess, cwd + "/checkpoint/meow_run_0.ckpt")
+saver.restore(sess, p.PATH_TO_CKPT)
 
 # start queues
 coordinate = tf.train.Coordinator()
