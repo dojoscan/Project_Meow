@@ -14,8 +14,8 @@ with tf.name_scope('InputPipeline'):
     tf.add_to_collection("BatchSize", batch_size)
     batch = input.create_batch(p.PATH_TO_IMAGES, p.PATH_TO_LABELS, batch_size, p.TRAIN)
     x = batch[0]
-    y_ = tf.one_hot(batch[1], p.NO_CLASSES, dtype=tf.int32, name='OneHot')
-
+    #y_ = tf.one_hot(batch[1], p.NO_CLASSES, dtype=tf.int32, name='OneHot')
+    y_=batch[1]
 # build CNN graph
 network_output = nf.squeeze_net(x)
 
