@@ -6,8 +6,7 @@ import time
 import numpy as np
 
 TRAIN = False
-#LEARNING_RATE = 0.001
-INITIAL_LEARNING_RATE = 0.001
+LEARNING_RATE = 0.001
 NR_ITERATIONS = 10000
 PRINT_FREQ = 100
 BATCH_SIZE = 128
@@ -38,10 +37,8 @@ h_pool3 = nf.squeeze_net(x)
 if TRAIN:
 
     # build training graph
-    learning_rate = tf.train.exponential_decay(INITIAL_LEARNING_RATE, global_step,
-                                               8000, 0.5, staircase=True)
     cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=h_pool3, labels=y_))
-    train_step = tf.train.AdamOptimizer(learning_rate).minimize(cross_entropy,global_step=global_step)
+    train_step = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
     correct_prediction = tf.equal(tf.argmax(h_pool3, 1), tf.argmax(y_, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     summary_op = tf.summary.scalar("Accuracy", accuracy)
@@ -63,9 +60,8 @@ if TRAIN:
     for i in range(NR_ITERATIONS):
         if i % PRINT_FREQ == 0:
             # evaluate forward pass for mini-batch
-            train_accuracy, lr, summary = sess.run([accuracy,learning_rate, summary_op], feed_dict={batch_size: BATCH_SIZE})
+            train_accuracy, summary = sess.run([accuracy, summary_op], feed_dict={batch_size: BATCH_SIZE})
             print("step %d, train accuracy = %g, time taken = %g seconds" % (i, train_accuracy, time.clock()-start_time))
-            print("learning rate = %g" % lr)
             # write accuracy to log file
             summary_writer.add_summary(summary, i)
             start_time = time.clock()
@@ -95,6 +91,7 @@ else:
     p_c = sess.run(class_prob, feed_dict={batch_size: 349})
 
     # write predictions to txt
-    output_file = open(PATH_TO_TEST_OUTPUT, 'w')
-    np.savetxt(output_file, p_c)
+    output_file = open(PATH_TO_TEST_OUTPUT, 'wb')
+    np.savetxt(output_file, p_c, fmt='%.4e', delimiter=' ', newline='\r\n')
+    print(p_c)
 

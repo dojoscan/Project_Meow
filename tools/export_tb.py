@@ -3,7 +3,7 @@ import os
 
 # WRITE SCALARS FROM TENSORBOARD LOG FILE TO TXT FILE
 
-path_to_events_folder = '/Users/Donal/Dropbox/CIFAR10/meow_logs/GD_0_0001/'
+path_to_events_folder = '/Users/Donal/Dropbox/CIFAR10/meow_logs/squeeze_res/'
 dir_files = os.listdir(path_to_events_folder)
 output_filename = 'accuracy_100_it.txt'
 output_file = open(path_to_events_folder+output_filename, 'w')
