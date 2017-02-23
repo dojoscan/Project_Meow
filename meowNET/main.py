@@ -1,6 +1,7 @@
 import tensorflow as tf
 import network_function as nf
 import input
+import loss
 import os
 import time
 import numpy as np

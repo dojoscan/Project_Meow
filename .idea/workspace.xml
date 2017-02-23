@@ -2,17 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a08750b-90c7-47c1-b583-f705ad600433" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meowNET/checkpoint/meow_run_0.ckpt.data-00000-of-00001" afterPath="$PROJECT_DIR$/meowNET/checkpoint/meow_run_0.ckpt.data-00000-of-00001" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meowNET/checkpoint/meow_run_0.ckpt.index" afterPath="$PROJECT_DIR$/meowNET/checkpoint/meow_run_0.ckpt.index" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meowNET/checkpoint/meow_run_0.ckpt.meta" afterPath="$PROJECT_DIR$/meowNET/checkpoint/meow_run_0.ckpt.meta" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/network_function.py" afterPath="$PROJECT_DIR$/guauNET/network_function.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/parameters.py" afterPath="$PROJECT_DIR$/guauNET/parameters.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/guauNET/tfrec_input.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/train.py" afterPath="$PROJECT_DIR$/guauNET/train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meowNET/.idea/workspace.xml" afterPath="$PROJECT_DIR$/meowNET/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meowNET/main.py" afterPath="$PROJECT_DIR$/meowNET/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/meowNET/network_function.py" afterPath="$PROJECT_DIR$/meowNET/network_function.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/export_tb.py" afterPath="$PROJECT_DIR$/tools/export_tb.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -30,7 +22,7 @@
       <file leaf-file-name="input.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/guauNET/input.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="550">
+            <state relative-caret-position="828">
               <caret line="48" column="52" lean-forward="false" selection-start-line="48" selection-start-column="52" selection-end-line="48" selection-end-column="52" />
               <folding />
             </state>
@@ -47,12 +39,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="train.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/guauNET/train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="24" column="49" lean-forward="true" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
-              <folding />
+            <state relative-caret-position="123">
+              <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -60,31 +54,29 @@
       <file leaf-file-name="network_function.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/guauNET/network_function.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
+            <state relative-caret-position="283">
               <caret line="57" column="49" lean-forward="true" selection-start-line="57" selection-start-column="49" selection-end-line="57" selection-end-column="49" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/meowNET/main.py">
+      <file leaf-file-name="test.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/guauNET/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="271">
-              <caret line="63" column="121" lean-forward="true" selection-start-line="63" selection-start-column="12" selection-end-line="63" selection-end-column="121" />
+            <state relative-caret-position="36">
+              <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/guauNET/test.py">
+      <file leaf-file-name="loss.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/guauNET/loss.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="25" column="56" lean-forward="false" selection-start-line="25" selection-start-column="56" selection-end-line="25" selection-end-column="56" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="108">
+              <caret line="6" column="43" lean-forward="false" selection-start-line="6" selection-start-column="43" selection-end-line="6" selection-end-column="43" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -115,7 +107,6 @@
         <option value="$PROJECT_DIR$/meowNET/mega.py" />
         <option value="$PROJECT_DIR$/meowNET/dummy_main.py" />
         <option value="$PROJECT_DIR$/meowNET/input.py" />
-        <option value="$PROJECT_DIR$/meowNET/main.py" />
         <option value="$PROJECT_DIR$/meowNET/network_function.py" />
         <option value="$PROJECT_DIR$/tools/export_tb.py" />
         <option value="$PROJECT_DIR$/guauNET/convert_to_TFRec.py" />
@@ -126,6 +117,8 @@
         <option value="$PROJECT_DIR$/guauNET/parameters.py" />
         <option value="$PROJECT_DIR$/../IntroCNN/models/tutorials/image/cifar10/cifar10.py" />
         <option value="$PROJECT_DIR$/guauNET/network_function.py" />
+        <option value="$PROJECT_DIR$/meowNET/main.py" />
+        <option value="$PROJECT_DIR$/guauNET/loss.py" />
         <option value="$PROJECT_DIR$/guauNET/train.py" />
         <option value="$PROJECT_DIR$/guauNET/test.py" />
       </list>
@@ -413,25 +406,25 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.08556548" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3188406" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3398693" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32206118" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3398693" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -461,13 +454,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/meowNET/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="32" column="0" lean-forward="true" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/meowNET/input.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -662,7 +648,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="414">
           <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="26" selection-end-column="62" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -670,7 +655,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="197">
           <caret line="89" column="6" lean-forward="false" selection-start-line="89" selection-start-column="6" selection-end-line="89" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -678,17 +662,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="529">
           <caret line="87" column="30" lean-forward="false" selection-start-line="87" selection-start-column="30" selection-end-line="87" selection-end-column="30" />
-          <folding>
-            <element signature="e#1325#1363#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/meowNET/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
-          <caret line="63" column="121" lean-forward="true" selection-start-line="63" selection-start-column="12" selection-end-line="63" selection-end-column="121" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -696,9 +669,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6214">
           <caret line="385" column="49" lean-forward="false" selection-start-line="385" selection-start-column="49" selection-end-line="385" selection-end-column="49" />
-          <folding>
-            <element signature="e#1259#1297#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -710,36 +680,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/guauNET/network_function.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="57" column="49" lean-forward="true" selection-start-line="57" selection-start-column="49" selection-end-line="57" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/guauNET/input.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
+        <state relative-caret-position="828">
           <caret line="48" column="52" lean-forward="false" selection-start-line="48" selection-start-column="52" selection-end-line="48" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/guauNET/test.py">
+    <entry file="file://$PROJECT_DIR$/meowNET/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="56" lean-forward="false" selection-start-line="25" selection-start-column="56" selection-end-line="25" selection-end-column="56" />
+        <state relative-caret-position="-194">
+          <caret line="10" column="21" lean-forward="true" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/guauNET/network_function.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="57" column="49" lean-forward="true" selection-start-line="57" selection-start-column="49" selection-end-line="57" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/guauNET/loss.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="43" lean-forward="false" selection-start-line="6" selection-start-column="43" selection-end-line="6" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/guauNET/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="24" column="49" lean-forward="true" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
+        <state relative-caret-position="123">
+          <caret line="7" column="0" lean-forward="true" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/guauNET/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="12" lean-forward="false" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
           <folding />
         </state>
       </provider>
