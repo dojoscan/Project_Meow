@@ -1,6 +1,6 @@
 import tensorflow as tf
 import network_function as nf
-import input
+import kitti_input as ki
 import loss
 import os
 import time
@@ -11,19 +11,19 @@ cwd = os.getcwd()
 # build input graph
 with tf.name_scope('InputPipeline'):
     batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
-    batch = input.create_batch(p.PATH_TO_IMAGES, p.PATH_TO_LABELS, batch_size, p.TRAIN)
+    batch = ki.create_batch(p.PATH_TO_IMAGES, p.PATH_TO_LABELS, batch_size, p.TRAIN)
     x = batch[0]
-    #y_ = tf.one_hot(batch[1], p.NO_CLASSES, dtype=tf.int32, name='OneHot')
-    y_=batch[1]
+    y_ = batch[1]
+
 # build CNN graph
 network_output = nf.squeeze_net(x)
 
 # build loss graph
-cross_entropy, train_accuracy = loss.calculate_loss(network_output,y_)
+loss, train_accuracy = loss.calculate_loss(network_output, y_)
 
 # build training graph
 with tf.name_scope('Training'):
-    train_step = tf.train.AdamOptimizer(p.LEARNING_RATE,name='LearningRate').minimize(cross_entropy,name='CrossEntropy')
+    train_step = tf.train.AdamOptimizer(p.LEARNING_RATE, name='LearningRate').minimize(loss, name='CrossEntropy')
 
 merged_summaries = tf.summary.merge_all()
 
@@ -45,14 +45,13 @@ start_time = time.clock()
 for i in range(p.NR_ITERATIONS):
     if i % p.PRINT_FREQ == 0:
         # run inference graph
-        accuracy, summary = sess.run([train_accuracy, merged_summaries], feed_dict={batch_size: p.BATCH_SIZE})
-        print("step %d, train accuracy = %g, time taken = %g seconds" % (i, accuracy, time.clock()-start_time))
+        batch_loss, summary = sess.run([loss, merged_summaries], feed_dict={batch_size: p.BATCH_SIZE})
+        print("step %d, train accuracy = %g, time taken = %g seconds" % (i, batch_loss, time.clock()-start_time))
         # write accuracy to log file
         summary_writer.add_summary(summary, i)
         start_time = time.clock()
     # run training graph
     sess.run(train_step, feed_dict={batch_size: p.BATCH_SIZE})
 
-print("Final train accuracy = %g" % sess.run(train_accuracy, feed_dict={batch_size: p.BATCH_SIZE}))
 save_path = saver.save(sess, p.PATH_TO_CKPT)
 print("Model saved in file: %s" % p.PATH_TO_CKPT)
