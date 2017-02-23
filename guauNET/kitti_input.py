@@ -56,7 +56,6 @@ def create_batch(path_to_images, path_to_labels, batch_size, train):
     """
     image_list = create_image_list(path_to_images)
     no_samples = len(image_list)
-    print(no_samples)
     image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
     if train:
         labels = read_labels(path_to_labels)

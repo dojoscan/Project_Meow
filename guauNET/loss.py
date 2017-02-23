@@ -1,5 +1,6 @@
 import tensorflow as tf
-classes = {'Car':'0', 'Van':'1','Truck':'2', 'Pedestrian':'3', 'Person_sitting':'4','Cyclist':'5','Tram':'6','Misc':'7','DontCare':'8'}
+import numpy as np
+from parameters import classes
 
 def bbox_transform_inv(bbox):
     """ Convert a bbox of form [xmin, ymin, xmax, ymax] to [cx, cy, w, h]
@@ -11,7 +12,6 @@ def bbox_transform_inv(bbox):
     with tf.variable_scope('bbox_transform_inv') as scope:
         xmin, ymin, xmax, ymax = bbox
         out_box = [[]]*4
-
         width       = xmax - xmin + 1.0
         height      = ymax - ymin + 1.0
         out_box[0]  = xmin + 0.5*width
@@ -22,9 +22,10 @@ def bbox_transform_inv(bbox):
 
 def separate_labels(y_):
     labels = {}
-    index = 0
-    for i in y_:
-        line = i.split('\n')
+    for i in range(0, len(y_)-1):
+        line = y_[i]
+        print(line)
+        line = line.split('\n')
         bboxes = []
         for j in line:
             obj = j.split(' ')
@@ -39,18 +40,12 @@ def separate_labels(y_):
         index = index+1
     return labels
 
-def calculate_loss(network_output,y_):
+def calculate_loss(y_):
     """ Calculate multi-task loss as described in squeezeDet
     Args:
         network_output: a 4d tensor
         y_: a 1d tensor where each element is a string containing annotations for all objects in a single image
     Returns:
-        loss: multi-task loss over a mini-natch
+        loss: multi-task loss over a mini-Batch
     """
-    with tf.name_scope('Loss'):
-        #lala
-        cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=network_output, labels=y_),
-                                       name='CrossEntropy')
-        tf.summary.scalar("Cross Entropy", cross_entropy)
-
-        return cross_entropy
+    return separate_labels(y_)
