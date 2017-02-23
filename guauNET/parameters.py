@@ -9,9 +9,9 @@ if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/train/images/"
     PATH_TO_LABELS = "/Users/Donal/Dropbox/CIFAR10/Data/train/labels.txt"
     PATH_TO_TEST_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/test/images/"
-    PATH_TO_LOGS = "/Users/Donal/Desktop/"
     PATH_TO_TEST_OUTPUT = "/Users/Donal/Desktop/"
-    PATH_TO_CKPT = "/Users/Donal/Dropbox/KITTI/checkpoints/"
+    PATH_TO_LOGS = "/Users/Donal/Desktop/Thesis/Code/Tensorflow_logs/"
+    PATH_TO_CKPT = "/Users/Donal/Desktop/Thesis/Code/Tensorflow_ckpt/"
 else:
     PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
     PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/labels.txt"

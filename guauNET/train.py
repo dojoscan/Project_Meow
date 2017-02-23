@@ -11,6 +11,7 @@ cwd = os.getcwd()
 # build input graph
 with tf.name_scope('InputPipeline'):
     batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
+    tf.add_to_collection("BatchSize", batch_size)
     batch = input.create_batch(p.PATH_TO_IMAGES, p.PATH_TO_LABELS, batch_size, p.TRAIN)
     x = batch[0]
     y_ = tf.one_hot(batch[1], p.NO_CLASSES, dtype=tf.int32, name='OneHot')
@@ -19,7 +20,7 @@ with tf.name_scope('InputPipeline'):
 network_output = nf.squeeze_net(x)
 
 # build loss graph
-cross_entropy, train_accuracy = loss.calculate_loss(network_output,y_)
+cross_entropy, train_accuracy = loss.calculate_loss(network_output, y_)
 
 # build training graph
 with tf.name_scope('Training'):
@@ -39,7 +40,6 @@ with tf.name_scope('Queues'):
 sess.run(tf.global_variables_initializer())
 summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_graph())
 
-# training
 print('Training initiated')
 start_time = time.clock()
 for i in range(p.NR_ITERATIONS):
@@ -52,7 +52,8 @@ for i in range(p.NR_ITERATIONS):
         start_time = time.clock()
     # run training graph
     sess.run(train_step, feed_dict={batch_size: p.BATCH_SIZE})
-
 print("Final train accuracy = %g" % sess.run(train_accuracy, feed_dict={batch_size: p.BATCH_SIZE}))
-save_path = saver.save(sess, p.PATH_TO_CKPT)
+
+# save graph and all parameters as checkpoint
+saver.save(sess, p.PATH_TO_CKPT+'\model', global_step=p.NR_ITERATIONS)
 print("Model saved in file: %s" % p.PATH_TO_CKPT)
