@@ -1,4 +1,5 @@
 import tensorflow as tf
+from parameters import NO_CLASSES, NR_ANCHOR_PER_CELL
 
 KEEP_PROP = 0.5
 
@@ -40,18 +41,18 @@ def squeeze_net(x):
     h_pool3 = max_pool_3x3(h_fire4)
 
     h_fire5 = fire(h_pool3, 128, s1x1=32, e1x1=128, e3x1=128, name='Fire5')
-    #h_fire6 = fire(h_fire5, 384, s1x1=48, e1x1=192, e3x1=192, name='Fire6')
-    #h_fire7 = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x1=256, name='Fire7')
-    #h_fire8 = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x1=256, name='Fire8')
-    #h_fire9 = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x1=384, name='Fire9')
-    #h_fire10 = fire(h_fire9, 768, s1x1=96, e1x1=384, e3x1=384, name='Fire10')
+    h_fire6 = fire(h_fire5, 384, s1x1=48, e1x1=192, e3x1=192, name='Fire6')
+    h_fire7 = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x1=256, name='Fire7')
+    h_fire8 = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x1=256, name='Fire8')
+    h_fire9 = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x1=384, name='Fire9')
+    h_fire10 = fire(h_fire9, 768, s1x1=96, e1x1=384, e3x1=384, name='Fire10')
     # dropout
-    #keep_prop = tf.constant(KEEP_PROP, dtype=tf.float32)
-    #h_drop = tf.nn.dropout(h_fire5, keep_prop, name='Dropout')
+    keep_prop = tf.constant(KEEP_PROP, dtype=tf.float32)
+    h_drop = tf.nn.dropout(h_fire10, keep_prop, name='Dropout')
 
-    W_conv3 = weight_variable([3, 3, 256, 10])
-    b_conv3 = bias_variable([10])
-    h_conv3 = tf.nn.bias_add(conv2d(h_fire5, W_conv3), b_conv3, name='AddBias')
+    W_conv3 = weight_variable([3, 3, 768, (NO_CLASSES+1+4)*NR_ANCHOR_PER_CELL])
+    b_conv3 = bias_variable([(NO_CLASSES+1+4)*NR_ANCHOR_PER_CELL])
+    h_conv3 = tf.nn.bias_add(conv2d(h_drop, W_conv3), b_conv3, name='AddBias')
     h_conv3 = tf.squeeze(h_conv3, name='Squeeze')
     return h_conv3
 

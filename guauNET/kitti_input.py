@@ -1,7 +1,8 @@
 import tensorflow as tf
 import os
 
-IM_SIZE = 32
+from parameters import IMAGE_HEIGHT, IMAGE_WIDTH
+
 
 def read_image(filename):
     """
@@ -13,7 +14,7 @@ def read_image(filename):
 
     file_contents = tf.read_file(filename)
     image = tf.image.decode_png(file_contents, channels=3)
-    image = tf.image.resize_images(image, [IM_SIZE, IM_SIZE])
+    image = tf.image.resize_images(image, [IMAGE_HEIGHT, IMAGE_WIDTH])
     return image
 
 def read_labels(path_to_labels):
