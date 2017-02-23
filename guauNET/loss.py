@@ -1,7 +1,6 @@
 import tensorflow as tf
 import numpy as np
 from parameters import classes
-
 def bbox_transform_inv(bbox):
     """ Convert a bbox of form [xmin, ymin, xmax, ymax] to [cx, cy, w, h]
     Args:
@@ -22,22 +21,25 @@ def bbox_transform_inv(bbox):
 
 def separate_labels(y_):
     labels = {}
-    for i in range(0, len(y_)-1):
-        line = y_[i]
-        print(line)
-        line = line.split('\n')
+    index=0
+    for i in range(0,len(y_)):
+        line = y_[i].decode()
         bboxes = []
-        for j in line:
-            obj = j.split(' ')
-            cls = classes[obj[0]]
-            xmin = float(obj[4])
-            ymin = float(obj[5])
-            xmax = float(obj[6])
-            ymax = float(obj[7])
+        line=line.split()
+        print(line)
+        for obj in range(0,len(line),15):
+            annot=line[obj+0]
+            cls = int(classes[annot])
+            xmin = float(line[4+obj])
+            ymin = float(line[5+obj])
+            xmax = float(line[6+obj])
+            ymax = float(line[7+obj])
             x, y, w, h = bbox_transform_inv([xmin, ymin, xmax, ymax])
             bboxes.append([x, y, w, h, cls])
+            print(bboxes)
         labels[index] = bboxes
         index = index+1
+    print(labels)
     return labels
 
 def calculate_loss(y_):

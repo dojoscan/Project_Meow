@@ -41,7 +41,7 @@ def squeeze_net(x):
     h_pool3 = max_pool_3x3(h_fire4)
 
     h_fire5 = fire(h_pool3, 128, s1x1=32, e1x1=128, e3x1=128, name='Fire5')
-    h_fire6 = fire(h_fire5, 384, s1x1=48, e1x1=192, e3x1=192, name='Fire6')
+    h_fire6 = fire(h_fire5, 256, s1x1=48, e1x1=192, e3x1=192, name='Fire6')
     h_fire7 = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x1=256, name='Fire7')
     h_fire8 = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x1=256, name='Fire8')
     h_fire9 = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x1=384, name='Fire9')

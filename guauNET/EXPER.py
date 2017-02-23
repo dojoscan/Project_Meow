@@ -5,7 +5,7 @@ import loss
 import os
 import time
 import parameters as p
-
+import numpy as np
 cwd = os.getcwd()
 
 # build input graph
@@ -29,8 +29,10 @@ sess.run(tf.global_variables_initializer())
 
 # training loop
 net_out, labels = sess.run([network_output, y_], feed_dict={batch_size: 2})
+
 LABELS = loss.calculate_loss(labels)
-print(LABELS)
+
+
 # convert labels to nicer form
 # convert net_out to nicer form
 # calculate loss
