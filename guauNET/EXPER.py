@@ -1,10 +1,11 @@
 import tensorflow as tf
 import network_function as nf
 import kitti_input as ki
+import parameters as p
+import interpretation as interp
 import loss
 import os
 import time
-import parameters as p
 import numpy as np
 cwd = os.getcwd()
 
@@ -18,6 +19,9 @@ with tf.name_scope('InputPipeline'):
 # build CNN graph
 network_output = nf.squeeze_net(x)
 
+# build interpretation graph
+class_scores = interp.interpret(network_output)
+
 sess = tf.Session()
 
 # start input queue threads
@@ -28,9 +32,11 @@ with tf.name_scope('Queues'):
 sess.run(tf.global_variables_initializer())
 
 # training loop
-net_out, labels = sess.run([network_output, y_], feed_dict={batch_size: 2})
+class_sc, labels = sess.run([class_scores, y_], feed_dict={batch_size: p.BATCH_SIZE})
 
-LABELS = loss.calculate_loss(labels)
+print(np.shape(class_sc))
+
+#LABELS = loss.calculate_loss(labels)
 
 
 # convert labels to nicer form

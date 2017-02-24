@@ -1,5 +1,5 @@
 import tensorflow as tf
-from parameters import NO_CLASSES, NR_ANCHOR_PER_CELL
+from parameters import NR_CLASSES, NR_ANCHORS_PER_CELL
 
 KEEP_PROP = 0.5
 
@@ -50,8 +50,8 @@ def squeeze_net(x):
     keep_prop = tf.constant(KEEP_PROP, dtype=tf.float32)
     h_drop = tf.nn.dropout(h_fire10, keep_prop, name='Dropout')
 
-    W_conv3 = weight_variable([3, 3, 768, (NO_CLASSES+1+4)*NR_ANCHOR_PER_CELL])
-    b_conv3 = bias_variable([(NO_CLASSES+1+4)*NR_ANCHOR_PER_CELL])
+    W_conv3 = weight_variable([3, 3, 768, (NR_CLASSES+1+4)*NR_ANCHORS_PER_CELL])
+    b_conv3 = bias_variable([(NR_CLASSES+1+4)*NR_ANCHORS_PER_CELL])
     h_conv3 = tf.nn.bias_add(conv2d(h_drop, W_conv3), b_conv3, name='AddBias')
     h_conv3 = tf.squeeze(h_conv3, name='Squeeze')
     return h_conv3

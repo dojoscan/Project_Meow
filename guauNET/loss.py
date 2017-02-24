@@ -1,6 +1,6 @@
 import tensorflow as tf
 import numpy as np
-from parameters import classes
+from parameters import CLASSES
 def bbox_transform_inv(bbox):
     """ Convert a bbox of form [xmin, ymin, xmax, ymax] to [cx, cy, w, h]
     Args:
@@ -29,7 +29,7 @@ def separate_labels(y_):
         print(line)
         for obj in range(0,len(line),15):
             annot=line[obj+0]
-            cls = int(classes[annot])
+            cls = int(CLASSES[annot])
             xmin = float(line[4+obj])
             ymin = float(line[5+obj])
             xmax = float(line[6+obj])
