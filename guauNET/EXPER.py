@@ -20,7 +20,7 @@ with tf.name_scope('InputPipeline'):
 network_output = nf.squeeze_net(x)
 
 # build interpretation graph
-class_scores = interp.interpret(network_output)
+class_scores, confidence_scores, bbox_delta= interp.interpret(network_output)
 
 sess = tf.Session()
 
@@ -32,9 +32,11 @@ with tf.name_scope('Queues'):
 sess.run(tf.global_variables_initializer())
 
 # training loop
-class_sc, labels = sess.run([class_scores, y_], feed_dict={batch_size: p.BATCH_SIZE})
+class_sc, confidence_sc, delta, labels = sess.run([class_scores, confidence_scores, bbox_delta, y_], feed_dict={batch_size: p.BATCH_SIZE})
 
 print(np.shape(class_sc))
+print(np.shape(confidence_sc))
+print(np.shape(delta))
 
 #LABELS = loss.calculate_loss(labels)
 

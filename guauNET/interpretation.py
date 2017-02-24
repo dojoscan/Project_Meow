@@ -21,4 +21,21 @@ def interpret(network_output):
                 [p.BATCH_SIZE, p.NR_ANCHORS_PER_CELL*p.OUTPUT_HEIGHT*p.OUTPUT_WIDTH, p.NR_CLASSES],
                 name='ClassScores'
             )
-        return class_scores
+
+        with tf.name_scope('ReformatConfidenceScores'):
+            num_confidence_scores = p.NR_ANCHORS_PER_CELL + num_class_probs
+            confidence_scores = tf.sigmoid(
+                tf.reshape(
+                    network_output[ :, :, :, num_class_probs:num_confidence_scores],
+                    [p.BATCH_SIZE, p.NR_ANCHORS_PER_CELL*p.OUTPUT_HEIGHT*p.OUTPUT_WIDTH]
+                ),
+                name='ConfidenceScores'
+            )
+
+        with tf.name_scope('ReformatBboxDelta'):
+            bbox_delta = tf.reshape(
+                network_output[:, :, :, num_confidence_scores:],
+                [ p.BATCH_SIZE, p.NR_ANCHORS_PER_CELL*p.OUTPUT_HEIGHT*p.OUTPUT_WIDTH, 4],
+                name='bboxDelta'
+            )
+        return class_scores, confidence_scores, bbox_delta
