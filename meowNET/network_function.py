@@ -107,7 +107,7 @@ def res_fire(x,input_depth,s1x1,e1x1,e3x1):
 
     return tf.concat([h_e1x1, h_e1x3], 3)+x
 
-# architectures
+# CNN ARCHITECTURES
 
 def meow_net(x):
 
@@ -160,26 +160,6 @@ def deeper_meow_net(x):
 
     return h_pool5
 
-def deep_norm_meow_net(x):
-
-    h_norm1 = normalization(x)
-    h_block1 = conv_pool(h_norm1, 3, 32, 32)
-    h_block2 = conv_pool(h_block1, 32, 32, 32)
-    h_block3 = conv_pool(h_block2, 32, 32, 32)
-
-    # conv7 3x3
-    W_conv7 = weight_variable([3, 3, 32, 10])
-    b_conv7 = bias_variable([10])
-    h_conv7 = tf.nn.relu(conv2d(h_block3, W_conv7) + b_conv7)
-
-    #h_norm4=normalization(h_conv7)
-
-    # max pool W_o x H_o
-    h_pool4 = max_pool_4x4(h_conv7)
-    h_pool4 = tf.squeeze(h_pool4)
-
-    return h_pool4
-
 def deep_dropout_meow_net(x):
 
     h_block1 = conv_pool(x, 3, 32, 32)
@@ -222,17 +202,7 @@ def squeeze_net(x):
     h_fire4 = fire(h_fire3, 64, s1x1=16, e1x1=32, e3x1=32)
     h_pool3 = max_pool_3x3(h_fire4)
 
-
     h_fire5 = res_fire(h_pool3,64,s1x1=32,e1x1=32,e3x1=32)
-
-    #h_fire6 = fire(h_fire5, 384, s1x1=48, e1x1=192, e3x1=192)
-    #h_fire7 = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x1=256)
-    #h_fire8 = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x1=256)
-    #h_fire9 = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x1=384)
-    #h_fire10 = fire(h_fire9, 768, s1x1=96, e1x1=384, e3x1=384)
-    # dropout
-    #keep_prop = tf.constant(KEEP_PROP, dtype=tf.float32)
-    #h_drop = tf.nn.dropout(h_fire10, keep_prop)
 
     W_conv3 = weight_variable([3, 3, 64, 10])
     b_conv3 = bias_variable([10])

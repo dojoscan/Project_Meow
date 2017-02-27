@@ -31,8 +31,8 @@ batch_size = tf.placeholder(dtype=tf.int32)
 batch = input.create_batch(PATH_TO_IMAGES, PATH_TO_LABELS, batch_size, TRAIN)
 x = batch[0]
 y_ = tf.one_hot(batch[1], NO_CLASSES, dtype=tf.int32)
-global_step = tf.Variable(0, trainable=False)
-# build CNN graph
+
+# build CNN graph: choose one of the architectures in network_function
 h_pool3 = nf.squeeze_net(x)
 
 if TRAIN:
