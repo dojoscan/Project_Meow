@@ -1,13 +1,16 @@
 import tensorflow as tf
 import parameters as p
 
-# define as parameters
-
 def interpret(network_output):
     '''
-
-    :param network_output:
-    :return:    '''
+    Converts the output tensor of the network to form that can be easily manipulated to calculate the loss
+    Args:
+        network_output: a 4d tensor outputted from the CNN [batch_sz,height,width,depth]
+    Return:
+        class_scores: a 3d tensor containing the Pr(Cl|Obj) dist. for each anchor [batch_sz, no_anchors_per_image, no_classes]
+        confidence_scores: a 2d tensor containing the Pr(Obj)*IOU for each anchor [batch_sz, no_anchors_per_image]
+        bbox_deltas: a 3d tensor containing the parameterised offsets for each anchor [batch_sz, no_anchors_per_image,4]
+    '''
     with tf.name_scope('Interpretation'):
         with tf.name_scope('ReformatClassScores'):
             num_class_probs = p.NR_ANCHORS_PER_CELL * p.NR_CLASSES
