@@ -3,7 +3,24 @@ import os
 import numpy as np
 
 from parameters import IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES
-from loss import bbox_transform_inv
+
+def bbox_transform_inv(bbox):
+    """ Convert a bbox of form [xmin, ymin, xmax, ymax] to [cx, cy, w, h]
+    Args:
+        bbox: an array
+    Returns:
+        outbox: an array
+    """
+    with tf.variable_scope('bbox_transform_inv') as scope:
+        xmin, ymin, xmax, ymax = bbox
+        out_box = [[]]*4
+        width       = xmax - xmin + 1.0
+        height      = ymax - ymin + 1.0
+        out_box[0]  = xmin + 0.5*width
+        out_box[1]  = ymin + 0.5*height
+        out_box[2]  = width
+        out_box[3]  = height
+    return out_box
 
 def read_image(filename):
     """
