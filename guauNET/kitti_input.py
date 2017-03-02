@@ -1,8 +1,9 @@
 import tensorflow as tf
 import os
 import numpy as np
+import time
 
-from parameters import IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES
+from parameters import IMAGE_HEIGHT, IMAGE_WIDTH,CLASSES
 
 def bbox_transform_inv(bbox):
     """ Convert a bbox of form [xmin, ymin, xmax, ymax] to [cx, cy, w, h]
@@ -49,18 +50,13 @@ def read_labels(path_to_labels):
         data = open(file, 'r').read()
         labels.append(data)
 
-    num_obj=[]
-    for i in range(0,len(labels)):
-        line=labels[i].split()
-        num_obj.append(int(len(line)/15))
-
-    max_num_obj=max(num_obj)
-    separacion = np.zeros((len(labels), max_num_obj,1))
-    print(separacion)
+    bboxes=[]
+    classes=[]
+    index_images=[]
     for i in range(0, len(labels)):
         # separate the values for each image, every image can have more than one object
         line = labels[i].split()
-        bboxes =[]
+        index_images.append(i)
         for obj in range(0, len(line), 15):
             # for each object in the image, we extract the ground truth corrdinates [x,y,w,h] and the class of the object
             annot = line[obj + 0]
@@ -70,15 +66,15 @@ def read_labels(path_to_labels):
             xmax = float(line[6 + obj])
             ymax = float(line[7 + obj])
             x, y, w, h = bbox_transform_inv([xmin, ymin, xmax, ymax])
-            bboxes.append([x, y, w, h, cls])
-        print(bboxes)
-        separacion[i]=bboxes
-    print(separacion)
+            if obj == 0:
+                classes.append([cls])
+                bboxes.append([(x,y,w,h)])
+            else:
+                ind=index_images.index(i)
+                classes[ind].append(cls)
+                bboxes[ind].append((x,y,w,h))
 
-        #labels[index] = bboxes
-        #index = index + 1
-
-    return labels
+    return labels, classes, bboxes
 
 
 def create_image_list(path_to_images):
@@ -108,7 +104,7 @@ def create_batch(path_to_images, path_to_labels, batch_size, train):
     no_samples = len(image_list)
     image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
     if train:
-        labels = read_labels(path_to_labels)
+        labels, classes, bboxes = read_labels(path_to_labels)
     else:   # Create fake labels for testing data
         labels = [0]*no_samples
     labels = tf.convert_to_tensor(labels, dtype=tf.string)
