@@ -1,8 +1,9 @@
 import tensorflow as tf
 import os
+import numpy as np
 
-from parameters import IMAGE_HEIGHT, IMAGE_WIDTH
-
+from parameters import IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES
+from loss import bbox_transform_inv
 
 def read_image(filename):
     """
@@ -30,7 +31,38 @@ def read_labels(path_to_labels):
     for file in [path_to_labels + s for s in label_list]:
         data = open(file, 'r').read()
         labels.append(data)
+
+    num_obj=[]
+    for i in range(0,len(labels)):
+        line=labels[i].split()
+        num_obj.append(int(len(line)/15))
+
+    max_num_obj=max(num_obj)
+    separacion = np.zeros((len(labels), max_num_obj,1))
+    print(separacion)
+    for i in range(0, len(labels)):
+        # separate the values for each image, every image can have more than one object
+        line = labels[i].split()
+        bboxes =[]
+        for obj in range(0, len(line), 15):
+            # for each object in the image, we extract the ground truth corrdinates [x,y,w,h] and the class of the object
+            annot = line[obj + 0]
+            cls = int(CLASSES[annot])
+            xmin = float(line[4 + obj])
+            ymin = float(line[5 + obj])
+            xmax = float(line[6 + obj])
+            ymax = float(line[7 + obj])
+            x, y, w, h = bbox_transform_inv([xmin, ymin, xmax, ymax])
+            bboxes.append([x, y, w, h, cls])
+        print(bboxes)
+        separacion[i]=bboxes
+    print(separacion)
+
+        #labels[index] = bboxes
+        #index = index + 1
+
     return labels
+
 
 def create_image_list(path_to_images):
     """
