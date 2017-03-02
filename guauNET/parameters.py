@@ -11,7 +11,7 @@ OUTPUT_WIDTH = 25
 OUTPUT_HEIGHT = 6
 NR_ANCHORS_PER_CELL = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
-USER = 'DONAL'
+USER = 'LUCIA'
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
     PATH_TO_LABELS = "/Users/Donal/Dropbox/KITTI/test/label/"

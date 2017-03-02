@@ -20,3 +20,20 @@ def compute_iou(boxA,boxB):
     union = boxA[2] * boxA[3] + boxB[2] * boxB[3] - intersection
 
     return intersection / (union + p.EPSILON)
+
+def bbox_transform_inv(bbox):
+    """ Convert a bbox of form [xmin, ymin, xmax, ymax] to [cx, cy, w, h]
+    Args:
+        bbox: an array
+    Returns:
+        outbox: an array
+    """
+    xmin, ymin, xmax, ymax = bbox
+    out_box = [[]]*4
+    width       = xmax - xmin + 1.0
+    height      = ymax - ymin + 1.0
+    out_box[0]  = xmin + 0.5*width
+    out_box[1]  = ymin + 0.5*height
+    out_box[2]  = width
+    out_box[3]  = height
+    return out_box
