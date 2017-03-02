@@ -1,5 +1,6 @@
 TRAIN = True
 LEARNING_RATE = 0.001
+EPSILON = 0.0001
 NR_ITERATIONS = 100
 PRINT_FREQ = 100
 BATCH_SIZE = 2
@@ -9,7 +10,7 @@ IMAGE_HEIGHT = 125
 OUTPUT_WIDTH = 25
 OUTPUT_HEIGHT = 6
 NR_ANCHORS_PER_CELL = 9
-CLASSES = {'Car': '0', 'Van': '1','Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4','Cyclist': '5','Tram': '6','Misc': '7','DontCare': '8'}
+CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
 USER = 'DONAL'
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"

@@ -20,7 +20,18 @@ with tf.name_scope('InputPipeline'):
 network_output = nf.squeeze_net(x)
 
 # build interpretation graph
-class_scores, confidence_scores, bbox_delta= interp.interpret(network_output)
+class_scores, confidence_scores, bbox_delta = interp.interpret(network_output)
+
+# create fake ground truth
+GT_delta = np.random.randint(400, size=[p.BATCH_SIZE, 1, 4])
+GT_delta = tf.convert_to_tensor(GT_delta, dtype=tf.float32)
+
+# create fake bbox
+bbox_delta = np.random.randint(400, size=[p.BATCH_SIZE, 10, 4])
+bbox_delta = tf.convert_to_tensor(GT_delta, dtype=tf.float32)
+
+# assign detections to ground truths graph
+max_iou, max_idx = interp.assign_to_ground_truth(bbox_delta, GT_delta)
 
 sess = tf.Session()
 
@@ -31,17 +42,13 @@ with tf.name_scope('Queues'):
 
 sess.run(tf.global_variables_initializer())
 
-# training loop
-class_sc, confidence_sc, delta, labels = sess.run([class_scores, confidence_scores, bbox_delta, y_], feed_dict={batch_size: p.BATCH_SIZE})
+# run session
+MAX_IOU, MAX_IDX = sess.run([max_iou, max_idx], feed_dict={batch_size: p.BATCH_SIZE})
+print(MAX_IOU)
+print(MAX_IDX)
 
-print(np.shape(class_sc))
-print(np.shape(confidence_sc))
-print(np.shape(delta))
-
-#LABELS = loss.calculate_loss(labels)
-
-
-# convert labels to nicer form
-# convert net_out to nicer form
+# move GT interp to input pipeline
+# calculate IOU
+# assign detections to GT
 # calculate loss
 # send loss into training graph
