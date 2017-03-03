@@ -2,9 +2,18 @@ import tensorflow as tf
 import os
 import numpy as np
 import time
+import tools as t
 
 from parameters import IMAGE_HEIGHT, IMAGE_WIDTH,CLASSES
-import tools as t
+
+# TO DO!
+# GT_MASK: 1 if anchor has max IOU with GT [batch size, no anchors per image]
+#               - compute IOU between each anchor and each GT
+#               - for each anchors, find GT with highest IOU
+# GT_BOX_DELTA: deltas between anchors and GT with highest IOU [batch size, no anchors per image, 4]
+# GT_BOX_INPUT: coordinates of GT bbox assigned to each anchor [batch size, no anchors per image, 4]
+# GT_LABELS: labels of GT assigned to each anchor [batch size, no anchors per image, no classes]
+# GT_OBJ_PER_IMAGE: number of objects per image [batch size]
 
 def read_image(filename):
     """
@@ -24,8 +33,8 @@ def read_labels(path_to_labels):
     Args:
         path_to_labels: full path to labels file
     Returns:
-        bbox: a 1D list of arrays of all boxes, array_sz=[number of times * 4]
-        classes: a 1D list of array of all classes, array_ sz=[number of objects]
+        bbox: a 1D list of tuples of ground truth bounding boxes (x, y, w, h), list_sz = [batch_sz]
+        classes: a 1D list of arrays of ground truth class labels, list_sz = [batch_sz], array_ sz = [number of objects]
     """
     label_list = os.listdir(path_to_labels)
     bboxes = []
@@ -89,9 +98,9 @@ def create_batch(path_to_images, path_to_labels, batch_size, train):
        classes, bboxes = read_labels(path_to_labels)
     else:   # Create fake labels for testing data
         classes = [0]*no_samples
-        bboxes=[0]*no_samples
+        bboxes = [0]*no_samples
     classes = tf.convert_to_tensor(classes, dtype=tf.int32)
-    bboxes=tf.convert_to_tensor(bboxes, dtype=tf.float32)
+    bboxes = tf.convert_to_tensor(bboxes, dtype=tf.float32)
     input_queue = tf.train.slice_input_producer([image_list, classes, bboxes], shuffle=False)
     images = read_image(input_queue[0])
     batch = tf.train.batch([images, input_queue[1], input_queue[2]], batch_size=batch_size)

@@ -14,7 +14,7 @@ with tf.name_scope('InputPipeline'):
     batch = ki.create_batch(p.PATH_TO_IMAGES, p.PATH_TO_LABELS, batch_size, p.TRAIN)
     x = batch[0]
     cls_gt = batch[1]
-    bbox_gt=batch[2]
+    bbox_gt = batch[2]
 
 # build CNN graph
 network_output = nf.squeeze_net(x)
