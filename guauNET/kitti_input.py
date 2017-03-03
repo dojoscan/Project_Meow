@@ -4,7 +4,7 @@ import numpy as np
 import time
 import tools as t
 
-from parameters import IMAGE_HEIGHT, IMAGE_WIDTH,CLASSES
+from parameters import IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES, ANCHORS, NR_ANCHORS_PER_IMAGE
 
 # TO DO!
 # GT_MASK: 1 if anchor has max IOU with GT [batch size, no anchors per image]
@@ -33,8 +33,8 @@ def read_labels(path_to_labels):
     Args:
         path_to_labels: full path to labels file
     Returns:
-        bbox: a 1D list of tuples of ground truth bounding boxes (x, y, w, h), list_sz = [batch_sz]
-        classes: a 1D list of arrays of ground truth class labels, list_sz = [batch_sz], array_ sz = [number of objects]
+        bbox: a 1D list of tuples of ground truth bounding boxes (x, y, w, h), list_sz = [total_no_images]
+        classes: a 1D list of arrays of ground truth class labels, list_sz = [total_no_images], array_ sz = [number_of_objects_per_image]
     """
     label_list = os.listdir(path_to_labels)
     bboxes = []
@@ -65,7 +65,7 @@ def read_labels(path_to_labels):
                 classes[ind].append(cls)
                 bboxes[ind].append((x,y,w,h))
         i=i+1
-    return classes, bboxes
+    return classes,bboxes
 
 
 def create_image_list(path_to_images):
@@ -79,6 +79,37 @@ def create_image_list(path_to_images):
     image_list = os.listdir(path_to_images)
     image_list = [path_to_images + s for s in image_list]
     return image_list
+
+def compute_deltas(coords):
+    coords = np.array(coords)
+    anchors = np.array(ANCHORS)
+    delta_x = (coords[:,0] - anchors[:,0])/anchors[:,2]
+    print(np.shape(delta_x))
+
+def assign_gt_to_anchors(classes, bboxes):
+    """
+    Args:
+        classes:
+        bboxes:
+    Returns:
+         gt_mask: a 2d array with values 1 if the anchor has the highest IOU with an obj, 0 otherwise, sz = [no_images,no_anchors]
+         gt_deltas:
+         gt_coords:
+         gt_labels:
+    """
+    for image_idx in range(0, len(classes)):
+        ious = []
+        mask = np.zeros([NR_ANCHORS_PER_IMAGE])
+        for obj in bboxes[image_idx]:
+            ious_obj = t.compute_iou(np.transpose(ANCHORS), np.transpose(obj))
+            ious.append(ious_obj)
+        obj_idx_for_anchor = np.argmax(ious, axis=0)
+        anchor_idx_for_obj = np.argmax(ious, axis=1)
+        mask[anchor_idx_for_obj] = 1
+        im_coords = bboxes[image_idx]
+        coords = [im_coords[i] for i in obj_idx_for_anchor[:]]
+        compute_deltas(coords)
+
 
 def create_batch(path_to_images, path_to_labels, batch_size, train):
     """
@@ -96,6 +127,7 @@ def create_batch(path_to_images, path_to_labels, batch_size, train):
     image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
     if train:
        classes, bboxes = read_labels(path_to_labels)
+       gt_mask, gt_deltas, gt_coords, gt_labels = assign_gt_to_anchors(classes, bboxes)
     else:   # Create fake labels for testing data
         classes = [0]*no_samples
         bboxes = [0]*no_samples
