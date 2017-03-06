@@ -1,6 +1,5 @@
 import tensorflow as tf
 import os
-import glob
 
 IM_SIZE = 32
 
