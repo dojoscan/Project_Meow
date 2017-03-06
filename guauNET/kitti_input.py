@@ -23,10 +23,13 @@ def read_file(filename):
         Args:
             filename: a scalar string tensor.
         Returns:
-            output_tensor: decoded file
+            data: decoded file
     """
-    file = []
-    return file
+
+    data = open(filename, 'rb')
+    data=np.load(data)
+
+    return data
 
 def create_file_list(path_to_folder):
     """

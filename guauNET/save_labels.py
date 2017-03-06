@@ -4,7 +4,7 @@ import numpy as np
 import time
 import tools as t
 
-from parameters import IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES, ANCHORS, NR_ANCHORS_PER_IMAGE, NR_CLASSES
+from parameters import IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES, ANCHORS, NR_ANCHORS_PER_IMAGE, NR_CLASSES, PATH_TO_LABELS
 
 
 # TO DO!
@@ -60,10 +60,15 @@ def compute_deltas(coords):
     anchors = np.array(ANCHORS)
     delta_x = (coords[:, 0] - anchors[:, 0]) / anchors[:, 2]
     delta_y = (coords[:, 1] - anchors[:, 1]) / anchors[:, 3]
-    delta_w = np.log(anchors[:, 2] / anchors[:, 2])
-    delta_h = np.log(anchors[:, 3] / anchors[:, 3])
+    delta_w = np.log(coords[:, 2] / anchors[:, 2])
+    delta_h = np.log(coords[:, 3] / anchors[:, 3])
     deltas = np.transpose([delta_x, delta_y, delta_w, delta_h])
     return deltas
+
+def create_files(index,path,deltas):
+    filename=('%06d'%index)+'.txt'
+    with open(os.path.join(path, filename), 'wb') as temp_file:
+        np.save(temp_file, deltas)
 
 
 def assign_gt_to_anchors(classes, bboxes):
@@ -77,6 +82,7 @@ def assign_gt_to_anchors(classes, bboxes):
          gt_coords:
          gt_labels:
     """
+    #path="C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
     for image_idx in range(0, len(classes)):
         ious = []
         mask = np.zeros([NR_ANCHORS_PER_IMAGE])
@@ -93,9 +99,17 @@ def assign_gt_to_anchors(classes, bboxes):
         pre_label = np.array([im_label[i] for i in obj_idx_for_anchor[:]])
         label = np.zeros((NR_ANCHORS_PER_IMAGE, NR_CLASSES))
         label[np.arange(NR_ANCHORS_PER_IMAGE), pre_label] = 1
+        #create_files(image_idx,path,deltas)
 
 
-def create_label(path_to_images, path_to_labels):
+
+
+
+
+
+
+
+def create_label(path_to_labels):
     """
     Args:
         path_to_images: full path to input images folder
@@ -110,3 +124,11 @@ def create_label(path_to_images, path_to_labels):
     classes, bboxes = read_labels(path_to_labels)
     assign_gt_to_anchors(classes, bboxes)
 
+
+create_label(PATH_TO_LABELS)
+#path="C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
+#label_list = os.listdir(path)
+#for file in [path + s for s in label_list]:
+ #   data = open(file, 'rb')
+ #   data=np.load(data)
+ #   print(data)
