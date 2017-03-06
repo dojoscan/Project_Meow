@@ -4,7 +4,7 @@ LEARNING_RATE = 0.001
 EPSILON = 0.0001
 NR_ITERATIONS = 100
 PRINT_FREQ = 100
-BATCH_SIZE = 2
+BATCH_SIZE = 20
 NR_CLASSES = 9
 IMAGE_WIDTH = 1242
 IMAGE_HEIGHT = 375
@@ -12,7 +12,7 @@ OUTPUT_WIDTH = 25
 OUTPUT_HEIGHT = 6
 NR_ANCHORS_PER_CELL = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
-USER = 'LUCIA'
+USER = 'DONAL'
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
     PATH_TO_LABELS = "/Users/Donal/Dropbox/KITTI/test/label/"
@@ -20,6 +20,7 @@ if USER == 'DONAL':
     PATH_TO_LOGS = "/Users/Donal/Desktop/"
     PATH_TO_TEST_OUTPUT = "/Users/Donal/Desktop/"
     PATH_TO_CKPT = "/Users/Donal/Dropbox/KITTI/checkpoints/"
+    PATH_TO_DELTAS = "/Users/Donal/Dropbox/KITTI/test/deltas/"
 else:
     #PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
     PATH_TO_IMAGES="C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"

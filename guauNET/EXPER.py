@@ -11,9 +11,9 @@ cwd = os.getcwd()
 # build input graph
 with tf.name_scope('InputPipeline'):
     batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
-    batch = ki.create_batch( batch_size, p.TRAIN)
+    batch = ki.create_batch(batch_size, p.TRAIN)
     x = batch[0]
-    cls_gt = batch[1]
+    deltas = batch[1]
     #bbox_gt = batch[2]
 
 # build CNN graph
@@ -32,8 +32,8 @@ with tf.name_scope('Queues'):
 sess.run(tf.global_variables_initializer())
 
 # run session
-lala= sess.run([cls_gt], feed_dict={batch_size: p.BATCH_SIZE})
-print(lala)
+queso = sess.run([deltas], feed_dict={batch_size: p.BATCH_SIZE})
+print(queso)
 
 # move GT interp to input pipeline
 # calculate IOU

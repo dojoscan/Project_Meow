@@ -1,3 +1,5 @@
 # Find mean image & std
 # Restore from CKPT/global step
-# Save/Read deltas etc from file
+# Loss function
+# Data augmention
+# Tensorboard
