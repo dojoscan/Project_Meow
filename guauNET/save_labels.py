@@ -82,7 +82,7 @@ def assign_gt_to_anchors(classes, bboxes):
          gt_coords:
          gt_labels:
     """
-    #path="C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
+    path="C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
     for image_idx in range(0, len(classes)):
         ious = []
         mask = np.zeros([NR_ANCHORS_PER_IMAGE])
@@ -99,14 +99,7 @@ def assign_gt_to_anchors(classes, bboxes):
         pre_label = np.array([im_label[i] for i in obj_idx_for_anchor[:]])
         label = np.zeros((NR_ANCHORS_PER_IMAGE, NR_CLASSES))
         label[np.arange(NR_ANCHORS_PER_IMAGE), pre_label] = 1
-        #create_files(image_idx,path,deltas)
-
-
-
-
-
-
-
+        create_files(image_idx,path,deltas)
 
 
 def create_label(path_to_labels):

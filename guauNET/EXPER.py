@@ -11,10 +11,10 @@ cwd = os.getcwd()
 # build input graph
 with tf.name_scope('InputPipeline'):
     batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
-    batch = ki.create_batch(p.PATH_TO_IMAGES, p.PATH_TO_LABELS, batch_size, p.TRAIN)
+    batch = ki.create_batch( batch_size, p.TRAIN)
     x = batch[0]
     cls_gt = batch[1]
-    bbox_gt = batch[2]
+    #bbox_gt = batch[2]
 
 # build CNN graph
 network_output = nf.squeeze_net(x)
@@ -32,9 +32,9 @@ with tf.name_scope('Queues'):
 sess.run(tf.global_variables_initializer())
 
 # run session
-class_t, bbox_t = sess.run([cls_gt, bbox_gt], feed_dict={batch_size: p.BATCH_SIZE})
-print(class_t)
-print(bbox_t)
+lala= sess.run([cls_gt], feed_dict={batch_size: p.BATCH_SIZE})
+print(lala)
+
 # move GT interp to input pipeline
 # calculate IOU
 # assign detections to GT

@@ -6,8 +6,8 @@ NR_ITERATIONS = 100
 PRINT_FREQ = 100
 BATCH_SIZE = 2
 NR_CLASSES = 9
-IMAGE_WIDTH = 414
-IMAGE_HEIGHT = 125
+IMAGE_WIDTH = 1242
+IMAGE_HEIGHT = 375
 OUTPUT_WIDTH = 25
 OUTPUT_HEIGHT = 6
 NR_ANCHORS_PER_CELL = 9
@@ -29,6 +29,7 @@ else:
     PATH_TO_LOGS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/meow_logs/"
     PATH_TO_TEST_OUTPUT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/test_output/"
     PATH_TO_CKPT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/checkpoints/"
+    PATH_TO_DELTAS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
 
 def set_anchors():
   H, W, B = 22, 76, 9
