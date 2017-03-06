@@ -27,11 +27,9 @@ def read_file(filename):
     """
 
     file_contents = tf.read_file(filename)
-    data=tf.decode_raw(file_contents,out_type=tf.float64)
-
-    #data = open(filename, 'rb')
-    #data=np.load(data)
-
+    data = tf.decode_raw(file_contents, out_type=tf.float64)
+    data = data[10:]
+    data = tf.transpose(tf.reshape(data, [4, p.NR_ANCHORS_PER_IMAGE]))
     return data
 
 def create_file_list(path_to_folder):
@@ -55,7 +53,7 @@ def create_batch(batch_size, train):
     Returns:
         batch:  list of tensors (see SqueezeDet paper for more details) -
                 images, 4d tensor sz = [batch_sz, im_h, im_w, im_d]
-                masks, whether or not an anchor is assigned to a GT{1,0}, 2d tensor sz = [batch_sz, no_anchors_per_image]
+                masks, whether or not an anchor is assigned to a GT {1,0}, 2d tensor sz = [batch_sz, no_anchors_per_image]
                 deltas, deltas between GT assigned to each anchor and the anchors themselves, 3d tensor sz = [batch_sz, no_anchors_per_image,4]
                 coords, coords for GT assigned to each anchor, 3d tensor sz = [batch_sz, no_anchors_per_image,4]
                 labels, one hot class labels for GT assigned to each anchor, 3d tensor sz = [batch_sz, no_anchors_per_image,no_classes]
@@ -78,7 +76,7 @@ def create_batch(batch_size, train):
     #label_list = tf.convert_to_tensor(label_list, dtype=tf.string)
 
     #input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list], shuffle=False)
-    input_queue = tf.train.slice_input_producer([image_list,delta_list],
+    input_queue = tf.train.slice_input_producer([image_list, delta_list],
                                                 shuffle=False)
     images = read_image(input_queue[0])
     #masks = read_file(input_queue[1])
