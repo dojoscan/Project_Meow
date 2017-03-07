@@ -12,7 +12,7 @@ OUTPUT_WIDTH = 25
 OUTPUT_HEIGHT = 6
 NR_ANCHORS_PER_CELL = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
-USER = 'DONAL'
+USER = 'LUCIA'
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
     PATH_TO_LABELS = "/Users/Donal/Dropbox/KITTI/test/label/"
@@ -31,6 +31,9 @@ else:
     PATH_TO_TEST_OUTPUT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/test_output/"
     PATH_TO_CKPT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/checkpoints/"
     PATH_TO_DELTAS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
+    PATH_TO_MASK = "C:/Master Chalmers/2 year/volvo thesis/code0/test/mask/"
+    PATH_TO_COORDS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/coords/"
+    PATH_TO_CLASSES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/classes/"
 
 def set_anchors():
   H, W, B = 22, 76, 9

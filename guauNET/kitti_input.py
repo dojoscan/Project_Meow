@@ -29,7 +29,7 @@ def read_file(filename):
     file_contents = tf.read_file(filename)
     data = tf.decode_raw(file_contents, out_type=tf.float64)
     data = data[10:]
-    data = tf.transpose(tf.reshape(data, [4, p.NR_ANCHORS_PER_IMAGE]))
+    #data = tf.transpose(tf.reshape(data, [4, p.NR_ANCHORS_PER_IMAGE]))
     return data
 
 def create_file_list(path_to_folder):
@@ -59,10 +59,10 @@ def create_batch(batch_size, train):
                 labels, one hot class labels for GT assigned to each anchor, 3d tensor sz = [batch_sz, no_anchors_per_image,no_classes]
     """
     image_list = create_file_list(p.PATH_TO_IMAGES)
-    #mask_list = create_file_list(p.PATH_TO_MASKS)
+    mask_list = create_file_list(p.PATH_TO_MASK)
     delta_list = create_file_list(p.PATH_TO_DELTAS)
-    #coord_list = create_file_list(p.PATH_TO_COORDS)
-    #label_list = create_file_list(p.PATH_TO_LABELS)
+    coord_list = create_file_list(p.PATH_TO_COORDS)
+    label_list = create_file_list(p.PATH_TO_CLASSES)
 
     no_samples = len(image_list)
 
@@ -70,22 +70,25 @@ def create_batch(batch_size, train):
         mask_list = delta_list = coord_list = label_list = [0]*no_samples
 
     image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
-    #mask_list = tf.convert_to_tensor(mask_list, dtype=tf.string)
+    mask_list = tf.convert_to_tensor(mask_list, dtype=tf.string)
     delta_list = tf.convert_to_tensor(delta_list, dtype=tf.string)
-    #coord_list = tf.convert_to_tensor(coord_list, dtype=tf.string)
-    #label_list = tf.convert_to_tensor(label_list, dtype=tf.string)
+    coord_list = tf.convert_to_tensor(coord_list, dtype=tf.string)
+    label_list = tf.convert_to_tensor(label_list, dtype=tf.string)
 
-    #input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list], shuffle=False)
-    input_queue = tf.train.slice_input_producer([image_list, delta_list],
-                                                shuffle=False)
+    input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list], shuffle=False)
+    #input_queue = tf.train.slice_input_producer([image_list, delta_list],
+    #                                            shuffle=False)
     images = read_image(input_queue[0])
-    #masks = read_file(input_queue[1])
-    deltas = read_file(input_queue[1])
-    #coords = read_file(input_queue[3])
-    #labels = read_file(input_queue[4])
-
-    #batch = tf.train.batch([images, masks, deltas, coords, labels], batch_size=batch_size)
-    batch = tf.train.batch([images, deltas], batch_size=batch_size)
+    masks = read_file(input_queue[1])
+    masks=tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE,])
+    deltas = read_file(input_queue[2])
+    deltas = tf.transpose(tf.reshape(deltas, [4, p.NR_ANCHORS_PER_IMAGE]))
+    coords = read_file(input_queue[3])
+    coords = (tf.reshape(coords, [p.NR_ANCHORS_PER_IMAGE, 4]))
+    labels = read_file(input_queue[4])
+    labels = (tf.reshape(labels, [p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES]))
+    batch = tf.train.batch([images, masks, deltas, coords, labels], batch_size=batch_size)
+    #batch = tf.train.batch([images, masks], batch_size=batch_size)
 
     return batch
 

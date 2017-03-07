@@ -6,6 +6,10 @@ import tools as t
 
 from parameters import IMAGE_HEIGHT, IMAGE_WIDTH, CLASSES, ANCHORS, NR_ANCHORS_PER_IMAGE, NR_CLASSES, PATH_TO_LABELS
 
+PATH_TO_DELTAS="C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
+PATH_TO_MASK="C:/Master Chalmers/2 year/volvo thesis/code0/test/mask/"
+PATH_TO_COORDS="C:/Master Chalmers/2 year/volvo thesis/code0/test/coords/"
+PATH_TO_CLASSES="C:/Master Chalmers/2 year/volvo thesis/code0/test/classes/"
 
 # TO DO!
 # GT_MASK: 1 if anchor has max IOU with GT [batch size, no anchors per image]
@@ -65,10 +69,10 @@ def compute_deltas(coords):
     deltas = np.transpose([delta_x, delta_y, delta_w, delta_h])
     return deltas
 
-def create_files(index,path,deltas):
+def create_files(index,path,data):
     filename=('%06d'%index)+'.txt'
     with open(os.path.join(path, filename), 'wb') as temp_file:
-        np.save(temp_file, deltas)
+        np.save(temp_file, data)
 
 
 def assign_gt_to_anchors(classes, bboxes):
@@ -82,7 +86,6 @@ def assign_gt_to_anchors(classes, bboxes):
          gt_coords:
          gt_labels:
     """
-    path="C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
     for image_idx in range(0, len(classes)):
         ious = []
         mask = np.zeros([NR_ANCHORS_PER_IMAGE])
@@ -99,8 +102,10 @@ def assign_gt_to_anchors(classes, bboxes):
         pre_label = np.array([im_label[i] for i in obj_idx_for_anchor[:]])
         label = np.zeros((NR_ANCHORS_PER_IMAGE, NR_CLASSES))
         label[np.arange(NR_ANCHORS_PER_IMAGE), pre_label] = 1
-        create_files(image_idx,path,deltas)
-
+        create_files(image_idx,PATH_TO_MASK,mask)
+        create_files(image_idx,PATH_TO_DELTAS,deltas)
+        create_files(image_idx,PATH_TO_COORDS,coords)
+        create_files(image_idx,PATH_TO_CLASSES,label)
 
 def create_label(path_to_labels):
     """
@@ -118,10 +123,15 @@ def create_label(path_to_labels):
     assign_gt_to_anchors(classes, bboxes)
 
 
-create_label(PATH_TO_LABELS)
+#create_label(PATH_TO_LABELS)
 #path="C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
-#label_list = os.listdir(path)
-#for file in [path + s for s in label_list]:
- #   data = open(file, 'rb')
- #   data=np.load(data)
- #   print(data)
+label_list = os.listdir(PATH_TO_DELTAS)
+for file in [PATH_TO_DELTAS + s for s in label_list]:
+    data = open(file, 'rb')
+    data=np.load(data)
+    print(data)
+    print(data.dtype)
+
+#classes-float64
+#coords-float64
+#mask-float64

@@ -13,8 +13,10 @@ with tf.name_scope('InputPipeline'):
     batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
     batch = ki.create_batch(batch_size, p.TRAIN)
     x = batch[0]
-    deltas = batch[1]
-    #bbox_gt = batch[2]
+    gt_mask = batch[1]
+    gt_deltas = batch[2]
+    gt_coords=batch[3]
+    gt_labels=batch[4]
 
 # build CNN graph
 network_output = nf.squeeze_net(x)
@@ -32,8 +34,8 @@ with tf.name_scope('Queues'):
 sess.run(tf.global_variables_initializer())
 
 # run session
-queso = sess.run([deltas], feed_dict={batch_size: p.BATCH_SIZE})
-print(queso)
+mask, deltas, coords, labels = sess.run([gt_mask,gt_deltas,gt_coords,gt_labels], feed_dict={batch_size: p.BATCH_SIZE})
+
 
 # move GT interp to input pipeline
 # calculate IOU
