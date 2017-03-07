@@ -3,3 +3,6 @@
 # Loss function
 # Data augmention
 # Tensorboard
+# L2 norm
+# Downloading pre-trained squeeze
+# Transfer learning

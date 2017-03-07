@@ -63,6 +63,7 @@ def create_batch(path_to_images, path_to_labels, batch_size, train):
     labels = tf.convert_to_tensor(labels, dtype=tf.int32)
     input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=False)
     images = read_image(input_queue[0])
+    # Dequeue mini-batch
     batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size)
     return batch
 

@@ -74,7 +74,7 @@ if TRAIN:
 
 else:
 
-    # get prob. dist. over classes
+    # get confidence over classes
     class_prob = tf.nn.softmax(h_pool3)
 
     saver = tf.train.Saver()
@@ -84,7 +84,7 @@ else:
     saver.restore(sess, PATH_TO_CKPT + "/deeper_meow.ckpt")
     print('Parameters restored from checkpoint!')
 
-    # start queues
+    # create threads and thread manager
     coordinate = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 
