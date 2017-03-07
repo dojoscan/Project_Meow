@@ -1,3 +1,5 @@
+# CONTAINS IOU, BOX TRANSFORM FUNCTIONS
+
 import numpy as np
 import parameters as p
 
@@ -10,6 +12,7 @@ def compute_iou(boxA,boxB):
     Returns:
          iou: arrays of IOUs between a box (or set of boxes) and another box
     '''
+
     x_min = np.maximum(boxA[0], boxB[0])
     y_min = np.maximum(boxA[1], boxB[1])
     x_max = np.minimum(boxA[0]+boxA[2], boxB[0]+boxB[2])
@@ -23,10 +26,6 @@ def compute_iou(boxA,boxB):
 
 def bbox_transform_inv(bbox):
     """ Convert a bbox of form [xmin, ymin, xmax, ymax] to [cx, cy, w, h]
-    Args:
-        bbox: an array
-    Returns:
-        outbox: an array
     """
     xmin, ymin, xmax, ymax = bbox
     out_box = [[]]*4

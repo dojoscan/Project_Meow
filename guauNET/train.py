@@ -1,3 +1,5 @@
+# TRAINING PIPELINE FOR KITTI
+
 import tensorflow as tf
 import network_function as nf
 import kitti_input as ki

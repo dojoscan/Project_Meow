@@ -1,8 +1,7 @@
+# READS BATCHS OF IMAGES AND LABELS (MASKS, COORDS, DELTAS, CLASSES) FROM DISK
+
 import tensorflow as tf
 import os
-import numpy as np
-import time
-import tools as t
 import parameters as p
 
 def read_image(filename):
@@ -29,7 +28,6 @@ def read_file(filename):
     file_contents = tf.read_file(filename)
     data = tf.decode_raw(file_contents, out_type=tf.float64)
     data = data[10:]
-    #data = tf.transpose(tf.reshape(data, [4, p.NR_ANCHORS_PER_IMAGE]))
     return data
 
 def create_file_list(path_to_folder):
@@ -76,21 +74,21 @@ def create_batch(batch_size, train):
     label_list = tf.convert_to_tensor(label_list, dtype=tf.string)
 
     input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list], shuffle=False)
-    #input_queue = tf.train.slice_input_producer([image_list, delta_list],
-    #                                            shuffle=False)
+
     images = read_image(input_queue[0])
+
     masks = read_file(input_queue[1])
-    masks=tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE,])
+    masks = tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE, ])
+
     deltas = read_file(input_queue[2])
     deltas = tf.transpose(tf.reshape(deltas, [4, p.NR_ANCHORS_PER_IMAGE]))
+
     coords = read_file(input_queue[3])
     coords = (tf.reshape(coords, [p.NR_ANCHORS_PER_IMAGE, 4]))
+
     labels = read_file(input_queue[4])
     labels = (tf.reshape(labels, [p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES]))
+
     batch = tf.train.batch([images, masks, deltas, coords, labels], batch_size=batch_size)
-    #batch = tf.train.batch([images, masks], batch_size=batch_size)
 
     return batch
-
-#image_list, label_list = create_file_list((p.PATH_TO_IMAGES, p.PATH_TO_LABELS))
-#create_batch(2,train='true')

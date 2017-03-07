@@ -1,4 +1,7 @@
+# CONTAINS ALL PARAMETERS AND SETTINGS
+
 import numpy as np
+
 TRAIN = True
 LEARNING_RATE = 0.001
 EPSILON = 0.0001
@@ -21,10 +24,11 @@ if USER == 'DONAL':
     PATH_TO_TEST_OUTPUT = "/Users/Donal/Desktop/"
     PATH_TO_CKPT = "/Users/Donal/Dropbox/KITTI/checkpoints/"
     PATH_TO_DELTAS = "/Users/Donal/Dropbox/KITTI/test/deltas/"
+    PATH_TO_MASK = "/Users/Donal/Dropbox/KITTI/test/mask/"
+    PATH_TO_COORDS = "/Users/Donal/Dropbox/KITTI/test/coords/"
+    PATH_TO_CLASSES = "/Users/Donal/Dropbox/KITTI/test/classes/"
 else:
-    #PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
     PATH_TO_IMAGES="C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"
-    #PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/labels.txt"
     PATH_TO_LABELS="C:/Master Chalmers/2 year/volvo thesis/code0/test/label/"
     PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
     PATH_TO_LOGS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/meow_logs/"

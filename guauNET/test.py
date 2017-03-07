@@ -1,5 +1,7 @@
+# TESTING PIPELINE FOR KITTI
+
 import tensorflow as tf
-import network_function as nf
+import network as net
 import input
 import os
 import numpy as np
@@ -14,7 +16,7 @@ x = batch[0]
 y_ = tf.one_hot(batch[1], p.NO_CLASSES, dtype=tf.int32)
 
 # build CNN graph
-h_pool3 = nf.meow_net(x)
+h_pool3 = net.meow_net(x)
 
 # get prob. dist. over classes
 class_prob = tf.nn.softmax(h_pool3)

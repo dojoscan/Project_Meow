@@ -1,3 +1,5 @@
+# CONVERTS OUTPUT OF THE NETWORK TO EASY-TO-WORK-WITH FORMAT
+
 import tensorflow as tf
 import parameters as p
 
@@ -43,7 +45,7 @@ def interpret(network_output):
             )
         return class_scores, confidence_scores, bbox_delta
 
-def calculate_iou(boxPred, boxGT):
+def tensor_iou(boxPred, boxGT):
     for obj in boxGT:
         with tf.variable_scope('Intersection'):
             x_min = tf.maximum(boxPred[:, 0], obj[0], name='x_min')
@@ -63,14 +65,3 @@ def calculate_iou(boxPred, boxGT):
             union = w1 * h1 + w2 * h2 - intersection
 
         return intersection / (union + p.EPSILON)
-
-def assign_to_ground_truth(boxPred, boxGT):
-
-    # split boxes into list with one tensor per image
-    boxPred = tf.unstack(boxPred, axis=0)
-    boxGT = tf.unstack(boxGT, axis=0)
-    iou = calculate_iou(boxPred, boxGT)
-    max_idx = tf.argmax(iou, axis=1)
-    max_iou = tf.gather(iou, max_idx)
-
-    return max_iou, max_idx

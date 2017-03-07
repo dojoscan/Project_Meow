@@ -1,7 +1,11 @@
+# CALCULATES MEAN AND STD IMAGE FOR A DATASET
+
 import os
 import parameters as p
 import numpy as np
 from PIL import Image
+import sys
+sys.path.append("/ProjectMeow/guauNET/")
 
 SAVE_PATH = '/Users/Donal/Desktop/'
 
