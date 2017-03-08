@@ -46,22 +46,21 @@ def interpret(network_output):
         return class_scores, confidence_scores, bbox_delta
 
 def tensor_iou(boxPred, boxGT):
-    for obj in boxGT:
-        with tf.variable_scope('Intersection'):
-            x_min = tf.maximum(boxPred[:, 0], obj[0], name='x_min')
-            y_min = tf.maximum(boxPred[:, 1], obj[1], name='y_min')
-            x_max = tf.minimum(boxPred[:, 2], obj[2], name='x_max')
-            y_max = tf.minimum(boxPred[:, 3], obj[3], name='y_max')
-            w = tf.maximum(0.0, x_max - x_min, name='Inter_w')
-            h = tf.maximum(0.0, y_max - y_min, name='Inter_h')
-            intersection = tf.multiply(w, h, name='Intersection')
+    with tf.variable_scope('Intersection'):
+         x_min = tf.maximum(boxPred[:,:,0], boxGT[:,:,0], name='x_min')
+         y_min = tf.maximum(boxPred[:,:,1], boxGT[:,:,1], name='y_min')
+         x_max = tf.minimum(boxPred[:,:,2], boxGT[:,:,2], name='x_max')
+         y_max = tf.minimum(boxPred[:,:,3], boxGT[:,:,3], name='y_max')
+         w = tf.maximum(tf.cast(0.0,tf.float64), x_max - x_min, name='Inter_w')
+         h = tf.maximum(tf.cast(0.0,tf.float64), y_max - y_min, name='Inter_h')
+         intersection = tf.multiply(w, h, name='Intersection')
 
-        with tf.variable_scope('Union'):
-            w1 = tf.subtract(boxPred[:, 2], obj[0], name='w_1')
-            h1 = tf.subtract(boxPred[:, 3], obj[1], name='h_1')
-            w2 = tf.subtract(boxPred[:, 2], obj[0], name='w_2')
-            h2 = tf.subtract(boxPred[:, 3], obj[1], name='h_2')
+    with tf.variable_scope('Union'):
+         w1 = tf.subtract(boxPred[:,:,2], boxGT[:,:,0], name='w_1')
+         h1 = tf.subtract(boxPred[:,:, 3], boxGT[:,:,1], name='h_1')
+         w2 = tf.subtract(boxPred[:,:, 2], boxGT[:,:,0], name='w_2')
+         h2 = tf.subtract(boxPred[:,:, 3], boxGT[:,:,1], name='h_2')
 
-            union = w1 * h1 + w2 * h2 - intersection
+         union = w1 * h1 + w2 * h2 - intersection
 
-        return intersection / (union + p.EPSILON)
+    return intersection / (union + p.EPSILON)

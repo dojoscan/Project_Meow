@@ -4,15 +4,20 @@ import numpy as np
 
 TRAIN = True
 LEARNING_RATE = 0.001
+DECAY_STEP=1000
+DECAY_FACTOR = 0.5
 EPSILON = 0.0001
-NR_ITERATIONS = 100
-PRINT_FREQ = 100
-BATCH_SIZE = 20
+NR_ITERATIONS = 10
+PRINT_FREQ = 1
+BATCH_SIZE = 2
 NR_CLASSES = 9
 IMAGE_WIDTH = 1242
 IMAGE_HEIGHT = 375
-OUTPUT_WIDTH = 25
-OUTPUT_HEIGHT = 6
+OUTPUT_WIDTH = 76
+OUTPUT_HEIGHT = 22
+LAMBDA_BBOX = 5
+LAMBDA_CONF_POS = 75
+LAMBDA_CONF_NEG = 100
 NR_ANCHORS_PER_CELL = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
 USER = 'LUCIA'
@@ -40,7 +45,7 @@ else:
     PATH_TO_CLASSES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/classes/"
 
 def set_anchors():
-  H, W, B = 22, 76, 9
+  H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL
   anchor_shapes = np.reshape(
       [np.array(
           [[  36.,  37.], [ 366., 174.], [ 115.,  59.],

@@ -78,7 +78,7 @@ def create_batch(batch_size, train):
     images = read_image(input_queue[0])
 
     masks = read_file(input_queue[1])
-    masks = tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE, ])
+    masks = tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE,1 ])
 
     deltas = read_file(input_queue[2])
     deltas = tf.transpose(tf.reshape(deltas, [4, p.NR_ANCHORS_PER_IMAGE]))
