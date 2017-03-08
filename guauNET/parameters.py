@@ -5,7 +5,7 @@ import numpy as np
 TRAIN = True
 DATA_AUGMENT = True
 LEARNING_RATE = 0.001
-DECAY_STEP=1000
+DECAY_STEP = 1000
 DECAY_FACTOR = 0.5
 EPSILON = 0.0001
 NR_ITERATIONS = 10
@@ -22,6 +22,11 @@ LAMBDA_CONF_NEG = 100
 NR_ANCHORS_PER_CELL = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
 USER = 'LUCIA'
+
+# UPDATE WITH ACTUAL MEAN AND STD IMAGE
+MEAN_IMAGE = np.zeros((IMAGE_HEIGHT, IMAGE_WIDTH, 3))
+STD_IMAGE = np.ones((IMAGE_HEIGHT, IMAGE_WIDTH, 3))
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"

@@ -14,7 +14,6 @@ def read_image(filename):
 
     file_contents = tf.read_file(filename)
     image = tf.image.decode_png(file_contents, channels=3)
-    image = tf.image.resize_images(image, [p.IMAGE_HEIGHT, p.IMAGE_WIDTH])
     if p.DATA_AUGMENT:
         bin = tf.random_shuffle([0, 1])
         if bin[0] == 0:
