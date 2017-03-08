@@ -3,6 +3,7 @@
 import numpy as np
 
 TRAIN = True
+DATA_AUGMENT = True
 LEARNING_RATE = 0.001
 DECAY_STEP=1000
 DECAY_FACTOR = 0.5
@@ -21,6 +22,7 @@ LAMBDA_CONF_NEG = 100
 NR_ANCHORS_PER_CELL = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
 USER = 'LUCIA'
+
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
     PATH_TO_LABELS = "/Users/Donal/Dropbox/KITTI/test/label/"
@@ -32,9 +34,9 @@ if USER == 'DONAL':
     PATH_TO_MASK = "/Users/Donal/Dropbox/KITTI/test/mask/"
     PATH_TO_COORDS = "/Users/Donal/Dropbox/KITTI/test/coords/"
     PATH_TO_CLASSES = "/Users/Donal/Dropbox/KITTI/test/classes/"
-else:
-    PATH_TO_IMAGES="C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"
-    PATH_TO_LABELS="C:/Master Chalmers/2 year/volvo thesis/code0/test/label/"
+elif USER == 'LUCIA':
+    PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"
+    PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/label/"
     PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
     PATH_TO_LOGS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/meow_logs/"
     PATH_TO_TEST_OUTPUT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/test_output/"
@@ -43,6 +45,17 @@ else:
     PATH_TO_MASK = "C:/Master Chalmers/2 year/volvo thesis/code0/test/mask/"
     PATH_TO_COORDS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/coords/"
     PATH_TO_CLASSES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/classes/"
+else:
+    PATH_TO_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/image/"
+    PATH_TO_LABELS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/label/"
+    PATH_TO_DELTAS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/delta/"
+    PATH_TO_MASK = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/mask/"
+    PATH_TO_COORDS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/coords/"
+    PATH_TO_CLASSES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/class/"
+    PATH_TO_CKPT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFckpt/"
+    PATH_TO_LOGS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFlogs/"
+    PATH_TO_TEST_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/image/"
+    PATH_TO_TEST_OUTPUT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output/"
 
 def set_anchors():
   H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL
