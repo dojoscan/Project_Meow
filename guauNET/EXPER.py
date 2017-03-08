@@ -29,7 +29,14 @@ total_loss, bbox_loss, confidence_loss, classification_loss = l.loss_function(gt
 global_step = tf.Variable(0, trainable=False)
 learning_rate = tf.train.exponential_decay(p.LEARNING_RATE, global_step,
                                            p.DECAY_STEP, p.DECAY_FACTOR, staircase=True)
-train_step = tf.train.AdamOptimizer(learning_rate).minimize(total_loss)
+#train_step = tf.train.AdamOptimizer(learning_rate).minimize(total_loss)
+
+train_step = tf.train.AdamOptimizer(learning_rate)
+grads_vars = train_step.compute_gradients(total_loss, tf.trainable_variables())
+for i, (grad, var) in enumerate(grads_vars):
+    grads_vars[i] = (tf.clip_by_norm(grad, 1), var)
+
+apply_gradient_op = train_step.apply_gradients(grads_vars, global_step=global_step)
 
 sess = tf.Session()
 
@@ -55,4 +62,4 @@ for i in range(p.NR_ITERATIONS):
         print("Bbox loss = %g, Confidence loss = %g, Class los = %g"%(b1, conf1, class1))
         start_time = time.clock()
     # optimise network
-    sess.run(train_step, feed_dict={batch_size: p.BATCH_SIZE})
+    sess.run(apply_gradient_op, feed_dict={batch_size: p.BATCH_SIZE})
