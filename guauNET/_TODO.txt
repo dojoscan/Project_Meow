@@ -1,8 +1,7 @@
-# Find mean image & std
 # Restore from CKPT/global step
 # Loss function
-# Data augmention
 # Tensorboard
-# L2 norm
-# Downloading pre-trained squeeze
+# Weight decay
+# Downloading pre-trained squeeze (maybe)
 # Transfer learning
+# Validation
