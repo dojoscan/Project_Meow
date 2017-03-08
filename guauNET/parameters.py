@@ -4,12 +4,12 @@ import numpy as np
 
 TRAIN = True
 DATA_AUGMENT = True
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.01
 DECAY_STEP = 1000
 DECAY_FACTOR = 0.5
 EPSILON = 0.0001
-NR_ITERATIONS = 10
-PRINT_FREQ = 1
+NR_ITERATIONS = 5000
+PRINT_FREQ = 100
 BATCH_SIZE = 2
 NR_CLASSES = 9
 IMAGE_WIDTH = 1242
@@ -24,8 +24,8 @@ CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitt
 USER = 'LUCIA'
 
 # UPDATE WITH ACTUAL MEAN AND STD IMAGE
-MEAN_IMAGE = np.zeros((IMAGE_HEIGHT, IMAGE_WIDTH, 3))
-STD_IMAGE = np.ones((IMAGE_HEIGHT, IMAGE_WIDTH, 3))
+MEAN_IMAGE = np.load('C:/Master Chalmers/2 year/volvo thesis/code0/test/KITTI_mean.txt')
+STD_IMAGE = np.load('C:/Master Chalmers/2 year/volvo thesis/code0/test/KITTI_std.txt')
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 if USER == 'DONAL':
