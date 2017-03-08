@@ -4,12 +4,12 @@ import numpy as np
 
 TRAIN = True
 DATA_AUGMENT = True
-LEARNING_RATE = 0.01
+LEARNING_RATE = 0.001
 DECAY_STEP = 1000
 DECAY_FACTOR = 0.5
 EPSILON = 0.0001
 NR_ITERATIONS = 5000
-PRINT_FREQ = 100
+PRINT_FREQ = 5
 BATCH_SIZE = 2
 NR_CLASSES = 9
 IMAGE_WIDTH = 1242
@@ -21,12 +21,7 @@ LAMBDA_CONF_POS = 75
 LAMBDA_CONF_NEG = 100
 NR_ANCHORS_PER_CELL = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
-USER = 'LUCIA'
-
-# UPDATE WITH ACTUAL MEAN AND STD IMAGE
-MEAN_IMAGE = np.load('C:/Master Chalmers/2 year/volvo thesis/code0/test/KITTI_mean.txt')
-STD_IMAGE = np.load('C:/Master Chalmers/2 year/volvo thesis/code0/test/KITTI_std.txt')
-# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
@@ -39,6 +34,7 @@ if USER == 'DONAL':
     PATH_TO_MASK = "/Users/Donal/Dropbox/KITTI/test/mask/"
     PATH_TO_COORDS = "/Users/Donal/Dropbox/KITTI/test/coords/"
     PATH_TO_CLASSES = "/Users/Donal/Dropbox/KITTI/test/classes/"
+    PATH_TO_STAT = "/Users/Donal/Dropbox/KITTI/std_mean/"
 elif USER == 'LUCIA':
     PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"
     PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/label/"
@@ -50,6 +46,7 @@ elif USER == 'LUCIA':
     PATH_TO_MASK = "C:/Master Chalmers/2 year/volvo thesis/code0/test/mask/"
     PATH_TO_COORDS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/coords/"
     PATH_TO_CLASSES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/classes/"
+    PATH_TO_STAT = "C:/Master Chalmers/2 year/volvo thesis/code0/test/"
 else:
     PATH_TO_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/image/"
     PATH_TO_LABELS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/label/"
@@ -100,3 +97,5 @@ def set_anchors():
 
 ANCHORS = set_anchors()
 NR_ANCHORS_PER_IMAGE = len(ANCHORS)
+MEAN_IMAGE = np.load(PATH_TO_STAT + 'KITTI_mean.txt')
+STD_IMAGE = np.load(PATH_TO_STAT + 'KITTI_std.txt')

@@ -14,7 +14,7 @@ def bbox_regression(mask, gt_deltas, net_deltas, nr_objects):
     "   nr_objects : number of objects in the whole batch" \
     "Returns:" \
     "   loss: the bbox regression calculated (a number)"
-    loss=(p.LAMBDA_BBOX/nr_objects)*tf.reduce_sum(tf.square(mask*(tf.cast(net_deltas,tf.float64)-gt_deltas)))
+    loss=(p.LAMBDA_BBOX/(nr_objects+p.EPSILON))*tf.reduce_sum(tf.square(mask*(tf.cast(net_deltas,tf.float64)-gt_deltas)))
     return loss
 
 def transform_deltas_to_bbox(net_deltas):
@@ -25,12 +25,12 @@ def transform_deltas_to_bbox(net_deltas):
     "Returns:" \
     "   pred_coords: a 3d tensor containing the transformation of the deltas to x, y, w, h, sz=[batch_sz, no_anchors_per_image,4]"
 
-    pred_x = p.ANCHORS[:,0]+(p.ANCHORS[:,2]*net_deltas[:,:,0])
-    pred_y = p.ANCHORS[:,1]+(p.ANCHORS[:,3]*net_deltas[:,:,1])
-    pred_w = p.ANCHORS[:,2]*tf.exp(net_deltas[:,:,2])
-    pred_h = p.ANCHORS[:,3]*tf.exp(net_deltas[:,:,3])
+    pred_x = p.ANCHORS[:, 0]+(p.ANCHORS[:, 2]*net_deltas[:, :, 0])
+    pred_y = p.ANCHORS[:, 1]+(p.ANCHORS[:, 3]*net_deltas[:, :, 1])
+    pred_w = p.ANCHORS[:, 2]*tf.exp(net_deltas[:, :, 2])
+    pred_h = p.ANCHORS[:, 3]*tf.exp(net_deltas[:, :, 3])
 
-    xmin, ymin, xmax, ymax =t.bbox_transform([pred_x, pred_y, pred_w, pred_h])
+    xmin, ymin, xmax, ymax = t.bbox_transform([pred_x, pred_y, pred_w, pred_h])
 
     # check if the calculated values are inside the image limits
     xmin = tf.minimum(tf.maximum(0.0, xmin), p.IMAGE_WIDTH - 1.0)
@@ -38,8 +38,8 @@ def transform_deltas_to_bbox(net_deltas):
     xmax = tf.maximum(tf.minimum(p.IMAGE_WIDTH - 1.0, xmax), 0.0)
     ymax = tf.maximum(tf.minimum(p.IMAGE_HEIGHT - 1.0, ymax), 0.0)
 
-    pred_coords=t.bbox_transform_inv([xmin, ymin, xmax, ymax])
-    pred_coords=tf.transpose(tf.stack(pred_coords,axis=1), perm=[0,2,1])
+    pred_coords = t.bbox_transform_inv([xmin, ymin, xmax, ymax])
+    pred_coords = tf.transpose(tf.stack(pred_coords,axis=1), perm=[0,2,1])
     return pred_coords
 
 
