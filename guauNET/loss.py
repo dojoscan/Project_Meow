@@ -14,7 +14,7 @@ def bbox_regression(mask, gt_deltas, net_deltas, nr_objects):
     "   nr_objects : number of objects in the whole batch" \
     "Returns:" \
     "   loss: the bbox regression calculated (a number)"
-    loss=(p.LAMBDA_BBOX/(nr_objects+p.EPSILON))*tf.reduce_sum(tf.square(mask*(tf.cast(net_deltas,tf.float64)-gt_deltas)))
+    loss=(p.LAMBDA_BBOX/(nr_objects+p.EPSILON))*tf.reduce_sum(tf.square(mask*(net_deltas-gt_deltas)))
     return loss
 
 def transform_deltas_to_bbox(net_deltas):
@@ -86,8 +86,8 @@ def loss_function(mask, gt_deltas, gt_coords,  net_deltas, net_confidence_scores
     bbox_loss=bbox_regression(mask,gt_deltas, net_deltas, nr_objects)
     net_coords=transform_deltas_to_bbox(net_deltas)
     # calculate iou between the predicted coordinates and the ground truth coords
-    gt_confidence_scores = interp.tensor_iou(tf.cast(net_coords,tf.float64), gt_coords)
-    confidence_loss = confidence_score_regression(mask, tf.cast(net_confidence_scores, tf.float64), gt_confidence_scores, nr_objects)
-    classification_loss = classification_regression(mask, gt_labels, tf.cast(net_class_score, tf.float64), nr_objects)
+    gt_confidence_scores = interp.tensor_iou(net_coords, gt_coords)
+    confidence_loss = confidence_score_regression(mask, net_confidence_scores, gt_confidence_scores, nr_objects)
+    classification_loss = classification_regression(mask, gt_labels, net_class_score, nr_objects)
     total_loss = bbox_loss + confidence_loss + classification_loss
     return total_loss, bbox_loss, confidence_loss, classification_loss

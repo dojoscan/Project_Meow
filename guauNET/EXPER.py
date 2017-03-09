@@ -4,9 +4,7 @@ import kitti_input as ki
 import parameters as p
 import interpretation as interp
 import loss as l
-import os
 import time
-import numpy as np
 
 # build input graph
 with tf.name_scope('InputPipeline'):
@@ -24,12 +22,13 @@ network_output = net.squeeze_net(x)
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output)
 
+# build loss graph
 total_loss, bbox_loss, confidence_loss, classification_loss = l.loss_function(gt_mask, gt_deltas, gt_coords,  bbox_delta, confidence_scores, gt_labels, class_scores)
 
+# build training graph
 global_step = tf.Variable(0, trainable=False)
 learning_rate = tf.train.exponential_decay(p.LEARNING_RATE, global_step,
                                            p.DECAY_STEP, p.DECAY_FACTOR, staircase=True)
-#train_step = tf.train.AdamOptimizer(learning_rate).minimize(total_loss)
 
 train_step = tf.train.AdamOptimizer(learning_rate)
 grads_vars = train_step.compute_gradients(total_loss, tf.trainable_variables())
@@ -47,10 +46,6 @@ with tf.name_scope('Queues'):
 
 sess.run(tf.global_variables_initializer())
 
-# run session
-#mask, deltas, coords, labels = sess.run([gt_mask, gt_deltas, gt_coords, gt_labels], feed_dict={batch_size: p.BATCH_SIZE})
-#final_loss = sess.run([train_step],feed_dict={batch_size: p.BATCH_SIZE})
-
 
 print('Training initiated')
 start_time = time.clock()
@@ -59,7 +54,8 @@ for i in range(p.NR_ITERATIONS):
         # evaluate loss for mini-batch
         final_loss, b1, conf1, class1 = sess.run([total_loss,bbox_loss, confidence_loss, classification_loss], feed_dict={batch_size: p.BATCH_SIZE})
         print("step %d, train loss = %g, time taken = %g seconds" % (i, final_loss, time.clock() - start_time))
-        print("Bbox loss = %g, Confidence loss = %g, Class los = %g"%(b1, conf1, class1))
+        print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (b1, conf1, class1))
+        print("-------------------------------------------------------------")
         start_time = time.clock()
     # optimise network
     sess.run(apply_gradient_op, feed_dict={batch_size: p.BATCH_SIZE})

@@ -51,8 +51,8 @@ def tensor_iou(boxPred, boxGT):
          y_min = tf.maximum(boxPred[:,:,1], boxGT[:,:,1], name='y_min')
          x_max = tf.minimum(boxPred[:,:,2], boxGT[:,:,2], name='x_max')
          y_max = tf.minimum(boxPred[:,:,3], boxGT[:,:,3], name='y_max')
-         w = tf.maximum(tf.cast(0.0,tf.float64), x_max - x_min, name='Inter_w')
-         h = tf.maximum(tf.cast(0.0,tf.float64), y_max - y_min, name='Inter_h')
+         w = tf.maximum(0.0, x_max - x_min, name='Inter_w')
+         h = tf.maximum(0.0, y_max - y_min, name='Inter_h')
          intersection = tf.multiply(w, h, name='Intersection')
 
     with tf.variable_scope('Union'):

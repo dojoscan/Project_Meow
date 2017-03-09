@@ -1,7 +1,5 @@
 # Restore from CKPT/global step
-# Loss function
 # Tensorboard
 # Weight decay
-# Downloading pre-trained squeeze (maybe)
 # Transfer learning
 # Validation
