@@ -18,7 +18,7 @@ if USER == 'DONAL':
     PATH_TO_TEST_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/test/images/"
     PATH_TO_LOGS = "/Users/Donal/Desktop/Thesis/Code/Tensorflow_logs/"
     PATH_TO_TEST_OUTPUT = "/Users/Donal/Desktop/predictions.txt"
-    PATH_TO_CKPT = "/Users/Donal/Desktop/Thesis/Code/Tensorflow_ckpt/deeper_meow"
+    PATH_TO_CKPT = "/Users/Donal/Desktop/Thesis/Code/Tensorflow_ckpt/deeper_meow/"
 else:
     PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
     PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/labels.txt"
@@ -69,7 +69,7 @@ if TRAIN:
         # optimise network
         sess.run(train_step, feed_dict={batch_size: BATCH_SIZE})
 
-    save_path = saver.save(sess, PATH_TO_CKPT + "/deeper_meow.ckpt")
+    save_path = saver.save(sess, PATH_TO_CKPT + "deeper_meow.ckpt")
     print("Parameters saved in %s! Final train accuracy = %g" % (PATH_TO_CKPT, sess.run(accuracy, feed_dict={batch_size: BATCH_SIZE})))
 
 else:
@@ -81,7 +81,7 @@ else:
     sess = tf.Session()
 
     # restore from checkpoint
-    saver.restore(sess, PATH_TO_CKPT + "/deeper_meow.ckpt")
+    saver.restore(sess, PATH_TO_CKPT + "deeper_meow.ckpt")
     print('Parameters restored from checkpoint!')
 
     # create threads and thread manager

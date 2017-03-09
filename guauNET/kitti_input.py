@@ -14,13 +14,13 @@ def read_image(filename):
 
     file_contents = tf.read_file(filename)
     image = tf.image.decode_png(file_contents, channels=3)
-    if p.DATA_AUGMENT:
+    if p.TRAIN:
         bin = tf.random_shuffle([0, 1])
         if bin[0] == 0:
             image = tf.image.random_brightness(image, max_delta=32. / 255.)
             image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
         else:
-            image = tf.image.random_saturation(image, lower=0.5, upper=1.5)
+            image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
             image = tf.image.random_brightness(image, max_delta=32. / 255.)
     image = tf.divide(tf.subtract(tf.image.resize_images(image, [p.IMAGE_HEIGHT, p.IMAGE_WIDTH]), p.MEAN_IMAGE), p.STD_IMAGE)
     return image
