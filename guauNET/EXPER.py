@@ -17,7 +17,8 @@ with tf.name_scope('InputPipeline'):
     gt_labels = batch[4]
 
 # build CNN graph
-network_output = net.squeeze_net(x)
+keep_prop = tf.placeholder(dtype = tf.float32, name='KeepProp')
+network_output = net.squeeze_net(x, keep_prop)
 
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output)
@@ -52,10 +53,10 @@ start_time = time.clock()
 for i in range(p.NR_ITERATIONS):
     if i % p.PRINT_FREQ == 0:
         # evaluate loss for mini-batch
-        final_loss, b1, conf1, class1 = sess.run([total_loss,bbox_loss, confidence_loss, classification_loss], feed_dict={batch_size: p.BATCH_SIZE})
+        final_loss, b1, conf1, class1 = sess.run([total_loss,bbox_loss, confidence_loss, classification_loss], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
         print("step %d, train loss = %g, time taken = %g seconds" % (i, final_loss, time.clock() - start_time))
         print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (b1, conf1, class1))
         print("-------------------------------------------------------------")
         start_time = time.clock()
     # optimise network
-    sess.run(apply_gradient_op, feed_dict={batch_size: p.BATCH_SIZE})
+    sess.run(apply_gradient_op, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})

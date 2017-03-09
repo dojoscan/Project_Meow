@@ -2,30 +2,39 @@
 
 import tensorflow as tf
 import network as net
-import input
-import os
-import numpy as np
+import kitti_input as ki
 import parameters as p
-
+import interpretation as interp
+import os
+import time
+import numpy as np
 cwd = os.getcwd()
 
 # build input graph
-batch_size = tf.placeholder(dtype=tf.int32)
-batch = input.create_batch(p.PATH_TO_IMAGES, p.PATH_TO_LABELS, batch_size, p.TRAIN)
-x = batch[0]
-y_ = tf.one_hot(batch[1], p.NO_CLASSES, dtype=tf.int32)
+with tf.name_scope('InputPipeline'):
+    batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
+    batch = ki.create_batch(batch_size, p.TRAIN)
+    x = batch[0]
+    gt_mask = batch[1]
+    gt_deltas = batch[2]
+    gt_coords = batch[3]
+    gt_labels = batch[4]
 
 # build CNN graph
-h_pool3 = net.meow_net(x)
+keep_prop = tf.placeholder(dtype = tf.float32, name='KeepProp')
+network_output = net.squeeze_net(x, keep_prop)
 
-# get prob. dist. over classes
-class_prob = tf.nn.softmax(h_pool3)
+# build interpretation graph
+class_scores, confidence_scores, bbox_delta = interp.interpret(network_output)
 
-saver = tf.train.Saver()
+
+
+
+#saver = tf.train.Saver()
 sess = tf.Session()
 
 # restore from checkpoint
-saver.restore(sess, p.PATH_TO_CKPT)
+#saver.restore(sess, p.PATH_TO_CKPT)
 
 # start queues
 coordinate = tf.train.Coordinator()
@@ -33,7 +42,7 @@ threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 sess.run(tf.global_variables_initializer())
 
 # run testing
-p_c = sess.run(class_prob, feed_dict={batch_size: 5})
+p_c = sess.run(confidence_scores, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 1})
 
-output_file = open(p.PATH_TO_TEST_OUTPUT, 'w')
-np.savetxt(output_file, p_c)
+#output_file = open(p.PATH_TO_TEST_OUTPUT, 'w')
+#np.savetxt(output_file, p_c)
