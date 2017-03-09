@@ -2,26 +2,36 @@
 
 import numpy as np
 
+# Training
 TRAIN = True
 DATA_AUGMENT = True
-LEARNING_RATE = 0.001
-DECAY_STEP = 1000
-DECAY_FACTOR = 0.5
-EPSILON = 0.0001
-NR_ITERATIONS = 5000
-PRINT_FREQ = 5
 BATCH_SIZE = 2
-NR_CLASSES = 9
-IMAGE_WIDTH = 1242
-IMAGE_HEIGHT = 375
-OUTPUT_WIDTH = 76
-OUTPUT_HEIGHT = 22
+
+# Loss
 LAMBDA_BBOX = 5
 LAMBDA_CONF_POS = 75
 LAMBDA_CONF_NEG = 100
-NR_ANCHORS_PER_CELL = 9
+
+# Optimisation
+LEARNING_RATE = 0.001
+DECAY_STEP = 1000
+DECAY_FACTOR = 0.5
+NR_ITERATIONS = 50
+PRINT_FREQ = 5
+
+# Input
+NR_CLASSES = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
-USER = 'LUCIA'
+IMAGE_WIDTH = 1242
+IMAGE_HEIGHT = 375
+
+# Output
+OUTPUT_WIDTH = 76
+OUTPUT_HEIGHT = 22
+NR_ANCHORS_PER_CELL = 9
+NR_TOP_DETECTIONS = 64
+
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
@@ -99,3 +109,7 @@ ANCHORS = set_anchors()
 NR_ANCHORS_PER_IMAGE = len(ANCHORS)
 MEAN_IMAGE = np.load(PATH_TO_STAT + 'KITTI_mean.txt')
 STD_IMAGE = np.load(PATH_TO_STAT + 'KITTI_std.txt')
+MEAN_IMAGE = MEAN_IMAGE.astype(np.float32)
+STD_IMAGE = STD_IMAGE.astype(np.float32)
+
+EPSILON = 0.0001
