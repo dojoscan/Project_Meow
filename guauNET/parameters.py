@@ -3,7 +3,7 @@
 import numpy as np
 
 # Training
-TRAIN = True
+TRAIN = False
 DATA_AUGMENT = True
 BATCH_SIZE = 8
 
@@ -30,8 +30,9 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 NR_TOP_DETECTIONS = 64
+NMS_THRESHOLD = 0.4
 
-USER = 'DONAL'
+USER = 'LUCIA'
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
