@@ -46,7 +46,6 @@ for i in range(0, p.BATCH_SIZE):
     class_index.append(tf.gather(det_class[i,:], index[i,:]))
 
 # nms
-idx_nms=[]
 boxes=tf.reshape(boxes,[p.BATCH_SIZE, p.NR_TOP_DETECTIONS, 4])
 class_index=tf.reshape(class_index,[p.BATCH_SIZE, p.NR_TOP_DETECTIONS])
 final_boxes=[]
@@ -56,15 +55,26 @@ for i in range(0, p.BATCH_SIZE):
     boxes_nms=tf.reshape(boxes[i,:,:],[-1,4])
     probs_nms=tf.reshape(probs[i,:],[-1])
     class_nms=tf.reshape(class_index[i,:],[-1])
-    for j in range(0,p.NR_CLASSES):
-        idx_per_class = [k for k in range(0,p.NR_TOP_DETECTIONS) if class_nms[k] == j]
-        print(idx_per_class)
-        #idx_nms.append(tf.gather(boxes_nms,idx_per_class))
-        #idx_nms.append(tf.image.non_max_suppression(boxes_nms[idx_per_class,:], probs_nms[idx_per_class], p.NR_TOP_DETECTIONS, iou_threshold=None, name=None))
-    #final_boxes.append(tf.gather(boxes_nms,idx_nms[i]))
-    #final_probs.append(tf.gather(probs_nms, idx_nms[i]))
+    coun = 0
+    for j in range(0, p.NR_CLASSES):
+        class_bool = tf.equal(class_nms, tf.constant(j, dtype=tf.int32))
+        class_indx = tf.cast(tf.where(class_bool),dtype=tf.int32)
+        boxes_class = tf.reshape(tf.gather(boxes_nms, class_indx),[-1, 4])
+        probs_class = tf.squeeze(tf.gather(probs_nms, class_indx))
+        idx_nms = tf.image.non_max_suppression(boxes_class, probs_class, p.NR_TOP_DETECTIONS, iou_threshold=0.4, name='NMS')
+        idx = tf.squeeze(tf.gather(class_indx,idx_nms))
+        print(idx)
+        if idx != []:
+            if coun == 0:
+                final_idx = idx
+            else:
+                final_idx = tf.concat(final_idx, idx)
+            coun += 1
+    final_boxes.append(tf.gather(boxes_nms,final_idx))
+    final_probs.append(tf.gather(probs_nms, final_idx))
 #final_boxes=tf.reshape(final_boxes,[p.BATCH_SIZE,-1,4])
 #final_probs = tf.reshape(final_probs,[p.BATCH_SIZE,-1])
+
 
 
 #saver = tf.train.Saver()
@@ -79,12 +89,11 @@ threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 sess.run(tf.global_variables_initializer())
 
 # run testing
-val, pro, box, idx, cls= sess.run([boxes, class_index, probs, idx_nms, idx_per_class], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 1})
-print(val)
-print(pro)
-print(box)
-print(idx)
-print(cls)
+i, f , b, c= sess.run([idx, final_idx, final_boxes, final_probs], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 1})
+print(i)
+print(f)
+print(b)
+print(c)
 
 
 
