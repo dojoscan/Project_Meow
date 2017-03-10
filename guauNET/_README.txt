@@ -6,6 +6,7 @@ kitti_input.py - Contains the input pipeline; reads the images and labels (masks
 network.py - TF Graph for the network forward pass
 interpretation.py - TF Graph for converting the network output to a more manipulable format
 loss.py - TF Graph for calculating the multi-task loss from labels and interpreted network output
+filter_prediction.py - TF Graph for filtering the interpreted network output by confidence score and non-maximum suppression
 tools.py - Tools for transforming bounding boxes, calculating IOU etc.
 parameters.py - Holds all hyperparameters and settings
 
@@ -31,6 +32,9 @@ Instructions:
 4. Run pre-processing/save_labels to generate the deltas, masks, coordinates, and classes for the training data
 5. Run train.py
 6. Run test.py
+
+NOTES:
+1. Must be atleast one object per training image
 	
 
 B. Wu, F. Iandola, P. H. Jin, K. Keutzer, SqueezeDet: Unified, Small, LowPower Fully Convolutional Neural Networks for Real-Time Object Detectionfor Autonomous Driving, in CVPR, 2017.
