@@ -21,14 +21,11 @@ def max_pool_3x3(x):
 
 def squeeze_net(x, keep_prop):
 
-    W_conv1 = weight_variable([3, 1, 3, 32], 0.1)
-    b_conv1 = bias_variable([32])
-    h_conv1 = tf.nn.relu(tf.nn.conv2d(x, W_conv1, strides=[1, 2, 2, 1], padding='VALID', name='Conv') + b_conv1, name='ReLU')
-
-    W_conv2 = weight_variable([1, 3, 32, 32], 0.1)
-    b_conv2 = bias_variable([32])
-    h_conv2 = tf.nn.relu(conv2d(h_conv1, W_conv2) + b_conv2, name='ReLU')
-    h_pool1 = max_pool_3x3(h_conv2)
+    with tf.variable_scope('Conv1'):
+        W_conv1 = weight_variable([3, 3, 3, 32], 0.1)
+        b_conv1 = bias_variable([32])
+        h_conv1 = tf.nn.relu(tf.nn.conv2d(x, W_conv1, strides=[1, 2, 2, 1], padding='VALID', name='Conv') + b_conv1, name='ReLU')
+        h_pool1 = max_pool_3x3(h_conv1)
 
     h_fire1 = fire(h_pool1, 32, s1x1=16, e1x1=32, e3x1=32, name='Fire1')
     h_fire2 = fire(h_fire1, 64, s1x1=16, e1x1=32, e3x1=32, name='Fire2')
@@ -44,24 +41,25 @@ def squeeze_net(x, keep_prop):
     h_fire8 = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x1=256, name='Fire8')
     h_fire9 = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x1=384, name='Fire9')
     h_fire10 = fire(h_fire9, 768, s1x1=96, e1x1=384, e3x1=384, name='Fire10')
-    # dropout
-    h_drop = tf.nn.dropout(h_fire10, keep_prop, name='Dropout')
 
-    W_conv3 = weight_variable([3, 3, 768, (NR_CLASSES+1+4)*NR_ANCHORS_PER_CELL], 0.001)
-    b_conv3 = bias_variable([(NR_CLASSES+1+4)*NR_ANCHORS_PER_CELL])
-    h_conv3 = tf.nn.bias_add(conv2d(h_drop, W_conv3), b_conv3, name='AddBias')
-    # h_conv3 = tf.squeeze(h_conv3, name='Squeeze')
+    with tf.variable_scope('Dropout'):
+        h_drop = tf.nn.dropout(h_fire10, keep_prop, name='Dropout')
+
+    with tf.variable_scope('Conv2'):
+        W_conv3 = weight_variable([3, 3, 768, (NR_CLASSES+1+4)*NR_ANCHORS_PER_CELL], 0.001)
+        b_conv3 = bias_variable([(NR_CLASSES+1+4)*NR_ANCHORS_PER_CELL])
+        h_conv3 = tf.nn.bias_add(conv2d(h_drop, W_conv3), b_conv3, name='AddBias')
+
     return h_conv3
 
 def fire(x, input_depth, s1x1, e1x1, e3x1, name):
     with tf.variable_scope(name):
-        #Squeeze layer
+
         with tf.variable_scope('Squeeze'):
             W_s = weight_variable([1, 1, input_depth, s1x1], 0.1)
             b_s = bias_variable([s1x1])
             h_s = tf.nn.relu(conv2d(x, W_s) + b_s, name='ReLU')
 
-        #Expand Layer
         with tf.variable_scope('Expand'):
             W_e1x1 = weight_variable([1, 1, s1x1, e1x1], 0.1)
             b_e1x1 = bias_variable([e1x1])
