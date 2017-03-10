@@ -11,7 +11,10 @@ def transform_deltas_to_bbox(net_deltas):
     "Args:" \
     "   net_deltas: a 3d tensor containing the parameterised offsets for each anchor sz=[batch_sz, no_anchors_per_image,4]" \
     "Returns:" \
-    "   pred_coords: a 3d tensor containing the transformation of the deltas to x, y, w, h, sz =[batch_sz, no_anchors_per_image,4]"
+    "   if Train = true"\
+    "   pred_coords: a 3d tensor containing the transformation of the deltas to x, y, w, h, sz =[batch_sz, no_anchors_per_image,4]"\
+    "   if Train = false (test)" \
+    "   pred_coords: a 3d tensor containing the transformation of the deltas to xmin, ymin, xmax, ymax, sz =[batch_sz, no_anchors_per_image,4]"
     with tf.variable_scope("TransformDeltasToBbox"):
         pred_x = p.ANCHORS[:, 0]+(p.ANCHORS[:, 2]*net_deltas[:, :, 0])
         pred_y = p.ANCHORS[:, 1]+(p.ANCHORS[:, 3]*net_deltas[:, :, 1])
@@ -26,8 +29,12 @@ def transform_deltas_to_bbox(net_deltas):
         xmax = tf.maximum(tf.minimum(p.IMAGE_WIDTH - 1.0, xmax), 0.0, name='CalcXmax')
         ymax = tf.maximum(tf.minimum(p.IMAGE_HEIGHT - 1.0, ymax), 0.0, name='CalcYmax')
 
-        pred_coords = t.bbox_transform_inv([xmin, ymin, xmax, ymax])
-        pred_coords = tf.transpose(tf.stack(pred_coords, axis=1), perm=[0,2,1], name='BboxCoords')
+        if p.TRAIN:
+            pred_coords = t.bbox_transform_inv([xmin, ymin, xmax, ymax])
+            pred_coords = tf.transpose(tf.stack(pred_coords, axis=1), perm=[0,2,1], name='BboxCoords')
+        else:
+            pred_coords = [xmin, ymin, xmax, ymax]
+            pred_coords = tf.transpose(tf.stack(pred_coords, axis=1), perm=[0, 2, 1], name='BboxCoords')
     return pred_coords
 
 def bbox_regression(mask, gt_deltas, net_deltas, nr_objects):
