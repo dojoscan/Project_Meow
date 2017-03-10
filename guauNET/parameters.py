@@ -68,6 +68,7 @@ else:
     PATH_TO_LOGS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFlogs/"
     PATH_TO_TEST_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/image/"
     PATH_TO_TEST_OUTPUT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output/"
+    PATH_TO_STAT = "/Users/LDIEGO/Documents/KITTI/std_mean/"
 
 def set_anchors():
   H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL
