@@ -3,6 +3,7 @@
 import tensorflow as tf
 import parameters as p
 import loss as l
+import os
 
 def find_k_best(det_probs, det_boxes, det_class):
     "' Find the k best boxes with better probabilities." \
@@ -86,3 +87,20 @@ def filter(class_scores, confidence_scores, bbox_delta):
     final_boxes, final_probs, final_class = nms(probs, boxes, class_index)
 
     return final_boxes, final_probs, final_class
+
+def write_labels(fbox, fclass, fprobs, index):
+
+    for i in range(0, len(fbox)):
+        nr_objects = len(fclass[i])
+        filename = ('%06d' % (i+index)) + '.txt'
+        place_text = os.path.join(p.PATH_TO_WRITE_LABELS, filename)
+        with open(place_text, 'w') as a:
+            for j in range(0, nr_objects):
+                # np.savetxt(place_text, fclass[i][j])
+                wr = p.CLASSES_INV[('%s' % fclass[i][j])] + (' ') + ('%s' % -1) + (' ') + ('%s' % -1) + (' ') + \
+                     ('%s' % -10) + (' ') + ('%.2f' % fbox[i][j, 0]) + (' ') + ('%.2f' % fbox[i][j, 1]) + (' ') +\
+                     ('%.2f' % fbox[i][j, 2]) + (' ') + ('%.2f' % fbox[i][j, 3]) + (' ') + ('%s %s %s' % (-1, -1, -1)) +\
+                     (' ') + ('%s %s %s' % (-1000, -1000, -1000)) + (' ') + ('%s' % -10) + (' ') +\
+                     ('%.2f' % fprobs[i][j]) + ('\n')
+                a.write(wr)
+            a.close()
