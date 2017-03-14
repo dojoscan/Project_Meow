@@ -5,7 +5,7 @@ import numpy as np
 # Training
 TRAIN = False
 DATA_AUGMENT = True
-BATCH_SIZE = 8
+BATCH_SIZE = 2
 
 # Loss
 LAMBDA_BBOX = 5
@@ -22,6 +22,7 @@ PRINT_FREQ = 100
 # Input
 NR_CLASSES = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
+CLASSES_INV = {'0': 'Car', '1': 'Van', '2': 'Truck', '3': 'Pedestrian', '4': 'Person_sitting', '5': 'Cyclist', '6': 'Tram', '7': 'Misc', '8': 'DontCare'}
 IMAGE_WIDTH = 1242
 IMAGE_HEIGHT = 375
 
@@ -31,6 +32,10 @@ OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 NR_TOP_DETECTIONS = 64
 NMS_THRESHOLD = 0.4
+
+# Test
+NR_OF_TEST_IMAGES = 7518
+TEST_BATCH_SIZE = 6
 
 USER = 'LUCIA'
 
@@ -46,6 +51,7 @@ if USER == 'DONAL':
     PATH_TO_COORDS = "/Users/Donal/Dropbox/KITTI/test/coords/"
     PATH_TO_CLASSES = "/Users/Donal/Dropbox/KITTI/test/classes/"
     PATH_TO_STAT = "/Users/Donal/Dropbox/KITTI/std_mean/"
+    PATH_TO_WRITE_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Project_Meow/guauNET/write_labels"
 elif USER == 'LUCIA':
     PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"
     PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/label/"
@@ -58,6 +64,7 @@ elif USER == 'LUCIA':
     PATH_TO_COORDS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/coords/"
     PATH_TO_CLASSES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/classes/"
     PATH_TO_STAT = "C:/Master Chalmers/2 year/volvo thesis/code0/test/"
+    PATH_TO_WRITE_LABELS= "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Project_Meow/guauNET/write_labels"
 else:
     PATH_TO_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/image/"
     PATH_TO_LABELS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/label/"
@@ -70,6 +77,7 @@ else:
     PATH_TO_TEST_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/image/"
     PATH_TO_TEST_OUTPUT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output/"
     PATH_TO_STAT = "/Users/LDIEGO/Documents/KITTI/std_mean/"
+    PATH_TO_WRITE_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Project_Meow/guauNET/write_labels"
 
 def set_anchors():
   H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL

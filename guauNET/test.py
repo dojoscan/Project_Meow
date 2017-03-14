@@ -28,23 +28,25 @@ class_scores, confidence_scores, bbox_delta = interp.interpret(network_output)
 # build filtering graph
 final_boxes, final_probs, final_class = fp.filter(class_scores, confidence_scores, bbox_delta)
 
-#saver = tf.train.Saver()
+saver = tf.train.Saver()
 sess = tf.Session()
 
 # restore from checkpoint
-#saver.restore(sess, p.PATH_TO_CKPT)
+saver.restore(sess, p.PATH_TO_CKPT)
 
 # start queues
 coordinate = tf.train.Coordinator()
 threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
-sess.run(tf.global_variables_initializer())
 
 # run testing
-fbox, fprobs, fclass = sess.run([final_boxes, final_probs, final_class], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 1})
-print(fbox)
-print(fprobs)
-print(fclass)
+start_time=time.clock()
+sum_time=0
+for i in range(0,p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE):
+    fbox, fprobs, fclass = sess.run([final_boxes, final_probs, final_class], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 1})
+    # Write labels
+    fp.write_labels(fbox, fclass, fprobs, i)
+    print("step %d, time taken = %g seconds"%(i, time.clock()-start_time))
+    sum_time += time.clock()-start_time
+    start_time=time.clock()
 
-
-#output_file = open(p.PATH_TO_TEST_OUTPUT, 'w')
-#np.savetxt(output_file, p_c)
+print("average time taken per image = %g seconds" % (sum_time/p.NR_OF_TEST_IMAGES))
