@@ -35,9 +35,9 @@ NMS_THRESHOLD = 0.4
 
 # Test
 NR_OF_TEST_IMAGES = 7518
-TEST_BATCH_SIZE = 6
+TEST_BATCH_SIZE = 3
 
-USER = 'LUCIA'
+USER = 'BILL'
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
@@ -72,12 +72,13 @@ else:
     PATH_TO_MASK = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/mask/"
     PATH_TO_COORDS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/coords/"
     PATH_TO_CLASSES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/class/"
+    PATH_TO_CKPT_TEST = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFckpt/17-3-10_SqueezeAsym_10k/"
     PATH_TO_CKPT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFckpt/"
     PATH_TO_LOGS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFlogs/"
     PATH_TO_TEST_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/image/"
     PATH_TO_TEST_OUTPUT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output/"
     PATH_TO_STAT = "/Users/LDIEGO/Documents/KITTI/std_mean/"
-    PATH_TO_WRITE_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Project_Meow/guauNET/write_labels"
+    PATH_TO_WRITE_LABELS = "C:/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output"
 
 def set_anchors():
   H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL

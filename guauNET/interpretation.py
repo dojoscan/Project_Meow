@@ -3,7 +3,7 @@
 import tensorflow as tf
 import parameters as p
 
-def interpret(network_output):
+def interpret(network_output, batch_size):
     '''
     Converts the output tensor of the network to form that can be easily manipulated to calculate the loss
     Args:
@@ -23,7 +23,7 @@ def interpret(network_output):
                         [-1, p.NR_CLASSES]
                     )
                 ),
-                [p.BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES],
+                [batch_size, p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES],
                 name='ClassScores'
             )
 
@@ -32,7 +32,7 @@ def interpret(network_output):
             confidence_scores = tf.sigmoid(
                 tf.reshape(
                     network_output[:, :, :, num_class_probs:num_confidence_scores],
-                    [p.BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE]
+                    [batch_size, p.NR_ANCHORS_PER_IMAGE]
                 ),
                 name='ConfidenceScores'
             )
@@ -40,7 +40,7 @@ def interpret(network_output):
         with tf.name_scope('ReformatBboxDelta'):
             bbox_delta = tf.reshape(
                 network_output[:, :, :, num_confidence_scores:],
-                [ p.BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE, 4],
+                [ batch_size, p.NR_ANCHORS_PER_IMAGE, 4],
                 name='bboxDelta'
             )
         return class_scores, confidence_scores, bbox_delta

@@ -14,14 +14,14 @@ def find_k_best(det_probs, det_boxes, det_class):
     "   boxes: a 3d tensor with the bounding boxes coordinates corresponding to the k best prob, sz=[batch_sz, no_anchors_per_image,4]" \
     "   class_index: a 2d tensor with the classes of the object from the k best prob, sz=[batch_sz, no_anchors_per_image]"
     probs, index = tf.nn.top_k(det_probs, k=p.NR_TOP_DETECTIONS, sorted=True, name=None)
-    index = tf.reshape(index, [p.BATCH_SIZE, p.NR_TOP_DETECTIONS])
+    index = tf.reshape(index, [p.TEST_BATCH_SIZE, p.NR_TOP_DETECTIONS])
     boxes = []
     class_index = []
-    for i in range(0, p.BATCH_SIZE):
+    for i in range(0, p.TEST_BATCH_SIZE):
         boxes.append(tf.gather(det_boxes[i, :, :], index[i, :]))
         class_index.append(tf.gather(det_class[i, :], index[i, :]))
-    boxes = tf.reshape(boxes, [p.BATCH_SIZE, p.NR_TOP_DETECTIONS, 4])
-    class_index = tf.reshape(class_index, [p.BATCH_SIZE, p.NR_TOP_DETECTIONS])
+    boxes = tf.reshape(boxes, [p.TEST_BATCH_SIZE, p.NR_TOP_DETECTIONS, 4])
+    class_index = tf.reshape(class_index, [p.TEST_BATCH_SIZE, p.NR_TOP_DETECTIONS])
     return probs, boxes, class_index
 
 def nms(probs, boxes, class_index):
@@ -33,7 +33,7 @@ def nms(probs, boxes, class_index):
     final_boxes = []
     final_probs = []
     final_class = []
-    for i in range(0, p.BATCH_SIZE):
+    for i in range(0, p.TEST_BATCH_SIZE):
         boxes_image = tf.reshape(boxes[i, :, :], [-1, 4])
         probs_image = tf.reshape(probs[i, :], [-1])
         class_image = tf.reshape(class_index[i, :], [-1])
@@ -73,7 +73,7 @@ def filter(class_scores, confidence_scores, bbox_delta):
     "   final_class: a 1d tensor containing other tensors with the classes from the bbox selected after nms per image"
     # calcualtion of probabilities
     probs_per_class = tf.multiply(class_scores,
-                                  tf.reshape(confidence_scores, [p.BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE, 1]))
+                                  tf.reshape(confidence_scores, [p.TEST_BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE, 1]))
     det_probs = tf.reduce_max(probs_per_class,
                               axis=2)  # search for the maximum number (per image per anchor) along the classes
     det_class = tf.cast(tf.argmax(probs_per_class, axis=2),

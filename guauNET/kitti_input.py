@@ -78,7 +78,7 @@ def create_batch(batch_size, train):
             mask_list = delta_list = coord_list = label_list = tf.convert_to_tensor(['0']*no_samples, dtype=tf.string)
 
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list],
-                                                        shuffle=True, name='InputQueue')
+                                                        shuffle=False, name='InputQueue')
             images = read_image(input_queue[0])
 
             masks = input_queue[1]
