@@ -5,7 +5,7 @@ import os
 import parameters as p
 import numpy as np
 
-def read_image(filename):
+def read_image(filename, train):
     """
     Args:
         filename: a scalar string tensor.
@@ -16,7 +16,7 @@ def read_image(filename):
         file_contents = tf.read_file(filename)
         image = tf.image.decode_png(file_contents, channels=3, name='Image')
         with tf.variable_scope('DistortImage'):
-            if p.TRAIN:
+            if train:
                 bin = tf.random_shuffle([0, 1])
                 if bin[0] == 0:
                     image = tf.image.random_brightness(image, max_delta=32. / 255.)
@@ -79,7 +79,7 @@ def create_batch(batch_size, train):
 
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list],
                                                         shuffle=False, name='InputQueue')
-            images = read_image(input_queue[0])
+            images = read_image(input_queue[0], train)
 
             masks = input_queue[1]
 
@@ -100,7 +100,7 @@ def create_batch(batch_size, train):
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list], shuffle=True, name='InputQueue')
 
             with tf.variable_scope("ReadTensorSlice"):
-                images = read_image(input_queue[0])
+                images = read_image(input_queue[0], train)
 
                 masks = read_file(input_queue[1])
                 masks = tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE,1 ], name='Masks')

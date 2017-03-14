@@ -14,7 +14,7 @@ cwd = os.getcwd()
 
 # build input graph
 batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
-batch = ki.create_batch(batch_size, p.TRAIN)
+batch = ki.create_batch(batch_size, True)
 x = batch[0]
 gt_mask = batch[1]
 gt_deltas = batch[2]
@@ -30,7 +30,7 @@ class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, b
 
 # build loss graph
 total_loss, bbox_loss, confidence_loss, classification_loss = l.loss_function(gt_mask, gt_deltas, gt_coords,  bbox_delta
-                                                                                              , confidence_scores, gt_labels, class_scores)
+                                                                                              , confidence_scores, gt_labels, class_scores, True)
 
 # build training graph
 with tf.variable_scope('Optimisation'):

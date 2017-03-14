@@ -78,7 +78,7 @@ def filter(class_scores, confidence_scores, bbox_delta):
                               axis=2)  # search for the maximum number (per image per anchor) along the classes
     det_class = tf.cast(tf.argmax(probs_per_class, axis=2),
                         tf.int32)  # gives the index of the class of the maximum number
-    det_boxes = l.transform_deltas_to_bbox(bbox_delta)
+    det_boxes = l.transform_deltas_to_bbox(bbox_delta, False)
 
     # find k best
     probs, boxes, class_index = find_k_best(det_probs, det_boxes, det_class)

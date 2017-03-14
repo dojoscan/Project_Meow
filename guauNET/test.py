@@ -15,7 +15,7 @@ cwd = os.getcwd()
 # build input graph
 with tf.name_scope('InputPipeline'):
     batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
-    batch = ki.create_batch(batch_size, p.TRAIN)
+    batch = ki.create_batch(batch_size, False)
     x = batch[0]
 
 # build CNN graph

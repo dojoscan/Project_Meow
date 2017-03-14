@@ -5,7 +5,7 @@ import parameters as p
 import interpretation as interp
 import tools as t
 
-def transform_deltas_to_bbox(net_deltas):
+def transform_deltas_to_bbox(net_deltas, train):
 
     "' Transform the deltas given by the network to x,y,w,h format " \
     "Args:" \
@@ -29,7 +29,7 @@ def transform_deltas_to_bbox(net_deltas):
         xmax = tf.maximum(tf.minimum(p.IMAGE_WIDTH - 1.0, xmax), 0.0, name='CalcXmax')
         ymax = tf.maximum(tf.minimum(p.IMAGE_HEIGHT - 1.0, ymax), 0.0, name='CalcYmax')
 
-        if p.TRAIN:
+        if train:
             pred_coords = t.bbox_transform_inv([xmin, ymin, xmax, ymax])
             pred_coords = tf.transpose(tf.stack(pred_coords, axis=1), perm=[0,2,1], name='BboxCoords')
         else:
@@ -42,7 +42,8 @@ def bbox_regression(mask, gt_deltas, net_deltas, nr_objects):
     "Returns:" \
     "   loss: the bbox regression calculated (a number)"
     with tf.variable_scope("BboxLoss"):
-        loss = (p.LAMBDA_BBOX/(nr_objects+p.EPSILON))*tf.reduce_sum(tf.square(mask*(net_deltas-gt_deltas)))
+        #loss = (p.LAMBDA_BBOX/(nr_objects+p.EPSILON))*tf.reduce_sum(tf.square(mask*(net_deltas-gt_deltas)))
+        loss = tf.truediv(tf.reduce_sum(p.LAMBDA_BBOX* tf.square(mask * (net_deltas- gt_deltas))),nr_objects,name='bbox_loss')
     return loss
 
 
@@ -70,7 +71,7 @@ def classification_regression(mask, gt_labels, class_score, nr_objects):
                                          (1-gt_labels)*(-tf.log(1-class_score+p.EPSILON)))* mask),nr_objects, name='DeltaLoss')
     return loss
 
-def loss_function(mask, gt_deltas, gt_coords,  net_deltas, net_confidence_scores, gt_labels, net_class_score):
+def loss_function(mask, gt_deltas, gt_coords,  net_deltas, net_confidence_scores, gt_labels, net_class_score, train):
     "' Calculate the loss for the network." \
     "Args:" \
     "   mask: whether or not an anchor is assigned to a GT {1,0}, 2d tensor sz = [batch_sz, no_anchors_per_image]" \
@@ -85,7 +86,7 @@ def loss_function(mask, gt_deltas, gt_coords,  net_deltas, net_confidence_scores
     with tf.variable_scope("Loss"):
         nr_objects = tf.reduce_sum(mask, name="NrObjects")
         bbox_loss = bbox_regression(mask, gt_deltas, net_deltas, nr_objects)
-        net_coords = transform_deltas_to_bbox(net_deltas)
+        net_coords = transform_deltas_to_bbox(net_deltas, train)
         gt_confidence_scores = interp.tensor_iou(net_coords, gt_coords)
         confidence_loss = confidence_score_regression(mask, net_confidence_scores, gt_confidence_scores, nr_objects)
         classification_loss = classification_regression(mask, gt_labels, net_class_score, nr_objects)
