@@ -12,7 +12,7 @@ LAMBDA_CONF_POS = 75
 LAMBDA_CONF_NEG = 100
 
 # Optimisation
-LEARNING_RATE = 0.001
+LEARNING_RATE = 0.0001
 DECAY_STEP = 8000
 DECAY_FACTOR = 0.5
 NR_ITERATIONS = 1000
@@ -36,7 +36,7 @@ NMS_THRESHOLD = 0.4
 NR_OF_TEST_IMAGES = 7518
 TEST_BATCH_SIZE = 3
 
-USER = 'DONAL'
+USER = 'LUCIA'
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
@@ -55,9 +55,9 @@ elif USER == 'LUCIA':
     PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"
     PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/label/"
     PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
-    PATH_TO_LOGS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/meow_logs/"
+    PATH_TO_LOGS = "C:/log_ckpt_thesis/logs"
     PATH_TO_TEST_OUTPUT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/test_output/"
-    PATH_TO_CKPT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/checkpoints/"
+    PATH_TO_CKPT = "C:/log_ckpt_thesis/ckpt"
     PATH_TO_DELTAS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
     PATH_TO_MASK = "C:/Master Chalmers/2 year/volvo thesis/code0/test/mask/"
     PATH_TO_COORDS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/coords/"

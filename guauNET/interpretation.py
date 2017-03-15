@@ -53,17 +53,12 @@ def tensor_iou(boxPred, boxGT):
 
          x_min = tf.maximum(boxPred[:, :, 0], boxGT[:, :, 0], name='x_min')
          y_min = tf.maximum(boxPred[:, :, 1], boxGT[:, :, 1], name='y_min')
-         x_max = tf.minimum(boxPred[:, :, 2], boxGT[:, :, 2], name='x_max')
-         y_max = tf.minimum(boxPred[:, :, 3], boxGT[:, :, 3], name='y_max')
+         x_max = tf.minimum(boxPred[:, :, 2]+boxPred[:, :, 0],boxGT[:, :, 2]+boxGT[:, :, 0], name='x_max')
+         y_max = tf.minimum(boxPred[:, :, 1] + boxPred[:, :, 3], boxGT[:, :, 1] + boxGT[:, :, 3], name='y_max')
          w = tf.maximum(0.0, x_max - x_min, name='Inter_w')
          h = tf.maximum(0.0, y_max - y_min, name='Inter_h')
          intersection = tf.multiply(w, h, name='Intersection')
 
-         w1 = tf.subtract(boxPred[:, :, 2], boxGT[:, :, 0], name='w_1')
-         h1 = tf.subtract(boxPred[:, :, 3], boxGT[:, :, 1], name='h_1')
-         w2 = tf.subtract(boxPred[:, :, 2], boxGT[:, :, 0], name='w_2')
-         h2 = tf.subtract(boxPred[:, :, 3], boxGT[:, :, 1], name='h_2')
-
-         union = w1 * h1 + w2 * h2 - intersection
+         union = boxPred[:,:,2]*boxPred[:,:,3] + boxGT[:,:,2]*boxGT[:,:,3] - intersection
 
     return intersection / (union + p.EPSILON)

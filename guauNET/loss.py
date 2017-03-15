@@ -55,8 +55,9 @@ def confidence_score_regression(mask, confidence_scores, gt_confidence_scores, n
         input_mask = tf.reshape(mask,[p.BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE])
         #loss=tf.reduce_sum(((p.LAMBDA_CONF_POS/nr_objects)*tf.square(input_mask*(confidence_scores-gt_confidence_scores)))-((p.LAMBDA_CONF_NEG/(p.NR_ANCHORS_PER_IMAGE-nr_objects))*(1-input_mask)*tf.square(confidence_scores)))
         loss = tf.reduce_mean(tf.reduce_sum(tf.square((gt_confidence_scores - confidence_scores)) *
-                                            (input_mask*p.LAMBDA_CONF_POS/nr_objects+(1-input_mask) * p.LAMBDA_CONF_NEG /
-                                            (p.NR_ANCHORS_PER_IMAGE-nr_objects)), reduction_indices=[1]), name="ObjectConfLoss")
+                                             (input_mask*p.LAMBDA_CONF_POS/nr_objects+(1-input_mask) * p.LAMBDA_CONF_NEG /
+                                             (p.NR_ANCHORS_PER_IMAGE-nr_objects)), reduction_indices=[1]), name="ObjectConfLoss")
+
     return loss
 
 def classification_regression(mask, gt_labels, class_score, nr_objects):
