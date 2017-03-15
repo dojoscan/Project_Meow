@@ -6,6 +6,9 @@ import numpy as np
 DATA_AUGMENT = True
 BATCH_SIZE = 2
 
+# Network
+WEIGHT_DECAY_FACTOR = 0.0001
+
 # Loss
 LAMBDA_BBOX = 5
 LAMBDA_CONF_POS = 75
@@ -15,7 +18,7 @@ LAMBDA_CONF_NEG = 100
 LEARNING_RATE = 0.0001
 DECAY_STEP = 8000
 DECAY_FACTOR = 0.5
-NR_ITERATIONS = 1000
+NR_ITERATIONS = 500
 PRINT_FREQ = 10
 
 # Input
@@ -55,9 +58,9 @@ elif USER == 'LUCIA':
     PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"
     PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/label/"
     PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
-    PATH_TO_LOGS = "C:/log_ckpt_thesis/logs"
+    PATH_TO_LOGS = "C:/log_ckpt_thesis/logs/"
     PATH_TO_TEST_OUTPUT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/test_output/"
-    PATH_TO_CKPT = "C:/log_ckpt_thesis/ckpt"
+    PATH_TO_CKPT = "C:/log_ckpt_thesis/ckpt/"
     PATH_TO_DELTAS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
     PATH_TO_MASK = "C:/Master Chalmers/2 year/volvo thesis/code0/test/mask/"
     PATH_TO_COORDS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/coords/"

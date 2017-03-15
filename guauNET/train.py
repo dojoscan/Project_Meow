@@ -32,6 +32,9 @@ class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, b
 total_loss, bbox_loss, confidence_loss, classification_loss = l.loss_function(gt_mask, gt_deltas, gt_coords,  bbox_delta
                                                                                               , confidence_scores, gt_labels, class_scores, True)
 
+l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()])
+total_loss += l2_loss
+
 # build training graph
 with tf.variable_scope('Optimisation'):
     global_step = tf.Variable(0, trainable=False, name='GlobalStep')
@@ -48,6 +51,7 @@ tf.summary.scalar('Total_loss', total_loss)
 tf.summary.scalar('Bounding_box_loss', bbox_loss)
 tf.summary.scalar('Object_confidence_loss', confidence_loss)
 tf.summary.scalar('Classification_loss', classification_loss)
+tf.summary.scalar('Weight_decay_loss',l2_loss)
 tf.summary.scalar('Learning_rate', learning_rate)
 merged_summaries = tf.summary.merge_all()
 
@@ -68,18 +72,18 @@ summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_grap
 print('Training initiated')
 start_time = time.clock()
 for i in range(p.NR_ITERATIONS):
-    if i % p.PRINT_FREQ == 0:
-        # evaluate loss for mini-batch
-        final_loss, b1, conf1, class1, summary = sess.run([total_loss, bbox_loss, confidence_loss, classification_loss, merged_summaries],
-                                                            feed_dict={batch_size: p.BATCH_SIZE, keep_prop : 0.5})
-        print("step %d, train loss = %g, time taken = %g seconds" % (i, final_loss, time.clock() - start_time))
-        print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (b1, conf1, class1))
-        print("----------------------------------------------------------------------------")
-        # write accuracy to log file
-        summary_writer.add_summary(summary, global_step=i)
-        start_time = time.clock()
-    # run training graph
-    sess.run(apply_gradient_op, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
+     if i % p.PRINT_FREQ == 0:
+         # evaluate loss for mini-batch
+         final_loss, b1, conf1, class1, summary = sess.run([total_loss, bbox_loss, confidence_loss, classification_loss, merged_summaries],
+                                                             feed_dict={batch_size: p.BATCH_SIZE, keep_prop : 0.5})
+         print("step %d, train loss = %g, time taken = %g seconds" % (i, final_loss, time.clock() - start_time))
+         print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (b1, conf1, class1))
+         print("----------------------------------------------------------------------------")
+         # write accuracy to log file
+         summary_writer.add_summary(summary, global_step=i)
+         start_time = time.clock()
+     # run training graph
+     sess.run(apply_gradient_op, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
 
 save_path = saver.save(sess, p.PATH_TO_CKPT)
 print("Model saved in file: %s" % p.PATH_TO_CKPT)
