@@ -27,18 +27,22 @@ def calc_mean_std(path_to_images):
         im = Image.open(image)
         # Image object is 4d, RGB are first 3 channels
         im = np.array(im.resize((p.IMAGE_WIDTH, p.IMAGE_HEIGHT), Image.BILINEAR))
-        mean_image = np.add(im[:, :, 0:3], mean_image)
+        mean_image = np.add(im[:, :, 1:3], mean_image)
     mean_image = np.divide(mean_image, no_images)
     for image in image_list:
         im = Image.open(image)
         im = np.array(im.resize((p.IMAGE_WIDTH, p.IMAGE_HEIGHT), Image.BILINEAR))
-        std_image += np.square(np.subtract(im[:, :, 0:3],mean_image))
+        std_image += np.square(np.subtract(im[:, :, 1:3],mean_image))
     std_image = np.divide(std_image, no_images-1)
     std_image = np.sqrt(std_image)
     return mean_image, std_image
 
 mean_image, std_image = calc_mean_std(p.PATH_TO_IMAGES)
-with open(os.path.join(SAVE_PATH, 'KITTI_mean.txt'), 'wb') as temp_file:
-    np.save(temp_file, mean_image)
-with open(os.path.join(SAVE_PATH, 'KITTI_std.txt'), 'wb') as temp_file:
-    np.save(temp_file, std_image)
+# with open(os.path.join(SAVE_PATH, 'KITTI_mean.txt'), 'w') as temp_file:
+#      np.savetxt(temp_file, mean_image)
+# with open(os.path.join(SAVE_PATH, 'KITTI_std.txt'), 'w') as temp_file:
+#      np.savetxt(temp_file, std_image)
+
+print(mean_image)
+print(std_image)
+

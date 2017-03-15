@@ -23,7 +23,7 @@ gt_labels = batch[4]
 
 # build CNN graph
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
-network_output = net.squeeze_net(x, keep_prop)
+network_output = net.asym_squeeze_net(x, keep_prop)
 
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)

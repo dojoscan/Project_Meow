@@ -4,7 +4,7 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 8
+BATCH_SIZE = 2
 
 # Loss
 LAMBDA_BBOX = 5
@@ -36,7 +36,7 @@ NMS_THRESHOLD = 0.4
 NR_OF_TEST_IMAGES = 7518
 TEST_BATCH_SIZE = 3
 
-USER = 'LUCIA'
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"

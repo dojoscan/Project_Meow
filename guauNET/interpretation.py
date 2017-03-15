@@ -43,6 +43,9 @@ def interpret(network_output, batch_size):
                 [ batch_size, p.NR_ANCHORS_PER_IMAGE, 4],
                 name='bboxDelta'
             )
+        tf.summary.histogram('Class_scores', class_scores)
+        tf.summary.histogram('Confidence_scores', confidence_scores)
+        tf.summary.histogram('Bbox_deltas', bbox_delta)
         return class_scores, confidence_scores, bbox_delta
 
 def tensor_iou(boxPred, boxGT):
