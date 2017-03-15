@@ -6,11 +6,11 @@ KEEP_PROP = 0.5
 # variables
 
 def weight_variable(shape):
-    initial = tf.truncated_normal(shape, stddev=0.1)
+    initial = tf.truncated_normal(shape, stddev=0.1,name='Weights')
     return tf.Variable(initial)
 
 def bias_variable(shape):
-    initial = tf.constant(0.1, shape=shape)
+    initial = tf.constant(0.1, shape=shape,name='Biases')
     return tf.Variable(initial)
 
 # operations
@@ -204,10 +204,11 @@ def squeeze_net(x):
 
     h_fire5 = res_fire(h_pool3,64,s1x1=32,e1x1=32,e3x1=32)
 
-    W_conv3 = weight_variable([3, 3, 64, 10])
-    b_conv3 = bias_variable([10])
-    h_conv3 = tf.nn.bias_add(conv2d(h_fire5, W_conv3), b_conv3)
-    h_conv3 = tf.squeeze(h_conv3)
+    with tf.variable_scope('Conv3'):
+        W_conv3 = weight_variable([3, 3, 64, 10])
+        b_conv3 = bias_variable([10])
+        h_conv3 = tf.nn.bias_add(conv2d(h_fire5, W_conv3), b_conv3)
+        h_conv3 = tf.squeeze(h_conv3, name = 'squeeze_conv3')
 
     return h_conv3
 

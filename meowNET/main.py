@@ -5,13 +5,13 @@ import os
 import time
 import numpy as np
 
-TRAIN = False
+TRAIN = True
 LEARNING_RATE = 0.001
-NR_ITERATIONS = 10000
-PRINT_FREQ = 100
+NR_ITERATIONS = 1000
+PRINT_FREQ = 50
 BATCH_SIZE = 128
 NO_CLASSES = 10
-USER = 'DONAL'
+USER = 'LUCIA'
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/train/images/"
     PATH_TO_LABELS = "/Users/Donal/Dropbox/CIFAR10/Data/train/labels.txt"
@@ -23,7 +23,8 @@ else:
     PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/images/"
     PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/labels.txt"
     PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
-    PATH_TO_LOGS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/meow_logs/"
+    PATH_TO_LOGS = "C:/log_ckpt_thesis/MEOW/logs/"
+    PATH_TO_CKPT="C:/log_ckpt_thesis/MEOW/ckpt/"
 cwd = os.getcwd()
 
 # build input graph
@@ -33,7 +34,13 @@ x = batch[0]
 y_ = tf.one_hot(batch[1], NO_CLASSES, dtype=tf.int32)
 
 # build CNN graph: choose one of the architectures in network_function
-h_pool3 = nf.deeper_meow_net(x)
+#h_pool3 = nf.squeeze_net(x)
+with tf.variable_scope('Operation'):
+    W_conv = nf.weight_variable([3, 3, 3, 10])
+    b_conv = nf.bias_variable([10])
+    h_conv = tf.nn.relu(nf.conv2d(x, W_conv) + b_conv)
+    h_pool3= tf.nn.max_pool(h_conv, ksize=[1, 32, 32, 1],strides=[1, 1, 1, 1], padding='VALID', name='output')
+    h_pool3 = tf.squeeze(h_pool3)
 
 if TRAIN:
 
