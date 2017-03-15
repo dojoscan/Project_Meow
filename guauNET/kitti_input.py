@@ -67,28 +67,24 @@ def create_batch(batch_size, train):
                 labels, one hot class labels for GT assigned to each anchor, 3d tensor sz = [batch_sz, no_anchors_per_image,no_classes]
     """
     with tf.variable_scope('KITTIInputPipeline'):
+
         image_list = create_file_list(p.PATH_TO_IMAGES)
         mask_list = create_file_list(p.PATH_TO_MASK)
         delta_list = create_file_list(p.PATH_TO_DELTAS)
         coord_list = create_file_list(p.PATH_TO_COORDS)
         label_list = create_file_list(p.PATH_TO_CLASSES)
 
-        no_samples=len(image_list)
-        if train == False:
-            mask_list = delta_list = coord_list = label_list = tf.convert_to_tensor(['0']*no_samples, dtype=tf.string)
+        no_samples = len(image_list)
 
+        if not train:
+            mask_list = delta_list = coord_list = label_list = tf.convert_to_tensor(['0']*no_samples, dtype=tf.string)
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list],
                                                         shuffle=False, name='InputQueue')
             images = read_image(input_queue[0], train)
-
             masks = input_queue[1]
-
             deltas = input_queue[2]
-
             coords = input_queue[3]
-
             labels = input_queue[4]
-
         else:
             with tf.variable_scope("ConvertListsToTensor"):
                 image_list = tf.convert_to_tensor(image_list, dtype=tf.string)

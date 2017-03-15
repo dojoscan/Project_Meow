@@ -1,5 +1,4 @@
 # Restore from CKPT/global step
-# Tensorboard
 # Weight decay
 # Transfer learning
 # Validation
