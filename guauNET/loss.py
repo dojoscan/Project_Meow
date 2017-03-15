@@ -92,4 +92,6 @@ def loss_function(mask, gt_deltas, gt_coords,  net_deltas, net_confidence_scores
         confidence_loss = confidence_score_regression(mask, net_confidence_scores, gt_confidence_scores, nr_objects)
         classification_loss = classification_regression(mask, gt_labels, net_class_score, nr_objects)
         total_loss = bbox_loss + confidence_loss + classification_loss
-    return total_loss, bbox_loss, confidence_loss, classification_loss
+        l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()])
+        total_loss += l2_loss
+    return total_loss, bbox_loss, confidence_loss, classification_loss, l2_loss

@@ -4,22 +4,21 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 2
-
-# Network
-WEIGHT_DECAY_FACTOR = 0.0001
+BATCH_SIZE = 1
+PRINT_FREQ = 10
+CKPT_FREQ = 10
 
 # Loss
 LAMBDA_BBOX = 5
 LAMBDA_CONF_POS = 75
 LAMBDA_CONF_NEG = 100
+WEIGHT_DECAY_FACTOR = 0.0001
 
 # Optimisation
 LEARNING_RATE = 0.0001
 DECAY_STEP = 8000
 DECAY_FACTOR = 0.5
-NR_ITERATIONS = 500
-PRINT_FREQ = 10
+NR_ITERATIONS = 100
 
 # Input
 NR_CLASSES = 9
@@ -39,7 +38,7 @@ NMS_THRESHOLD = 0.4
 NR_OF_TEST_IMAGES = 7518
 TEST_BATCH_SIZE = 3
 
-USER = 'LUCIA'
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
@@ -47,7 +46,8 @@ if USER == 'DONAL':
     PATH_TO_TEST_IMAGES = "/Users/Donal/Dropbox/CIFAR10/Data/test/images/"
     PATH_TO_LOGS = "/Users/Donal/Desktop/"
     PATH_TO_TEST_OUTPUT = "/Users/Donal/Desktop/"
-    PATH_TO_CKPT = "/Users/Donal/Dropbox/KITTI/checkpoints/"
+    PATH_TO_CKPT = "/Users/Donal/Desktop/test_output/"
+    #PATH_TO_CKPT = "/Users/Donal/Dropbox/KITTI/checkpoints/"
     PATH_TO_DELTAS = "/Users/Donal/Dropbox/KITTI/test/deltas/"
     PATH_TO_MASK = "/Users/Donal/Dropbox/KITTI/test/mask/"
     PATH_TO_COORDS = "/Users/Donal/Dropbox/KITTI/test/coords/"
