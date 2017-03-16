@@ -5,13 +5,16 @@ from parameters import NR_CLASSES, NR_ANCHORS_PER_CELL
 
 def weight_variable(shape,std):
     initial = tf.truncated_normal(shape, stddev=std, name='Weights')
+    tf.summary.histogram('Weights', initial)
     return tf.Variable(initial)
 
 def bias_variable(shape):
     initial = tf.constant(0.1, shape=shape, name='Biases')
+    tf.summary.histogram('Bias', initial)
     return tf.Variable(initial)
 
 # operations
+
 def conv2d(x, W):
     return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME', name='Conv')
 
