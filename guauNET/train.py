@@ -74,22 +74,22 @@ summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_grap
 print('Training initiated')
 start_time = time.clock()
 for i in range(init_step, p.NR_ITERATIONS):
-     if i % p.CKPT_FREQ == 0:
-         # save learnable variables in checkpoint
+    if i % p.CKPT_FREQ == 0:
+        # save learnable variables in checkpoint
         saver.save(sess, p.PATH_TO_CKPT + 'run', global_step=global_step)
         print("Step %d checkpoint saved at " % i + p.PATH_TO_CKPT)
         print("----------------------------------------------------------------------------")
-     if i % p.PRINT_FREQ == 0:
-         # evaluate loss for mini-batch
-         final_loss, b1, conf1, class1, summary, _ = sess.run([total_loss, bbox_loss, confidence_loss, classification_loss, merged_summaries, gradient_op],
+    if i % p.PRINT_FREQ == 0:
+        # evaluate loss for mini-batch
+        final_loss, b1, conf1, class1, summary, _ = sess.run([total_loss, bbox_loss, confidence_loss, classification_loss, merged_summaries, gradient_op],
                                                              feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
-         print("Step %d, total loss = %g, time taken = %g seconds" % (i, final_loss, time.clock() - start_time))
-         print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (b1, conf1, class1))
-         print("----------------------------------------------------------------------------")
-         # write summaries to log file
-         summary_writer.add_summary(summary, global_step=i)
-         start_time = time.clock()
-     else:
+        print("Step %d, total loss = %g, time taken = %g seconds" % (i, final_loss, time.clock() - start_time))
+        print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (b1, conf1, class1))
+        print("----------------------------------------------------------------------------")
+        # write summaries to log file
+        summary_writer.add_summary(summary, global_step=i)
+        start_time = time.clock()
+    else:
         sess.run([gradient_op, global_step], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
 
 saver.save(sess, p.PATH_TO_CKPT + 'run', global_step=global_step)
