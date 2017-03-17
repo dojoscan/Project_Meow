@@ -5,8 +5,8 @@ import numpy as np
 # Training
 DATA_AUGMENT = True
 BATCH_SIZE = 2
-PRINT_FREQ = 100
-CKPT_FREQ = 10000
+PRINT_FREQ = 10
+CKPT_FREQ = 100
 
 # Loss
 LAMBDA_BBOX = 5
@@ -16,7 +16,7 @@ WEIGHT_DECAY_FACTOR = 0.0001
 
 # Optimisation
 LEARNING_RATE = 0.001
-NR_ITERATIONS = 20000
+NR_ITERATIONS = 100
 
 # Input
 NR_CLASSES = 9
@@ -36,7 +36,7 @@ NMS_THRESHOLD = 0.4
 NR_OF_TEST_IMAGES = 7518
 TEST_BATCH_SIZE = 3
 
-USER = 'BILL2'
+USER = 'LUCIA'
 
 if USER == 'DONAL':
     PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"

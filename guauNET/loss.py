@@ -43,7 +43,16 @@ def bbox_regression(mask, gt_deltas, net_deltas, nr_objects):
     "   loss: the bbox regression calculated (a number)"
     with tf.variable_scope("BboxLoss"):
         #loss = (p.LAMBDA_BBOX/(nr_objects+p.EPSILON))*tf.reduce_sum(tf.square(mask*(net_deltas-gt_deltas)))
-        loss = tf.truediv(tf.reduce_sum(p.LAMBDA_BBOX* tf.square(mask * (net_deltas- gt_deltas))),nr_objects,name='bbox_loss')
+        deltas_sub=net_deltas-gt_deltas
+        deltas_square=tf.square(deltas_sub)
+        deltas_sum=tf.reduce_sum(deltas_square, axis=[2])
+        input_mask = tf.reshape(mask, [-1, p.NR_ANCHORS_PER_IMAGE])
+        mul_mask=tf.multiply(input_mask, deltas_sum)
+        sum_anchors=tf.reduce_sum(mul_mask, axis=[1])
+        image_div=tf.truediv(sum_anchors, nr_objects)
+        image_mul=tf.multiply(image_div,p.LAMBDA_BBOX)
+        loss=tf.reduce_mean(image_mul, name='bbox_loss')
+        #loss = tf.truediv(tf.reduce_sum(p.LAMBDA_BBOX* tf.square(mask * (net_deltas- gt_deltas))),nr_objects,name='bbox_loss')
     return loss
 
 
@@ -52,11 +61,25 @@ def confidence_score_regression(mask, confidence_scores, gt_confidence_scores, n
     "Returns:" \
     "   loss: the confidence score regression (a number)"
     with tf.variable_scope("ObjectConfidenceLoss"):
-        input_mask = tf.reshape(mask,[p.BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE])
+        input_mask = tf.reshape(mask,[-1, p.NR_ANCHORS_PER_IMAGE])
+        conf_sub=confidence_scores-gt_confidence_scores
+        conf_square=tf.square(conf_sub)
+        mul_mask=tf.multiply(input_mask, conf_square)
+        left_sum=tf.reduce_sum(mul_mask,axis=[1])
+        left_div=tf.truediv(left_sum, nr_objects)
+        left_mul=tf.multiply(left_div, p.LAMBDA_CONF_POS)
+        conf_alone_square=tf.square(confidence_scores)
+        neg_mask=1-input_mask
+        conf_alone_mask=tf.multiply(neg_mask,conf_alone_square)
+        right_sum = tf.reduce_sum(conf_alone_mask, axis=[1])
+        right_div = tf.truediv(right_sum,p.NR_ANCHORS_PER_IMAGE- nr_objects)
+        right_mul = tf.multiply(right_div, p.LAMBDA_CONF_NEG)
+        sum_terms=tf.add(left_sum, right_sum)
+        loss=tf.reduce_mean(sum_terms, name="ObjectConfLoss")
         #loss=tf.reduce_sum(((p.LAMBDA_CONF_POS/nr_objects)*tf.square(input_mask*(confidence_scores-gt_confidence_scores)))-((p.LAMBDA_CONF_NEG/(p.NR_ANCHORS_PER_IMAGE-nr_objects))*(1-input_mask)*tf.square(confidence_scores)))
-        loss = tf.reduce_mean(tf.reduce_sum(tf.square((gt_confidence_scores - confidence_scores)) *
-                                             (input_mask*p.LAMBDA_CONF_POS/nr_objects+(1-input_mask) * p.LAMBDA_CONF_NEG /
-                                             (p.NR_ANCHORS_PER_IMAGE-nr_objects)), reduction_indices=[1]), name="ObjectConfLoss")
+        # loss = tf.reduce_mean(tf.reduce_sum(tf.square((gt_confidence_scores - confidence_scores)) *
+        #                                      (input_mask*p.LAMBDA_CONF_POS/nr_objects+(1-input_mask) * p.LAMBDA_CONF_NEG /
+        #                                      (p.NR_ANCHORS_PER_IMAGE-nr_objects)), reduction_indices=[1]), name="ObjectConfLoss")
 
     return loss
 
@@ -67,9 +90,17 @@ def classification_regression(mask, gt_labels, class_score, nr_objects):
     "Returns:" \
     "   loss: the classification regression (a number)"
     with tf.variable_scope("ClassConfidenceLoss"):
+        log_classes=-tf.log(class_score+p.EPSILON)
+        class_mul=tf.multiply(gt_labels,log_classes)
+        sum_class=tf.reduce_sum(class_mul, axis=[2])
+        input_mask = tf.reshape(mask, [-1, p.NR_ANCHORS_PER_IMAGE])
+        mask_mul=tf.multiply(input_mask, sum_class)
+        anchors_sum=tf.reduce_sum(mask_mul, axis=[1])
+        obj_div=tf.truediv(anchors_sum, nr_objects)
+        loss=tf.reduce_mean(obj_div,name='DeltaLoss')
         #loss = tf.reduce_sum(mask*(gt_labels*tf.log(class_score+p.EPSILON)))/nr_objects
-        loss = tf.truediv(tf.reduce_sum((gt_labels*(-tf.log(class_score+p.EPSILON)) +
-                                         (1-gt_labels)*(-tf.log(1-class_score+p.EPSILON)))* mask),nr_objects, name='DeltaLoss')
+        # loss = tf.truediv(tf.reduce_sum((gt_labels*(-tf.log(class_score+p.EPSILON)) +
+        #                                  (1-gt_labels)*(-tf.log(1-class_score+p.EPSILON)))* mask),nr_objects, name='DeltaLoss')
     return loss
 
 def loss_function(mask, gt_deltas, gt_coords,  net_deltas, net_confidence_scores, gt_labels, net_class_score, train):
@@ -85,7 +116,7 @@ def loss_function(mask, gt_deltas, gt_coords,  net_deltas, net_confidence_scores
     "Returns:" \
     "   total_loss: a number representing the sum of the three different losses (bbox, confidence and classification)"
     with tf.variable_scope("Loss"):
-        nr_objects = tf.reduce_sum(mask, name="NrObjects")
+        nr_objects = tf.reduce_sum(tf.reshape(mask,[-1, p.NR_ANCHORS_PER_IMAGE]), axis=[1],name="NrObjects")
         bbox_loss = bbox_regression(mask, gt_deltas, net_deltas, nr_objects)
         net_coords = transform_deltas_to_bbox(net_deltas, train)
         gt_confidence_scores = interp.tensor_iou(net_coords, gt_coords)
