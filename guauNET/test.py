@@ -42,10 +42,11 @@ threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 start_time=time.clock()
 sum_time=0
 for i in range(0,int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
-    fbox, fprobs, fclass = sess.run([final_boxes, final_probs, final_class], feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
+    fbox, fprobs, fclass, net_out = sess.run([final_boxes, final_probs, final_class, network_output], feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
+    print(net_out[0, 20, 20, 0])
     # Write labels
-    fp.write_labels(fbox, fclass, fprobs, (i*p.TEST_BATCH_SIZE))
-    print("step %d, time taken = %g seconds"%(i, time.clock()-start_time))
+    #fp.write_labels(fbox, fclass, fprobs, (i*p.TEST_BATCH_SIZE))
+    #print("step %d, time taken = %g seconds"%(i, time.clock()-start_time))
     sum_time += time.clock()-start_time
     start_time=time.clock()
 

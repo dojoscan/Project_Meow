@@ -25,7 +25,7 @@ gt_labels = batch[4]
 
 # build CNN graph
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
-network_output = net.asym_squeeze_net(x, keep_prop)
+network_output = net.res_asym_squeeze_net(x, keep_prop)
 
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)
@@ -40,7 +40,7 @@ with tf.variable_scope('Optimisation'):
     train_step = tf.train.AdamOptimizer(p.LEARNING_RATE, name='TrainStep')
     grads_vars = train_step.compute_gradients(total_loss, tf.trainable_variables())
     for i, (grad, var) in enumerate(grads_vars):
-        grads_vars[i] = (tf.clip_by_norm(grad, 1, name='ClippedGradients'), var)
+        grads_vars[i] = (tf.clip_by_value(grad, -1, 1, name='ClippedGradients'), var)
     gradient_op = train_step.apply_gradients(grads_vars, global_step=global_step)
 
 # summaries for TensorBoard
@@ -74,7 +74,7 @@ summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_grap
 print('Training initiated')
 start_time = time.clock()
 for i in range(init_step, p.NR_ITERATIONS):
-    if i % p.CKPT_FREQ == 0:
+    if i % p.CKPT_FREQ == 0 & i != 0:
         # save learnable variables in checkpoint
         saver.save(sess, p.PATH_TO_CKPT + 'run', global_step=global_step)
         print("Step %d checkpoint saved at " % i + p.PATH_TO_CKPT)
