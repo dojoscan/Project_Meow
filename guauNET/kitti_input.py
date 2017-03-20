@@ -69,15 +69,11 @@ def create_batch(batch_size, train):
     """
     with tf.variable_scope('KITTIInputPipeline'):
 
-        image_list = create_file_list(p.PATH_TO_IMAGES)
-        mask_list = create_file_list(p.PATH_TO_MASK)
-        delta_list = create_file_list(p.PATH_TO_DELTAS)
-        coord_list = create_file_list(p.PATH_TO_COORDS)
-        label_list = create_file_list(p.PATH_TO_CLASSES)
-
-        no_samples = len(image_list)
 
         if not train:
+            image_list = create_file_list(p.PATH_TO_TEST_IMAGES)
+
+            no_samples = len(image_list)
             mask_list = delta_list = coord_list = label_list = tf.convert_to_tensor(['0']*no_samples, dtype=tf.string)
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list],
                                                         shuffle=False, name='InputQueue')
@@ -87,6 +83,12 @@ def create_batch(batch_size, train):
             coords = input_queue[3]
             labels = input_queue[4]
         else:
+            image_list = create_file_list(p.PATH_TO_IMAGES)
+            mask_list = create_file_list(p.PATH_TO_MASK)
+            delta_list = create_file_list(p.PATH_TO_DELTAS)
+            coord_list = create_file_list(p.PATH_TO_COORDS)
+            label_list = create_file_list(p.PATH_TO_CLASSES)
+
             with tf.variable_scope("ConvertListsToTensor"):
                 image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
                 mask_list = tf.convert_to_tensor(mask_list, dtype=tf.string)
