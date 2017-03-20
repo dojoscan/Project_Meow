@@ -31,8 +31,8 @@ network_output = net.res_asym_squeeze_net(x, keep_prop)
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)
 
 # build loss graph
-total_loss, bbox_loss, confidence_loss, classification_loss, l2_loss = l.loss_function(gt_mask, gt_deltas, gt_coords,  bbox_delta
-                                                                                              , confidence_scores, gt_labels, class_scores, True)
+total_loss, bbox_loss, confidence_loss, classification_loss, l2_loss = l.loss_function\
+                        (gt_mask, gt_deltas, gt_coords,  bbox_delta, confidence_scores, gt_labels, class_scores, True)
 
 # build training graph
 with tf.variable_scope('Optimisation'):
@@ -43,12 +43,6 @@ with tf.variable_scope('Optimisation'):
         grads_vars[i] = (tf.clip_by_value(grad, -1, 1, name='ClippedGradients'), var)
     gradient_op = train_step.apply_gradients(grads_vars, global_step=global_step)
 
-# summaries for TensorBoard
-tf.summary.scalar('Total_loss', total_loss)
-tf.summary.scalar('Bounding_box_loss', bbox_loss)
-tf.summary.scalar('Object_confidence_loss', confidence_loss)
-tf.summary.scalar('Classification_loss', classification_loss)
-tf.summary.scalar('Weight_decay_loss', l2_loss)
 merged_summaries = tf.summary.merge_all()
 
 # saver for creating checkpoints
@@ -74,7 +68,7 @@ summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_grap
 print('Training initiated')
 start_time = time.clock()
 for i in range(init_step, p.NR_ITERATIONS):
-    if i % p.CKPT_FREQ == 0 & i != 0:
+    if i % p.CKPT_FREQ == 0 and i != 0:
         # save learnable variables in checkpoint
         saver.save(sess, p.PATH_TO_CKPT + 'run', global_step=global_step)
         print("Step %d checkpoint saved at " % i + p.PATH_TO_CKPT)

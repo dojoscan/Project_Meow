@@ -38,14 +38,14 @@ def bbox_transform_inv(bbox):
     return out_box
 
 def bbox_transform(bbox):
-  """convert a bbox of form [cx, cy, w, h] to [xmin, ymin, xmax, ymax]. Works
-  for numpy array or list of tensors.
-  """
-  cx, cy, w, h = bbox
-  out_box = [[]]*4
-  out_box[0] = cx-w/2
-  out_box[1] = cy-h/2
-  out_box[2] = cx+w/2
-  out_box[3] = cy+h/2
+    """convert a bbox of form [cx, cy, w, h] to [xmin, ymin, xmax, ymax]. Works
+                                            for numpy array or list of tensors.
+    """
+    cx, cy, w, h = bbox
+    out_box = [[]]*4
+    out_box[0] = cx-w/2
+    out_box[1] = cy-h/2
+    out_box[2] = cx+w/2
+    out_box[3] = cy+h/2
 
-  return out_box
+    return out_box
