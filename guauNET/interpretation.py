@@ -40,7 +40,7 @@ def interpret(network_output, batch_size):
         with tf.name_scope('ReformatBboxDelta'):
             bbox_delta = tf.reshape(
                 network_output[:, :, :, num_confidence_scores:],
-                [ batch_size, p.NR_ANCHORS_PER_IMAGE, 4],
+                [batch_size, p.NR_ANCHORS_PER_IMAGE, 4],
                 name='bboxDelta'
             )
         tf.summary.histogram('Class_scores', class_scores)

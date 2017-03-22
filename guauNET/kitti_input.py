@@ -69,7 +69,6 @@ def create_batch(batch_size, train):
     """
     with tf.variable_scope('KITTIInputPipeline'):
 
-
         if not train:
             image_list = create_file_list(p.PATH_TO_TEST_IMAGES)
 
@@ -102,7 +101,7 @@ def create_batch(batch_size, train):
                 images = read_image(input_queue[0], train)
 
                 masks = read_file(input_queue[1])
-                masks = tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE,1 ], name='Masks')
+                masks = tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE, 1], name='Masks')
 
                 deltas = read_file(input_queue[2])
                 deltas = tf.transpose(tf.reshape(deltas, [4, p.NR_ANCHORS_PER_IMAGE]), name='Deltas')

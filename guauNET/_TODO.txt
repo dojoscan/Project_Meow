@@ -1,4 +1,3 @@
-# Restore from CKPT/global step
-# Weight decay
 # Transfer learning
 # Validation
+# Check for bugs!!!

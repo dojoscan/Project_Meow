@@ -9,7 +9,7 @@ import time
 # build input graph
 with tf.name_scope('InputPipeline'):
     batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
-    batch = ki.create_batch(batch_size, True)
+    batch = ki.create_batch(batch_size, train=True)
     x = batch[0]
     gt_mask = batch[1]
     gt_deltas = batch[2]
@@ -27,13 +27,20 @@ with tf.name_scope('Queues'):
 
 sess.run(tf.global_variables_initializer())
 
-for i in range(0, 3):
-    BOX, MASK, LABELS = sess.run([bbox, gt_mask, gt_labels], feed_dict={batch_size:p.BATCH_SIZE})
+for i in range(0, 4):
+    BOX, MASK, LABELS, COORDS = sess.run([bbox, gt_mask, gt_labels, gt_coords], feed_dict={batch_size:p.BATCH_SIZE})
 
 import numpy as np
 Box = np.squeeze(BOX)
 Mask = np.squeeze(MASK)
 Label = np.squeeze(LABELS)
-idx = np.where(Mask == 1)[0]
-print(Box[idx,:])
-print(Label[idx,:])
+Coords = np.squeeze(COORDS)
+print(np.sum(Mask))
+print('-----------------------')
+print(Box[Mask==1,:])
+print('----------------------')
+print(Label[Mask==1,:])
+print('----------------------')
+print(Coords[Mask==1,:])
+print('----------------------')
+

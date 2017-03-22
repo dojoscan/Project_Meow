@@ -16,8 +16,7 @@ pre-processing:
 Instructions:
 1. Ensure that Python 3.5 and TensorFlow 1.0 are installed
 2. Download the KITTI training data and labels at http://www.cvlibs.net/datasets/kitti/eval_object.php ('left colour images' and 'training labels')
-3. Use pre-processing/set_std_mean.py to compute the mean and standard deviation image of the data set (require PIL).
-3. In parameters.py change the paths to direct to
+2. In parameters.py change the paths to direct to
 	PATH_TO_IMAGES: folder containing training images
     	PATH_TO_LABELS: folder containing training labels
 	[see kitti_input.create_batch for description of the following labels]
@@ -29,9 +28,9 @@ Instructions:
     	PATH_TO_LOGS: folder for storing TF logs
     	PATH_TO_TEST_IMAGES: folder containing test images
     	PATH_TO_TEST_OUTPUT: folder for storing the test predictions
-4. Run pre-processing/save_labels to generate the deltas, masks, coordinates, and classes for the training data
-5. Run train.py
-6. Run test.py
+3. Run pre-processing/save_labels to generate the deltas, masks, coordinates, and classes for the training data
+4. Run train.py
+5. Run test.py
 
 NOTES:
 1. Must be atleast one object per training image

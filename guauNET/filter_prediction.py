@@ -81,8 +81,8 @@ def filter(class_scores, confidence_scores, bbox_delta):
        final_class: a 1d tensor containing other tensors with the classes from the bbox selected after nms per image """
 
     with tf.variable_scope('Pre-Filter'):
-        probs_per_class = tf.multiply(class_scores,
-                                  tf.reshape(confidence_scores, [p.TEST_BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE, 1]), name='MultiplyConfClass')
+        probs_per_class = tf.multiply(class_scores, tf.reshape(confidence_scores,
+                                            [p.TEST_BATCH_SIZE, p.NR_ANCHORS_PER_IMAGE, 1]), name='MultiplyConfClass')
         det_probs = tf.reduce_max(probs_per_class, axis=2, name='MaxConfByClass')
         det_class = tf.cast(tf.argmax(probs_per_class, axis=2), tf.int32, name='MaxIdxConfByClass')
         det_boxes = l.transform_deltas_to_bbox(bbox_delta, False)

@@ -52,8 +52,8 @@ def compute_deltas(coords):
     anchors = np.array(p.ANCHORS)
     delta_x = (coords[:, 0] - anchors[:, 0]) / anchors[:, 2]
     delta_y = (coords[:, 1] - anchors[:, 1]) / anchors[:, 3]
-    delta_w = np.log(coords[:, 2] / anchors[:, 2])
-    delta_h = np.log(coords[:, 3] / anchors[:, 3])
+    delta_w = np.log((coords[:, 2] + p.EPSILON) / (anchors[:, 2] + p.EPSILON))
+    delta_h = np.log((coords[:, 3] + p.EPSILON) / (anchors[:, 3] + p.EPSILON))
     deltas = np.transpose([delta_x, delta_y, delta_w, delta_h])
     return deltas
 
@@ -67,7 +67,6 @@ def assign_gt_to_anchors(classes, bboxes):
     """
     Assigns ground truths to anchors and computes the labels for each anchor
     """
-
     for image_idx in range(0, len(classes)):
         ious = []
         mask = np.zeros([p.NR_ANCHORS_PER_IMAGE])
@@ -98,4 +97,4 @@ def create_label(path_to_labels):
     classes, bboxes = read_labels(path_to_labels)
     assign_gt_to_anchors(classes, bboxes)
 
-create_label(p.PATH_TO_LABELS)
+create_label("/Users/Donal/Desktop/debugLabels/label/")

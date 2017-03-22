@@ -10,8 +10,6 @@ import os
 import time
 import numpy as np
 
-cwd = os.getcwd()
-
 ckpt = tf.train.get_checkpoint_state(p.PATH_TO_CKPT)
 
 # build input graph
@@ -40,10 +38,11 @@ with tf.variable_scope('Optimisation'):
     train_step = tf.train.AdamOptimizer(p.LEARNING_RATE, name='TrainStep')
     grads_vars = train_step.compute_gradients(total_loss, tf.trainable_variables())
     for i, (grad, var) in enumerate(grads_vars):
-        grads_vars[i] = (tf.clip_by_value(grad, -1, 1, name='ClippedGradients'), var)
+        grads_vars[i] = (tf.clip_by_value(grad, -10, 10, name='ClippedGradients'), var)
     gradient_op = train_step.apply_gradients(grads_vars, global_step=global_step)
 
 merged_summaries = tf.summary.merge_all()
+summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_graph())
 
 # saver for creating checkpoints
 saver = tf.train.Saver(name='Saver')
@@ -62,7 +61,6 @@ if ckpt:
 else:
     sess.run(tf.global_variables_initializer())
     init_step = 0
-summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_graph())
 
 # training
 print('Training initiated')
