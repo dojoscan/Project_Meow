@@ -111,13 +111,13 @@ def loss_function(mask, gt_deltas, gt_coords,  net_deltas, net_confidence_scores
                                 (L2 [weight decay], bbox coordinate, object confidence and classification confidence)"""
 
     with tf.variable_scope("Loss"):
-        nr_objects = tf.reduce_sum(tf.reshape(mask,[-1, p.NR_ANCHORS_PER_IMAGE]), axis=[1], name="NrObjectsPerImage")
+        nr_objects = tf.reduce_sum(tf.reshape(mask, [-1, p.NR_ANCHORS_PER_IMAGE]), axis=[1], name="NrObjectsPerImage")
         bbox_loss = bbox_regression(mask, gt_deltas, net_deltas, nr_objects)
         net_coords = transform_deltas_to_bbox(net_deltas, train)
         gt_confidence_scores = interp.tensor_iou(net_coords, gt_coords)
         confidence_loss = confidence_score_regression(mask, net_confidence_scores, gt_confidence_scores, nr_objects)
         classification_loss = classification_regression(mask, gt_labels, net_class_score, nr_objects)
-        l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()])
+        l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables() if 'Bias' not in v.name])
         total_loss = l2_loss + bbox_loss + confidence_loss + classification_loss
 
         # summaries for TensorBoard

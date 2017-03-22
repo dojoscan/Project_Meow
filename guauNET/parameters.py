@@ -3,14 +3,14 @@
 import numpy as np
 
 # Training
-DATA_AUGMENT = False
-BATCH_SIZE = 2
-PRINT_FREQ = 10
-CKPT_FREQ = 250
+DATA_AUGMENT = True
+BATCH_SIZE = 1
+PRINT_FREQ = 100
+CKPT_FREQ = 10000
 
 # Optimisation
 LEARNING_RATE = 0.001
-NR_ITERATIONS = 1000
+NR_ITERATIONS = 100000
 
 # Testing
 NR_OF_TEST_IMAGES = 7518
@@ -22,7 +22,7 @@ NMS_THRESHOLD = 0.05
 LAMBDA_BBOX = 5
 LAMBDA_CONF_POS = 75
 LAMBDA_CONF_NEG = 100
-WEIGHT_DECAY_FACTOR = 0.0001
+WEIGHT_DECAY_FACTOR = 0.000001
 
 # Network Input
 NR_CLASSES = 9
@@ -39,60 +39,31 @@ NR_ANCHORS_PER_CELL = 9
 USER = 'DONAL'
 
 if USER == 'DONAL':
-    NR_OF_TEST_IMAGES = 50
-    PATH_TO_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
-    PATH_TO_LABELS = "/Users/Donal/Dropbox/KITTI/test/label/"
-    PATH_TO_TEST_IMAGES = "/Users/Donal/Dropbox/KITTI/test/image/"
-    PATH_TO_LOGS = "/Users/Donal/Desktop/tb/"
-    PATH_TO_TEST_OUTPUT = "/Users/Donal/Desktop/test_output"
-    PATH_TO_CKPT = "/Users/Donal/Desktop/"
-    PATH_TO_CKPT_TEST = "/Users/Donal/Desktop/"
-    PATH_TO_DELTAS = "/Users/Donal/Dropbox/KITTI/test/deltas/"
-    PATH_TO_MASK = "/Users/Donal/Dropbox/KITTI/test/mask/"
-    PATH_TO_COORDS = "/Users/Donal/Dropbox/KITTI/test/coords/"
-    PATH_TO_CLASSES = "/Users/Donal/Dropbox/KITTI/test/classes/"
-    PATH_TO_WRITE_LABELS = "/Users/Donal/Desktop/"
+    PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
+    PATH_TO_OUTPUT = '/Users/Donal/Dropbox/KITTI/output/'
 elif USER == 'LUCIA':
-    PATH_TO_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/image/"
-    PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/label/"
-    PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
-    PATH_TO_LOGS = "C:/log_ckpt_thesis/logs/"
-    PATH_TO_TEST_OUTPUT = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/test_output/"
-    PATH_TO_CKPT = "C:/log_ckpt_thesis/ckpt/"
-    PATH_TO_DELTAS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/deltas/"
-    PATH_TO_MASK = "C:/Master Chalmers/2 year/volvo thesis/code0/test/mask/"
-    PATH_TO_COORDS = "C:/Master Chalmers/2 year/volvo thesis/code0/test/coords/"
-    PATH_TO_CLASSES = "C:/Master Chalmers/2 year/volvo thesis/code0/test/classes/"
-    PATH_TO_STAT = "C:/Master Chalmers/2 year/volvo thesis/code0/test/"
-    PATH_TO_WRITE_LABELS= "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Project_Meow/guauNET/write_labels"
+    PATH_TO_DATA = '/Master Chalmers/2 year/volvo thesis/code0/KITTI/data'
+    PATH_TO_OUTPUT = '/Master Chalmers/2 year/volvo thesis/code0/KITTI/output/'
 elif USER == 'BILL':
-    PATH_TO_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/image/"
-    PATH_TO_LABELS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/label/"
-    PATH_TO_DELTAS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/delta/"
-    PATH_TO_MASK = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/mask/"
-    PATH_TO_COORDS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/coords/"
-    PATH_TO_CLASSES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/class/"
-    PATH_TO_CKPT_TEST = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFckpt/17-3-16_squeeze/run-1000"
-    PATH_TO_CKPT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFckpt/"
-    PATH_TO_LOGS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFlogs/"
-    PATH_TO_TEST_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/image/"
-    PATH_TO_TEST_OUTPUT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output/"
-    PATH_TO_STAT = "/Users/LDIEGO/Documents/KITTI/std_mean/"
-    PATH_TO_WRITE_LABELS = "C:/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output"
+    PATH_TO_DATA = "/Users/LDIEGO/Documents/KITTI/data/"
+    PATH_TO_OUTPUT = "/Users/LDIEGO/Documents/KITTI/output/"
 else:
-    PATH_TO_IMAGES = "/Users/LDIEGO/Desktop/training2/image/"
-    PATH_TO_LABELS = "/Users/LDIEGO/Desktop/training2/label/"
-    PATH_TO_DELTAS = "/Users/LDIEGO/Desktop/training2/delta/"
-    PATH_TO_MASK = "/Users/LDIEGO/Desktop/training2/mask/"
-    PATH_TO_COORDS = "/Users/LDIEGO/Desktop/training2/coords/"
-    PATH_TO_CLASSES = "/Users/LDIEGO/Desktop/training2/class/"
-    PATH_TO_CKPT_TEST = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFckpt/17-3-16_squeeze/run-1000"
-    PATH_TO_CKPT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFckpt/"
-    PATH_TO_LOGS = "/Users/LDIEGO/Documents/KITTI/KITTIdata/training/_output/TFlogs/"
-    PATH_TO_TEST_IMAGES = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/image/"
-    PATH_TO_TEST_OUTPUT = "/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output/"
-    PATH_TO_STAT = "/Users/LDIEGO/Documents/KITTI/std_mean/"
-    PATH_TO_WRITE_LABELS = "C:/Users/LDIEGO/Documents/KITTI/KITTIdata/testing/_output"
+    PATH_TO_DATA = "/home/ad-tool-wd-1/Documents/DONALLUCIA/KITTIdata/"
+    PATH_TO_OUTPUT = "/home/ad-tool-wd-1/Documents/DONALLUCIA/Output/"
+
+# training
+PATH_TO_IMAGES = PATH_TO_DATA + "training/image/"
+PATH_TO_LABELS = PATH_TO_DATA + "training/label/"
+PATH_TO_DELTAS = PATH_TO_DATA + "training/delta/"
+PATH_TO_MASK = PATH_TO_DATA + "training/mask/"
+PATH_TO_COORDS = PATH_TO_DATA + "training/coord/"
+PATH_TO_CLASSES = PATH_TO_DATA + "training/class/"
+PATH_TO_LOGS = PATH_TO_OUTPUT + "logs/"
+PATH_TO_CKPT = PATH_TO_OUTPUT + "ckpt/"
+# testing
+PATH_TO_TEST_IMAGES = PATH_TO_DATA + "testing/image/"
+PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/"
+PATH_TO_WRITE_LABELS = PATH_TO_OUTPUT + "predictions/"
 
 def set_anchors():
   H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL
