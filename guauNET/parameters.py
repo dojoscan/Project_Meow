@@ -5,7 +5,7 @@ import numpy as np
 # Training
 DATA_AUGMENT = True
 BATCH_SIZE = 1
-PRINT_FREQ = 100
+PRINT_FREQ = 5
 CKPT_FREQ = 10000
 
 # Optimisation
@@ -22,7 +22,7 @@ NMS_THRESHOLD = 0.05
 LAMBDA_BBOX = 5
 LAMBDA_CONF_POS = 75
 LAMBDA_CONF_NEG = 100
-WEIGHT_DECAY_FACTOR = 0.000001
+WEIGHT_DECAY_FACTOR = 1e-7
 
 # Network Input
 NR_CLASSES = 9
@@ -40,7 +40,7 @@ USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
-    PATH_TO_OUTPUT = '/Users/Donal/Dropbox/KITTI/output/'
+    PATH_TO_OUTPUT = '/Users/Donal/Desktop/output/'
 elif USER == 'LUCIA':
     PATH_TO_DATA = '/Master Chalmers/2 year/volvo thesis/code0/KITTI/data'
     PATH_TO_OUTPUT = '/Master Chalmers/2 year/volvo thesis/code0/KITTI/output/'
@@ -64,6 +64,12 @@ PATH_TO_CKPT = PATH_TO_OUTPUT + "ckpt/"
 PATH_TO_TEST_IMAGES = PATH_TO_DATA + "testing/image/"
 PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/"
 PATH_TO_WRITE_LABELS = PATH_TO_OUTPUT + "predictions/"
+# validation
+PATH_TO_VAL_IMAGES = PATH_TO_DATA + "validation/image/"
+PATH_TO_VAL_DELTAS = PATH_TO_DATA + "validation/delta/"
+PATH_TO_VAL_MASK = PATH_TO_DATA + "validation/mask/"
+PATH_TO_VAL_COORDS = PATH_TO_DATA + "validation/coord/"
+PATH_TO_VAL_CLASSES = PATH_TO_DATA + "validation/class/"
 
 def set_anchors():
   H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL

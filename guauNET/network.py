@@ -92,7 +92,7 @@ def fire(x, input_depth, s1x1, e1x1, e3x3, name):
             h_e1x1 = tf.nn.bias_add(conv2d(h_s, W_e1x1), b_e1x1)
             h_e1x1 = tf.nn.relu(h_e1x1)
 
-            W_e3x3 = weight_variable([3, 3, e3x3, e3x3], 'Weights3x3')
+            W_e3x3 = weight_variable([3, 3, s1x1, e3x3], 'Weights3x3')
             b_e3x3 = bias_variable([e3x3], 'Bias3x3')
             h_e3x3 = tf.nn.bias_add(conv2d(h_s, W_e3x3), b_e3x3)
             h_e3x3 = tf.nn.relu(h_e3x3)
@@ -104,27 +104,27 @@ def fire(x, input_depth, s1x1, e1x1, e3x3, name):
 # architectures
 
 def res_asym_squeeze_net(x, keep_prop):
-    with tf.variable_scope('RASqlNet'):
+    with tf.variable_scope('CNN'):
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights')
             b_conv1 = bias_variable([64], 'Bias')
             h_conv1 = tf.nn.relu(tf.nn.conv2d(x, W_conv1, strides=[1, 2, 2, 1], padding='VALID', name='Conv') + b_conv1, name='ReLU')
             h_pool1 = max_pool_3x3(h_conv1)
 
-        h_fire1 = asym_fire(h_pool1, 64, s1x1=16, e1x1=64, e3x1=64, name='Asym_Fire1')
-        h_fire2 = res_asym_fire(h_fire1, 128, s1x1=16, e1x1=64, e3x1=64, name='Res_Fire2')
+        h_fire1 = asym_fire(h_pool1, 64, s1x1=16, e1x1=64, e3x1=64, name='Fire1')
+        h_fire2 = res_asym_fire(h_fire1, 128, s1x1=16, e1x1=64, e3x1=64, name='Fire2')
         h_pool2 = max_pool_3x3(h_fire2)
 
-        h_fire3 = asym_fire(h_pool2, 128, s1x1=32,e1x1=128, e3x1=128, name='Asym_Fire3')
-        h_fire4 = res_asym_fire(h_fire3, 256, s1x1=32,e1x1=128, e3x1=128, name='Res_Fire4')
+        h_fire3 = asym_fire(h_pool2, 128, s1x1=32,e1x1=128, e3x1=128, name='Fire3')
+        h_fire4 = res_asym_fire(h_fire3, 256, s1x1=32,e1x1=128, e3x1=128, name='Fire4')
         h_pool3 = max_pool_3x3(h_fire4)
 
-        h_fire5 = asym_fire(h_pool3, 256, s1x1=48, e1x1=192, e3x1=192, name='Asym_Fire5')
-        h_fire6 = res_asym_fire(h_fire5, 384, s1x1=48, e1x1=192, e3x1=192, name='Res_Fire6')
-        h_fire7 = asym_fire(h_fire6, 384, s1x1=64, e1x1=256, e3x1=256, name='Asym_Fire7')
-        h_fire8 = res_asym_fire(h_fire7, 512, s1x1=64, e1x1=256, e3x1=256, name='Res_Fire8')
-        h_fire9 = asym_fire(h_fire8,  512, s1x1=96, e1x1=384, e3x1=384, name='Asym_Fire9')
-        h_fire10 = res_asym_fire(h_fire9, 768, s1x1=96, e1x1=384, e3x1=384, name='Res_Fire10')
+        h_fire5 = asym_fire(h_pool3, 256, s1x1=48, e1x1=192, e3x1=192, name='Fire5')
+        h_fire6 = res_asym_fire(h_fire5, 384, s1x1=48, e1x1=192, e3x1=192, name='Fire6')
+        h_fire7 = asym_fire(h_fire6, 384, s1x1=64, e1x1=256, e3x1=256, name='Fire7')
+        h_fire8 = res_asym_fire(h_fire7, 512, s1x1=64, e1x1=256, e3x1=256, name='Fire8')
+        h_fire9 = asym_fire(h_fire8,  512, s1x1=96, e1x1=384, e3x1=384, name='Fire9')
+        h_fire10 = res_asym_fire(h_fire9, 768, s1x1=96, e1x1=384, e3x1=384, name='Fire10')
 
         with tf.variable_scope('Dropout'):
             h_drop = tf.nn.dropout(h_fire10, keep_prop, name='Dropout')
@@ -137,7 +137,7 @@ def res_asym_squeeze_net(x, keep_prop):
     return h_conv3
 
 def squeeze_net(x, keep_prop):
-    with tf.variable_scope('SqueezeNet'):
+    with tf.variable_scope('CNN'):
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights')
             b_conv1 = bias_variable([64], 'Bias')

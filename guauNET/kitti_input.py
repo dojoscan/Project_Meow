@@ -5,18 +5,19 @@ import os
 import parameters as p
 import numpy as np
 
-def read_image(filename, train):
+def read_image(filename, mode):
     """
     Args:
         filename: a scalar string tensor.
     Returns:
         image_tensor: decoded image
     """
+
     with tf.variable_scope('ReadImage'):
         file_contents = tf.read_file(filename)
         image = tf.image.decode_png(file_contents, channels=3, name='Image')
         with tf.variable_scope('DistortImage'):
-            if train:
+            if mode ==' Train':
                 bin = tf.random_shuffle([0, 1])
                 if bin[0] == 0:
                     image = tf.image.random_brightness(image, max_delta=32. / 255.)
@@ -35,6 +36,7 @@ def read_file(filename):
         Returns:
             data: decoded file
     """
+
     with tf.variable_scope('ReadLabel'):
         file_contents = tf.read_file(filename)
         data = tf.decode_raw(file_contents, out_type=tf.float64)
@@ -54,11 +56,11 @@ def create_file_list(path_to_folder):
     return file_list
 
 
-def create_batch(batch_size, train):
+def create_batch(batch_size, mode):
     """
     Args:
         batch_size: number of examples in mini-batch
-        train: boolean for training or testing mode
+        mode: 'Train', 'Test' or 'Val'
     Returns:
         batch:  list of tensors (see SqueezeDet paper for more details) -
                 images, 4d tensor sz = [batch_sz, im_h, im_w, im_d]
@@ -69,24 +71,32 @@ def create_batch(batch_size, train):
     """
     with tf.variable_scope('KITTIInputPipeline'):
 
-        if not train:
+        if mode == 'Test':
             image_list = create_file_list(p.PATH_TO_TEST_IMAGES)
 
             no_samples = len(image_list)
-            mask_list = delta_list = coord_list = label_list = tf.convert_to_tensor(['0']*no_samples, dtype=tf.string)
-            input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list],
+            mask_list = delta_list = coord_list = class_list = tf.convert_to_tensor(['0']*no_samples, dtype=tf.string)
+            input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, class_list],
                                                         shuffle=False, name='InputQueue')
-            images = read_image(input_queue[0], train)
-            masks = input_queue[1]
-            deltas = input_queue[2]
-            coords = input_queue[3]
-            labels = input_queue[4]
+            image = read_image(input_queue[0], mode)
+            mask = input_queue[1]
+            delta = input_queue[2]
+            coord = input_queue[3]
+            classs = input_queue[4]
+
         else:
-            image_list = create_file_list(p.PATH_TO_IMAGES)
-            mask_list = create_file_list(p.PATH_TO_MASK)
-            delta_list = create_file_list(p.PATH_TO_DELTAS)
-            coord_list = create_file_list(p.PATH_TO_COORDS)
-            label_list = create_file_list(p.PATH_TO_CLASSES)
+            if mode == 'Train':
+                image_list = create_file_list(p.PATH_TO_IMAGES)
+                mask_list = create_file_list(p.PATH_TO_MASK)
+                delta_list = create_file_list(p.PATH_TO_DELTAS)
+                coord_list = create_file_list(p.PATH_TO_COORDS)
+                label_list = create_file_list(p.PATH_TO_CLASSES)
+            else: # validation
+                image_list = create_file_list(p.PATH_TO_VAL_IMAGES)
+                mask_list = create_file_list(p.PATH_TO_VAL_MASK)
+                delta_list = create_file_list(p.PATH_TO_VAL_DELTAS)
+                coord_list = create_file_list(p.PATH_TO_VAL_COORDS)
+                label_list = create_file_list(p.PATH_TO_VAL_CLASSES)
 
             with tf.variable_scope("ConvertListsToTensor"):
                 image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
@@ -98,20 +108,20 @@ def create_batch(batch_size, train):
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list], shuffle=True, name='InputQueue')
 
             with tf.variable_scope("ReadTensorSlice"):
-                images = read_image(input_queue[0], train)
+                image = read_image(input_queue[0], mode)
 
-                masks = read_file(input_queue[1])
-                masks = tf.reshape(masks, [p.NR_ANCHORS_PER_IMAGE, 1], name='Masks')
+                mask = read_file(input_queue[1])
+                mask = tf.reshape(mask, [p.NR_ANCHORS_PER_IMAGE, 1], name='Masks')
 
-                deltas = read_file(input_queue[2])
-                deltas = tf.transpose(tf.reshape(deltas, [4, p.NR_ANCHORS_PER_IMAGE]), name='Deltas')
+                delta = read_file(input_queue[2])
+                delta = tf.transpose(tf.reshape(delta, [4, p.NR_ANCHORS_PER_IMAGE]), name='Deltas')
 
-                coords = read_file(input_queue[3])
-                coords = tf.reshape(coords, [p.NR_ANCHORS_PER_IMAGE, 4], name='Coords')
+                coord = read_file(input_queue[3])
+                coord = tf.reshape(coord, [p.NR_ANCHORS_PER_IMAGE, 4], name='Coords')
 
-                labels = read_file(input_queue[4])
-                labels = tf.reshape(labels, [p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES], name='ClassLabels')
+                classs = read_file(input_queue[4])
+                classs = tf.reshape(classs, [p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES], name='ClassLabels')
 
-        batch = tf.train.batch([images, masks, deltas, coords, labels], batch_size=batch_size, name='Batch')
+        batch = tf.train.batch([image, mask, delta, coord, classs], batch_size=batch_size, name='Batch')
 
     return batch

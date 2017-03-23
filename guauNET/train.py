@@ -12,37 +12,50 @@ import numpy as np
 
 ckpt = tf.train.get_checkpoint_state(p.PATH_TO_CKPT)
 
-# build input graph
 batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
-batch = ki.create_batch(batch_size, True)
-x = batch[0]
-gt_mask = batch[1]
-gt_deltas = batch[2]
-gt_coords = batch[3]
-gt_labels = batch[4]
-
-# build CNN graph
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
-network_output = net.res_asym_squeeze_net(x, keep_prop)
 
-# build interpretation graph
-class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)
+# Training
+t_batch = ki.create_batch(batch_size, 'Train')
+t_image = t_batch[0]
+t_mask = t_batch[1]
+t_delta = t_batch[2]
+t_coord = t_batch[3]
+t_class = t_batch[4]
 
-# build loss graph
-total_loss, bbox_loss, confidence_loss, classification_loss, l2_loss = l.loss_function\
-                        (gt_mask, gt_deltas, gt_coords,  bbox_delta, confidence_scores, gt_labels, class_scores, True)
+t_network_output = net.squeeze_net(t_image, keep_prop)
+t_class_scores, t_conf_scores, t_bbox_delta = interp.interpret(t_network_output, batch_size)
+t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss = l.loss_function\
+                        (t_mask, t_delta, t_coord, t_class,  t_bbox_delta, t_conf_scores, t_class_scores, True)
+l.add_loss_summaries('Train_', t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss)
 
 # build training graph
 with tf.variable_scope('Optimisation'):
     global_step = tf.Variable(0, name='GlobalStep', trainable=False)
     train_step = tf.train.AdamOptimizer(p.LEARNING_RATE, name='TrainStep')
-    grads_vars = train_step.compute_gradients(total_loss, tf.trainable_variables())
+    grads_vars = train_step.compute_gradients(t_total_loss, tf.trainable_variables())
     for i, (grad, var) in enumerate(grads_vars):
         grads_vars[i] = (tf.clip_by_value(grad, -10, 10, name='ClippedGradients'), var)
     gradient_op = train_step.apply_gradients(grads_vars, global_step=global_step)
 
 merged_summaries = tf.summary.merge_all()
 summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_graph())
+
+# Validation
+with tf.variable_scope('Validation'):
+
+    v_batch = ki.create_batch(batch_size, 'Val')
+    v_image = v_batch[0]
+    v_mask = v_batch[1]
+    v_delta = v_batch[2]
+    v_coord = v_batch[3]
+    v_class = v_batch[4]
+
+    v_network_output = net.squeeze_net(v_image, keep_prop)
+    v_class_scores, v_conf_scores, v_bbox_delta = interp.interpret(v_network_output, batch_size)
+    v_total_loss, v_bbox_loss, v_conf_loss, v_class_loss, v_l2_loss = l.loss_function\
+                        (v_mask, v_delta, v_coord, v_class,  v_bbox_delta, v_conf_scores, v_class_scores, True)
+    val_summ = l.add_loss_summaries('Val_', t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss)
 
 # saver for creating checkpoints
 saver = tf.train.Saver(name='Saver')
@@ -72,16 +85,21 @@ for i in range(init_step, p.NR_ITERATIONS):
         print("Step %d checkpoint saved at " % i + p.PATH_TO_CKPT)
         print("----------------------------------------------------------------------------")
     if i % p.PRINT_FREQ == 0:
-        # evaluate loss for mini-batch
-        final_loss, b1, conf1, class1, summary, _ = sess.run([total_loss, bbox_loss, confidence_loss, classification_loss, merged_summaries, gradient_op],
-                                                             feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
-        print("Step %d, total loss = %g, time taken = %g seconds" % (i, final_loss, time.clock() - start_time))
-        print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (b1, conf1, class1))
+        # evaluate loss for validation mini-batch
+        val_summary = sess.run(val_summ, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
+        summary_writer.add_summary(val_summary, global_step=i)
+        # evaluate loss for training mini-batch and apply one step of opt
+        t_loss, t_box_l, t_conf_l, t_class_l, summary, _ = sess.run([t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss,
+                                                            merged_summaries, gradient_op], feed_dict={batch_size:
+                                                            p.BATCH_SIZE, keep_prop: 0.5})
+        print("Step %d, total loss = %g, time taken = %g seconds" % (i, t_loss, time.clock() - start_time))
+        print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (t_box_l, t_conf_l, t_class_l))
         print("----------------------------------------------------------------------------")
         # write summaries to log file
         summary_writer.add_summary(summary, global_step=i)
         start_time = time.clock()
     else:
+        # apply one step of opt
         sess.run([gradient_op, global_step], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
 
 saver.save(sess, p.PATH_TO_CKPT + 'run', global_step=global_step)
