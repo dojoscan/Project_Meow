@@ -17,14 +17,14 @@ def read_image(filename, mode):
         file_contents = tf.read_file(filename)
         image = tf.image.decode_png(file_contents, channels=3, name='Image')
         with tf.variable_scope('DistortImage'):
-            if mode ==' Train':
+            if mode == 'Train':
                 bin = tf.random_shuffle([0, 1])
                 if bin[0] == 0:
-                    image = tf.image.random_brightness(image, max_delta=32. / 255.)
+                    image = tf.image.random_brightness(image, max_delta=50. / 255.)
                     image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
                 else:
                     image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
-                    image = tf.image.random_brightness(image, max_delta=32. / 255.)
+                    image = tf.image.random_brightness(image, max_delta=50. / 255.)
         image = tf.image.resize_images(image, [p.IMAGE_HEIGHT, p.IMAGE_WIDTH])
         image = tf.subtract(image, tf.reduce_mean(image))
     return image
@@ -65,7 +65,7 @@ def create_batch(batch_size, mode):
         batch:  list of tensors (see SqueezeDet paper for more details) -
                 images, 4d tensor sz = [batch_sz, im_h, im_w, im_d]
                 masks, whether or not an anchor is assigned to a GT {1,0}, 2d tensor sz = [batch_sz, no_anchors_per_image]
-                deltas, deltas between GT assigned to each anchor and the anchors themselves, 3d tensor sz = [batch_sz, no_anchors_per_image,4]
+                deltas, offsets between GT assigned to each anchor and the anchors themselves, 3d tensor sz = [batch_sz, no_anchors_per_image,4]
                 coords, coords for GT assigned to each anchor, 3d tensor sz = [batch_sz, no_anchors_per_image,4]
                 labels, one hot class labels for GT assigned to each anchor, 3d tensor sz = [batch_sz, no_anchors_per_image,no_classes]
     """
@@ -91,7 +91,7 @@ def create_batch(batch_size, mode):
                 delta_list = create_file_list(p.PATH_TO_DELTAS)
                 coord_list = create_file_list(p.PATH_TO_COORDS)
                 label_list = create_file_list(p.PATH_TO_CLASSES)
-            else: # validation
+            else:   # validation
                 image_list = create_file_list(p.PATH_TO_VAL_IMAGES)
                 mask_list = create_file_list(p.PATH_TO_VAL_MASK)
                 delta_list = create_file_list(p.PATH_TO_VAL_DELTAS)
@@ -108,7 +108,8 @@ def create_batch(batch_size, mode):
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, label_list], shuffle=True, name='InputQueue')
 
             with tf.variable_scope("ReadTensorSlice"):
-                image = read_image(input_queue[0], mode)
+                with tf.device('/cpu:0'):
+                    image = read_image(input_queue[0], mode)
 
                 mask = read_file(input_queue[1])
                 mask = tf.reshape(mask, [p.NR_ANCHORS_PER_IMAGE, 1], name='Masks')

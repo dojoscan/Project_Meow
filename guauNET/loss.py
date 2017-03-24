@@ -8,7 +8,7 @@ import tools as t
 def transform_deltas_to_bbox(net_deltas, train):
     """ Transform the deltas given by the network to x,y,w,h format
     Args:
-       net_deltas: a 3d tensor containing the parametrised bbox offsets for each anchor
+       net_deltas: a 3d tensor containing the network-predicted parametrised bbox offsets for each anchor
                                                 sz=[batch_sz, no_anchors_per_image,4]
     Returns:
        if Train = True
@@ -44,7 +44,7 @@ def transform_deltas_to_bbox(net_deltas, train):
 def bbox_regression(mask, gt_deltas, net_deltas, nr_objects):
     """ Calculate bbox regression
     Returns:
-       loss: the bbox regression calculated (a number)"""
+       loss: the bbox regression calculated (a scalar)"""
 
     with tf.variable_scope("BboxLoss"):
         deltas_sum = tf.reduce_sum(tf.square(net_deltas-gt_deltas, name='SquareDiff'), axis=[2], name='SumOverDeltas')

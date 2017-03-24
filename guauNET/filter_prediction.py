@@ -69,7 +69,7 @@ def filter(class_scores, confidence_scores, bbox_delta):
 
     """ Calculates the bounding boxes and their corresponding confidence score (probability) and class, from the CNN
     output after applying non maximum supression (NMS) to the k first boxes with better 'probability'. This last term is
-    calculated multiplying the classification score and the confidence scores.
+    calculated by multiplying the classification score and the confidence scores.
 
     Args:
        class_scores: a 3d tensor containing the Conf(Cl|Obj) dist. for each anchor [batch_sz, no_anchors_per_image, no_classes]
@@ -102,7 +102,6 @@ def write_labels(fbox, fclass, fprobs, index):
         place_text = os.path.join(p.PATH_TO_WRITE_LABELS, filename)
         with open(place_text, 'w') as a:
             for j in range(0, nr_objects):
-                # np.savetxt(place_text, fclass[i][j])
                 wr = p.CLASSES_INV[('%s' % fclass[i][j])] + (' ') + ('%s' % -1) + (' ') + ('%s' % -1) + (' ') + \
                      ('%s' % -10) + (' ') + ('%.2f' % fbox[i][j, 0]) + (' ') + ('%.2f' % fbox[i][j, 1]) + (' ') +\
                      ('%.2f' % fbox[i][j, 2]) + (' ') + ('%.2f' % fbox[i][j, 3]) + (' ') + ('%s %s %s' % (-1, -1, -1)) +\

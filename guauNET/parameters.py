@@ -4,9 +4,9 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 1
-PRINT_FREQ = 5
-CKPT_FREQ = 10000
+BATCH_SIZE = 20
+PRINT_FREQ = 200
+CKPT_FREQ = 5000
 
 # Optimisation
 LEARNING_RATE = 0.001
