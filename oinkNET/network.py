@@ -47,7 +47,7 @@ def squeeze(x, keep_prop):
             b_conv1 = bias_variable([64], 'Bias', True)
             h_conv1 = tf.nn.relu(tf.nn.conv2d(x, W_conv1, strides=[1, 2, 2, 1], padding='VALID', name='Conv') + b_conv1,
                                  name='ReLU')
-            h_pool1 = tf.nn.max_pool(h_conv1, ksize=[1, 3,3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool')
+            h_pool1 = tf.nn.max_pool(h_conv1, ksize=[1, 3,3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool1')
 
         variables_to_save = {v.op.name: v for v in [W_conv1, b_conv1]}
 
@@ -88,8 +88,8 @@ def squeeze(x, keep_prop):
             depth_fire = 512
 
         with tf.variable_scope('Conv2'):
-            W_conv3 = weight_variable([3, 3, depth_fire, p.NO_CLASSES], 'Weights', False)
-            b_conv3 = bias_variable([p.NO_CLASSES], 'Bias', False)
+            W_conv3 = weight_variable([3, 3, depth_fire, (p.NR_CLASSES+1+4)*p.NR_ANCHORS_PER_CELL], 'Weights', False)
+            b_conv3 = bias_variable([(p.NR_CLASSES+1+4)*p.NR_ANCHORS_PER_CELL], 'Bias', False)
             h_conv3 = tf.nn.bias_add(tf.nn.conv2d(h_drop, W_conv3, strides=[1, 1, 1, 1], padding='SAME', name='Conv'), b_conv3, name='AddBias')
             h_conv3=tf.squeeze(h_conv3)
 
