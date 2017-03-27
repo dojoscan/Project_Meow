@@ -6,9 +6,7 @@ import kitti_input as ki
 import parameters as p
 import interpretation as interp
 import loss as l
-import os
 import time
-import numpy as np
 
 ckpt = tf.train.get_checkpoint_state(p.PATH_TO_CKPT)
 
@@ -16,14 +14,14 @@ batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
 
 # Training
-t_batch = ki.create_batch(batch_size, 'Train')
+t_batch = ki.create_batch(batch_size=batch_size, mode='Train')
 t_image = t_batch[0]
 t_mask = t_batch[1]
 t_delta = t_batch[2]
 t_coord = t_batch[3]
 t_class = t_batch[4]
 
-t_network_output = net.squeeze_net(t_image, keep_prop)
+t_network_output = net.squeeze_net(x=t_image, keep_prop=keep_prop)
 t_class_scores, t_conf_scores, t_bbox_delta = interp.interpret(t_network_output, batch_size)
 t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss = l.loss_function\
                         (t_mask, t_delta, t_coord, t_class,  t_bbox_delta, t_conf_scores, t_class_scores, True)
@@ -35,7 +33,7 @@ with tf.variable_scope('Optimisation'):
     train_step = tf.train.AdamOptimizer(p.LEARNING_RATE, name='TrainStep')
     grads_vars = train_step.compute_gradients(t_total_loss, tf.trainable_variables())
     for i, (grad, var) in enumerate(grads_vars):
-        grads_vars[i] = (tf.clip_by_value(grad, -10, 10, name='ClippedGradients'), var)
+        grads_vars[i] = (tf.clip_by_value(grad, -100, 100, name='ClippedGradients'), var)
     gradient_op = train_step.apply_gradients(grads_vars, global_step=global_step)
 
 merged_summaries = tf.summary.merge_all()
@@ -71,33 +69,35 @@ if ckpt:
     restore_path = tf.train.latest_checkpoint(p.PATH_TO_CKPT)
     saver.restore(sess, restore_path)
     init_step = int(restore_path.split('/')[-1].split('-')[-1])
+    print("Restored from checkpoint: step %d, dir = " % i + p.PATH_TO_CKPT)
 else:
     sess.run(tf.global_variables_initializer())
     init_step = 0
 
 # training
 print('Training initiated')
-start_time = time.clock()
+start_time = time.time()
 for i in range(init_step, p.NR_ITERATIONS):
-    if i % p.CKPT_FREQ == 0 and i != 0:
+    if i % p.CKPT_FREQ == 0 and i != init_step:
         # save learnable variables in checkpoint
         saver.save(sess, p.PATH_TO_CKPT + 'run', global_step=global_step)
         print("Step %d checkpoint saved at " % i + p.PATH_TO_CKPT)
         print("----------------------------------------------------------------------------")
     if i % p.PRINT_FREQ == 0:
         # evaluate loss for validation mini-batch
-        val_summary = sess.run(val_summ, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
-        summary_writer.add_summary(val_summary, global_step=i)
+        #val_summary = sess.run(val_summ, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
+        #summary_writer.add_summary(val_summary, global_step=i)
         # evaluate loss for training mini-batch and apply one step of opt
         t_loss, t_box_l, t_conf_l, t_class_l, summary, _ = sess.run([t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss,
-                                                            merged_summaries, gradient_op], feed_dict={batch_size:
-                                                            p.BATCH_SIZE, keep_prop: 0.5})
-        print("Step %d, total loss = %g, time taken = %g seconds" % (i, t_loss, time.clock() - start_time))
+                                                                merged_summaries, gradient_op], feed_dict={batch_size:
+                                                                p.BATCH_SIZE, keep_prop: 0.5})
+        print("Step %d, Total loss = %g, Speed = %g fps" % (i, t_loss, p.PRINT_FREQ *
+                                                            p.BATCH_SIZE/(time.time() - start_time)))
         print("Bbox loss = %g, Confidence loss = %g, Class loss = %g" % (t_box_l, t_conf_l, t_class_l))
         print("----------------------------------------------------------------------------")
         # write summaries to log file
         summary_writer.add_summary(summary, global_step=i)
-        start_time = time.clock()
+        start_time = time.time()
     else:
         # apply one step of opt
         sess.run([gradient_op, global_step], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})

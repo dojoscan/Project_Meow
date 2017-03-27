@@ -20,7 +20,7 @@ with tf.name_scope('InputPipeline'):
 
 # build CNN graph
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
-network_output = net.res_asym_squeeze_net(x, keep_prop)
+network_output = net.squeeze_net(x, keep_prop)
 
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)
@@ -32,20 +32,20 @@ saver = tf.train.Saver()
 sess = tf.Session()
 
 # restore from checkpoint
-saver.restore(sess, p.PATH_TO_CKPT_TEST)
+saver.restore(sess, tf.train.latest_checkpoint(p.PATH_TO_CKPT_TEST))
 
 # start queues
 coordinate = tf.train.Coordinator()
 threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 
 # run testing
-start_time = time.clock()
+start_time = time.time()
 sum_time = 0
 for i in range(0, int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
-    fbox, fprobs, fclass, net_out = sess.run([final_boxes, final_probs, final_class, batch], feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
+    image, fbox, fprobs, fclass, net_out = sess.run([x, final_boxes, final_probs, final_class, network_output], feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
     # Write labels
     fp.write_labels(fbox, fclass, fprobs, (i*p.TEST_BATCH_SIZE))
-    print("step %d, time taken = %g seconds" % (i, time.clock()-start_time))
+    print("Batch %d, Processing speed = %g fps" % (i, i*p.TEST_BATCH_SIZE/(time.time()-start_time)))
     sum_time += time.time()-start_time
     start_time = time.time()
 
