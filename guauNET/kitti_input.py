@@ -18,7 +18,7 @@ def read_image(filename, mode):
         with tf.variable_scope('DistortImage'):
             if mode == 'Train':
                 bin = tf.random_shuffle([0, 1])
-                if bin[0] == 0:  # check !!
+                if bin[0] == 0:
                     image = tf.image.random_brightness(image, max_delta=50. / 255.)
                     image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
                 else:
@@ -39,7 +39,7 @@ def read_file(filename):
     with tf.variable_scope('ReadLabel'):
         file_contents = tf.read_file(filename)
         data = tf.decode_raw(file_contents, out_type=tf.float64)
-        data = tf.cast(data[10:], tf.float32, name='DecodedLabel')  # check!!
+        data = tf.cast(data[10:], tf.float32, name='DecodedLabel')
     return data
 
 
@@ -107,7 +107,7 @@ def create_batch(batch_size, mode):
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, class_list],
                                                         shuffle=True, name='InputProducer')
 
-            with tf.variable_scope("ReadTensorSlice"):  # check!!
+            with tf.variable_scope("ReadTensorSlice"):
                 image = read_image(input_queue[0], mode)
 
                 mask = read_file(input_queue[1])
@@ -122,6 +122,6 @@ def create_batch(batch_size, mode):
                 classes = read_file(input_queue[4])
                 classes = tf.reshape(classes, [p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES], name='ClassLabels')
 
-        batch = tf.train.batch([image, mask, delta, coord, classes], batch_size=batch_size, name='Batch')
+        batch = tf.train.batch([image, mask, delta, coord, classes], batch_size=batch_size, name='Batch', num_threads=2)
 
     return batch

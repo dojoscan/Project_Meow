@@ -4,7 +4,7 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 20
+BATCH_SIZE = 2
 PRINT_FREQ = 100
 CKPT_FREQ = 5000
 

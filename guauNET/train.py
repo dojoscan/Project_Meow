@@ -14,7 +14,8 @@ batch_size = tf.placeholder(dtype=tf.int32, name='BatchSize')
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
 
 # Training
-t_batch = ki.create_batch(batch_size=batch_size, mode='Train')
+with tf.device("/cpu:0"):
+    t_batch = ki.create_batch(batch_size=batch_size, mode='Train')
 t_image = t_batch[0]
 t_mask = t_batch[1]
 t_delta = t_batch[2]
@@ -42,7 +43,8 @@ summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_grap
 # Validation
 with tf.variable_scope('Validation'):
 
-    v_batch = ki.create_batch(batch_size, 'Val')
+    with tf.device("/cpu:0"):
+        v_batch = ki.create_batch(batch_size, 'Val')
     v_image = v_batch[0]
     v_mask = v_batch[1]
     v_delta = v_batch[2]
@@ -69,7 +71,7 @@ if ckpt:
     restore_path = tf.train.latest_checkpoint(p.PATH_TO_CKPT)
     saver.restore(sess, restore_path)
     init_step = int(restore_path.split('/')[-1].split('-')[-1])
-    print("Restored from checkpoint: step %d, dir = " % i + p.PATH_TO_CKPT)
+    print("Restored from checkpoint: step %d, dir = " % init_step + p.PATH_TO_CKPT)
 else:
     sess.run(tf.global_variables_initializer())
     init_step = 0
