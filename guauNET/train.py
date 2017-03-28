@@ -56,7 +56,7 @@ with tf.variable_scope('Validation'):
     val_summ = l.add_loss_summaries('Val_', t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss)
 
 # saver for creating checkpoints
-saver = tf.train.Saver(name='Saver')
+saver = tf.train.Saver(name='Saver', max_to_keep=10)
 sess = tf.Session()
 
 # start input queue threads
@@ -85,8 +85,8 @@ for i in range(init_step, p.NR_ITERATIONS):
         print("----------------------------------------------------------------------------")
     if i % p.PRINT_FREQ == 0:
         # evaluate loss for validation mini-batch
-        #val_summary = sess.run(val_summ, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
-        #summary_writer.add_summary(val_summary, global_step=i)
+        val_summary = sess.run(val_summ, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
+        summary_writer.add_summary(val_summary, global_step=i)
         # evaluate loss for training mini-batch and apply one step of opt
         t_loss, t_box_l, t_conf_l, t_class_l, summary, _ = sess.run([t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss,
                                                                 merged_summaries, gradient_op], feed_dict={batch_size:
