@@ -33,14 +33,7 @@ batch = input.create_batch(PATH_TO_IMAGES, PATH_TO_LABELS, batch_size, TRAIN)
 x = batch[0]
 y_ = tf.one_hot(batch[1], NO_CLASSES, dtype=tf.int32)
 
-# build CNN graph: choose one of the architectures in network_function
-#h_pool3 = nf.squeeze_net(x)
-with tf.variable_scope('Operation'):
-    W_conv = nf.weight_variable([3, 3, 3, 10])
-    b_conv = nf.bias_variable([10])
-    h_conv = tf.nn.relu(nf.conv2d(x, W_conv) + b_conv)
-    h_pool3= tf.nn.max_pool(h_conv, ksize=[1, 32, 32, 1],strides=[1, 1, 1, 1], padding='VALID', name='output')
-    h_pool3 = tf.squeeze(h_pool3)
+h_pool3 = nf.squeeze_net(x)
 
 if TRAIN:
 
