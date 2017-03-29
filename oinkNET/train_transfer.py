@@ -19,7 +19,7 @@ t_delta = t_batch[2]
 t_coord = t_batch[3]
 t_class = t_batch[4]
 
-t_network_output, variables_to_save = network.squeeze(t_image, keep_prop)
+t_network_output, variables_to_save = network.squeeze(t_image, keep_prop, False)
 t_class_scores, t_conf_scores, t_bbox_delta = interp.interpret(t_network_output, batch_size)
 t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss = l.loss_function\
                         (t_mask, t_delta, t_coord, t_class,  t_bbox_delta, t_conf_scores, t_class_scores, True)
@@ -48,7 +48,7 @@ threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 
 sess.run(tf.global_variables_initializer())
 
-if p.APPLY_TF:
+if p.APPLY_TL:
     sess.run(tf.trainable_variables())
     saver.restore(sess, p.PATH_TO_CKPT + '/save/run_simple')
     print("Model restored.")
@@ -72,7 +72,7 @@ for i in range(p.NR_ITERATIONS):
 
     # optimise network
     sess.run([gradient_op, global_step], feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
-if p.APPLY_TF:
+if p.APPLY_TL:
     save_path = saver.save(sess, p.PATH_TO_CKPT + '/trans/run_simple')
 else:
     save_path = saver.save(sess,p.PATH_TO_CKPT + '/save/run_simple')

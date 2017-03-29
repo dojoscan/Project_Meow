@@ -16,16 +16,8 @@ def interpret(network_output, batch_size):
     with tf.name_scope('Interpretation'):
         with tf.name_scope('ReformatClassScores'):
             num_class_probs = p.NR_ANCHORS_PER_CELL * p.NR_CLASSES
-            class_scores = tf.reshape(
-                tf.nn.softmax(
-                    tf.reshape(
-                        network_output[:, :, :, :num_class_probs],
-                        [-1, p.NR_CLASSES]
-                    )
-                ),
-                [batch_size, p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES],
-                name='ClassScores'
-            )
+            class_scores = tf.nn.softmax(tf.reshape(network_output[:, :, :, :num_class_probs],
+                                        [batch_size, p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES], name='ClassScores'))
 
         with tf.name_scope('ReformatConfidenceScores'):
             num_confidence_scores = p.NR_ANCHORS_PER_CELL + num_class_probs
@@ -48,17 +40,19 @@ def interpret(network_output, batch_size):
         tf.summary.histogram('Bbox_deltas', bbox_delta)
         return class_scores, confidence_scores, bbox_delta
 
+
 def tensor_iou(boxPred, boxGT):
+
     with tf.variable_scope("IOU"):
 
-         x_min = tf.maximum(boxPred[:, :, 0], boxGT[:, :, 0], name='x_min')
-         y_min = tf.maximum(boxPred[:, :, 1], boxGT[:, :, 1], name='y_min')
-         x_max = tf.minimum(boxPred[:, :, 2]+boxPred[:, :, 0],boxGT[:, :, 2]+boxGT[:, :, 0], name='x_max')
-         y_max = tf.minimum(boxPred[:, :, 1] + boxPred[:, :, 3], boxGT[:, :, 1] + boxGT[:, :, 3], name='y_max')
-         w = tf.maximum(0.0, x_max - x_min, name='Inter_w')
-         h = tf.maximum(0.0, y_max - y_min, name='Inter_h')
-         intersection = tf.multiply(w, h, name='Intersection')
+        x_min = tf.maximum(boxPred[:, :, 0], boxGT[:, :, 0], name='x_min')
+        y_min = tf.maximum(boxPred[:, :, 1], boxGT[:, :, 1], name='y_min')
+        x_max = tf.minimum(boxPred[:, :, 2]+boxPred[:, :, 0],boxGT[:, :, 2]+boxGT[:, :, 0], name='x_max')
+        y_max = tf.minimum(boxPred[:, :, 1] + boxPred[:, :, 3], boxGT[:, :, 1] + boxGT[:, :, 3], name='y_max')
+        w = tf.maximum(0.0, x_max - x_min, name='Inter_w')
+        h = tf.maximum(0.0, y_max - y_min, name='Inter_h')
+        intersection = tf.multiply(w, h, name='Intersection')
 
-         union = boxPred[:,:,2]*boxPred[:,:,3] + boxGT[:,:,2]*boxGT[:,:,3] - intersection
+        union = boxPred[:, :, 2]*boxPred[:, :, 3] + boxGT[:, :, 2]*boxGT[:, :, 3] - intersection
 
     return intersection / (union + p.EPSILON)
