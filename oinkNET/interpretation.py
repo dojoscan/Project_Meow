@@ -15,9 +15,9 @@ def interpret(network_output, batch_size):
     '''
     with tf.name_scope('Interpretation'):
         with tf.name_scope('ReformatClassScores'):
-            num_class_probs = p.NR_ANCHORS_PER_CELL * p.NR_CLASSES
+            num_class_probs = p.NR_ANCHORS_PER_CELL * p.SEC_NR_CLASSES
             class_scores = tf.nn.softmax(tf.reshape(network_output[:, :, :, :num_class_probs],
-                                        [batch_size, p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES], name='ClassScores'))
+                                        [batch_size, p.NR_ANCHORS_PER_IMAGE, p.SEC_NR_CLASSES], name='ClassScores'))
 
         with tf.name_scope('ReformatConfidenceScores'):
             num_confidence_scores = p.NR_ANCHORS_PER_CELL + num_class_probs

@@ -66,25 +66,33 @@ def squeeze(x, keep_prop, freeze_bool):
         h_fire8, save_var = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x3=256, name='Fire8', freeze=freeze_bool, var_dict=save_var)
 
         if p.APPLY_TL:
-            h_fire9,_ = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x3=384, name='Fire9', freeze=False)
-            h_fire10,_ = fire(h_fire9, 768, s1x1=96, e1x1=384, e3x3=384, name='Fire10', freeze=False)
+            h_fire9,_ = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x3=384, name='Fire9', freeze=False, var_dict={} )
+            h_fire10,_ = fire(h_fire9, 768, s1x1=96, e1x1=384, e3x3=384, name='Fire10', freeze=False, var_dict={})
 
             with tf.variable_scope('Dropout'):
                 h_drop = tf.nn.dropout(h_fire10, keep_prop, name='Dropout')
 
-            depth_fire=768
+            with tf.variable_scope('Conv2'):
+                W_conv3 = weight_variable([3, 3, 768, (p.SEC_NR_CLASSES + 1 + 4) * p.NR_ANCHORS_PER_CELL], 'Weights',
+                                          False)
+                b_conv3 = bias_variable([(p.SEC_NR_CLASSES + 1 + 4) * p.NR_ANCHORS_PER_CELL], 'Bias', False)
+                h_output = tf.nn.bias_add(
+                    tf.nn.conv2d(h_drop, W_conv3, strides=[1, 1, 1, 1], padding='SAME', name='Conv'), b_conv3,
+                    name='AddBias')
+
         else:
 
             with tf.variable_scope('Dropout'):
                 h_drop = tf.nn.dropout(h_fire8, keep_prop, name='Dropout')
 
-            depth_fire = 512
+            with tf.variable_scope('Conv2'):
+                W_conv3 = weight_variable([3, 3, 512, p.PRIM_NR_CLASSES], 'Weights', False)
+                b_conv3 = bias_variable([ p.PRIM_NR_CLASSES], 'Bias', False)
+                h_conv3 = tf.nn.bias_add(tf.nn.conv2d(h_drop, W_conv3, strides=[1, 1, 1, 1], padding='SAME', name='Conv'), b_conv3, name='AddBias')
 
-        with tf.variable_scope('Conv2'):
-            W_conv3 = weight_variable([3, 3, depth_fire, (p.NR_CLASSES+1+4)*p.NR_ANCHORS_PER_CELL], 'Weights', False)
-            b_conv3 = bias_variable([(p.NR_CLASSES+1+4)*p.NR_ANCHORS_PER_CELL], 'Bias', False)
-            h_conv3 = tf.nn.bias_add(tf.nn.conv2d(h_drop, W_conv3, strides=[1, 1, 1, 1], padding='SAME', name='Conv'), b_conv3, name='AddBias')
-            h_conv3=tf.squeeze(h_conv3)
+            h_pool4 = tf.nn.avg_pool(h_conv3, ksize=[1, 31, 31, 1], strides=[1, 1, 1, 1], padding='VALID',
+                                     name='MaxPool4')
+            h_output=tf.squeeze(h_pool4)
 
 
-    return h_conv3, save_var
+    return h_output, save_var

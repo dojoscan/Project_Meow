@@ -28,10 +28,10 @@ def transform_deltas_to_bbox(net_deltas, train):
 
         # check if the calculated values are inside the image limits
         with tf.variable_scope("CheckImageBoundary"):
-            xmin = tf.minimum(tf.maximum(0.0, xmin), p.IMAGE_WIDTH - 1.0, name='CalcXmin')
-            ymin = tf.minimum(tf.maximum(0.0, ymin), p.IMAGE_HEIGHT - 1.0, name='CalcYmin')
-            xmax = tf.maximum(tf.minimum(p.IMAGE_WIDTH - 1.0, xmax), 0.0, name='CalcXmax')
-            ymax = tf.maximum(tf.minimum(p.IMAGE_HEIGHT - 1.0, ymax), 0.0, name='CalcYmax')
+            xmin = tf.minimum(tf.maximum(0.0, xmin), p.SEC_IMAGE_WIDTH - 1.0, name='CalcXmin')
+            ymin = tf.minimum(tf.maximum(0.0, ymin), p.SEC_IMAGE_HEIGHT - 1.0, name='CalcYmin')
+            xmax = tf.maximum(tf.minimum(p.SEC_IMAGE_WIDTH - 1.0, xmax), 0.0, name='CalcXmax')
+            ymax = tf.maximum(tf.minimum(p.SEC_IMAGE_HEIGHT - 1.0, ymax), 0.0, name='CalcYmax')
 
         if train:
             pred_coords = t.bbox_transform_inv([xmin, ymin, xmax, ymax])

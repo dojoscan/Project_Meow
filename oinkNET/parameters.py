@@ -1,11 +1,10 @@
 # CONTAINS ALL PARAMETERS AND SETTINGS
-# parameters to rename: NR_CLASSES (to primary and secondary), IMAGE_WIDTH and HEIGHT
 import numpy as np
 
 # Training
 APPLY_TL = False
 DATA_AUGMENT = True
-BATCH_SIZE = 2
+BATCH_SIZE = 20
 PRINT_FREQ = 10
 CKPT_FREQ = 5000
 
@@ -14,6 +13,10 @@ LEARNING_RATE = 0.0001
 NR_ITERATIONS = 100
 
 # PRIMARY (imageNET)
+PRIM_NR_CLASSES = 10
+PRIM_IMAGE_WIDTH = 512
+PRIM_IMAGE_HEIGHT = 512
+
 # SECONDARY (KITTI)
 # Testing
 NR_OF_TEST_IMAGES = 50
@@ -28,11 +31,11 @@ LAMBDA_CONF_NEG = 100.0
 WEIGHT_DECAY_FACTOR = 1E-4
 
 # Network Input
-NR_CLASSES = 9
+SEC_NR_CLASSES = 9
 CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
 CLASSES_INV = {'0': 'Car', '1': 'Van', '2': 'Truck', '3': 'Pedestrian', '4': 'Person_sitting', '5': 'Cyclist', '6': 'Tram', '7': 'Misc', '8': 'DontCare'}
-IMAGE_WIDTH = 1242
-IMAGE_HEIGHT = 375
+SEC_IMAGE_WIDTH = 1242
+SEC_IMAGE_HEIGHT = 375
 
 # Network Output
 OUTPUT_WIDTH = 76
@@ -44,15 +47,19 @@ USER = 'LUCIA'
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
     PATH_TO_OUTPUT = '/Users/Donal/Desktop/output/'
+    PATH_TO_PRIM_DATA ='/Users/Donal/Dropbox/KITTI/data/'
 elif USER == 'LUCIA':
     PATH_TO_DATA = '/Master Chalmers/2 year/volvo thesis/code0/'
     PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/transfer_learning/'
+    PATH_TO_PRIM_DATA = 'C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/'
 elif USER == 'BILL':
     PATH_TO_DATA = "/Users/LDIEGO/Documents/KITTI/data/"
     PATH_TO_OUTPUT = "/Users/LDIEGO/Documents/KITTI/output/"
+    PATH_TO_PRIM_DATA = '/Users/Donal/Dropbox/KITTI/data/'
 else:
     PATH_TO_DATA = "/home/ad-tool-wd-1/Documents/DONALLUCIA/KITTIdata/"
     PATH_TO_OUTPUT = "/home/ad-tool-wd-1/Documents/DONALLUCIA/Output/"
+    PATH_TO_PRIM_DATA ='/Users/Donal/Dropbox/KITTI/data/'
 
 # training
 PATH_TO_IMAGES = PATH_TO_DATA + "training/image/"
@@ -86,7 +93,7 @@ def set_anchors():
   center_x = np.reshape(
       np.transpose(
           np.reshape(
-              np.array([np.arange(1, W+1)*float(IMAGE_WIDTH)/(W+1)]*H*B),
+              np.array([np.arange(1, W+1)*float(SEC_IMAGE_WIDTH)/(W+1)]*H*B),
               (B, H, W)
           ),
           (1, 2, 0)
@@ -96,7 +103,7 @@ def set_anchors():
   center_y = np.reshape(
       np.transpose(
           np.reshape(
-              np.array([np.arange(1, H+1)*float(IMAGE_HEIGHT)/(H+1)]*W*B),
+              np.array([np.arange(1, H+1)*float(SEC_IMAGE_HEIGHT)/(H+1)]*W*B),
               (B, W, H)
           ),
           (2, 1, 0)
@@ -115,3 +122,4 @@ NR_ANCHORS_PER_IMAGE = len(ANCHORS)
 
 EPSILON = 0.0001
 
+NUM_THREADS = 4

@@ -11,10 +11,20 @@ def read_image(filename):
     Returns:
         image_tensor: decoded image
     """
-
-    file_contents = tf.read_file(filename)
-    image = tf.image.decode_png(file_contents, channels=3)
-    image = tf.image.resize_images(image, [p.IM_SIZE, p.IM_SIZE])
+    with tf.variable_scope('ReadImage'):
+        file_contents = tf.read_file(filename)
+        image = tf.image.decode_png(file_contents, channels=3)
+        image = tf.cast(image, tf.float32)
+        with tf.variable_scope('DistortImage'):
+            bin = tf.random_shuffle([0, 1])
+            image = tf.image.random_flip_left_right(image)
+            if bin[0] == 0:
+                image = tf.image.random_brightness(image, max_delta=50. / 255.)
+                image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
+            else:
+                image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
+                image = tf.image.random_brightness(image, max_delta=50. / 255.)
+        image = tf.image.resize_image_with_crop_or_pad(image, p.PRIM_IMAGE_HEIGHT , p.PRIM_IMAGE_WIDTH )
     return image
 
 def read_labels(path_to_labels):
@@ -43,7 +53,7 @@ def create_image_list(path_to_images):
     image_list = [path_to_images + s for s in image_list]
     return image_list
 
-def create_batch(path_to_images, path_to_labels, batch_size, train):
+def create_batch(batch_size, mode):
     """
     Args:
         path_to_images: full path to input images folder
@@ -54,17 +64,20 @@ def create_batch(path_to_images, path_to_labels, batch_size, train):
         batch: list of images as a 4d tensor sz = [batch_sz, im_h, im_w, im_d]
         and labels as a 1d tensor sz = [batch_sz]
     """
-    image_list = create_image_list(path_to_images)
-    no_samples = len(image_list)
-    image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
-    if train:
+    with tf.variable_scope('KITTIInputPipeline'):
+        if mode=='Train':
+            # CHANGE IMAGES TO IMAGE, KEEP CONSITENT :)
+            path_to_images = p.PATH_TO_PRIM_DATA + 'training/images/'
+            path_to_labels = p.PATH_TO_PRIM_DATA + 'training/labels.txt'
+        else:
+            path_to_images = p.PATH_TO_PRIM_DATA + 'validation/images/'
+            path_to_labels = p.PATH_TO_PRIM_DATA + 'validation/labels.txt'
+        image_list = create_image_list(path_to_images)
+        image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
         labels = read_labels(path_to_labels)
-    else:   # Create fake labels for testing data
-        labels = [0]*no_samples
-    labels = tf.convert_to_tensor(labels, dtype=tf.int32)
-    input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=False)
-    images = read_image(input_queue[0])
-    # Dequeue mini-batch
-    batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size)
+        labels = tf.convert_to_tensor(labels, dtype=tf.int32)
+        input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=True,  name='InputProducer')
+        images = read_image(input_queue[0])
+        batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size, name='Batch', num_threads= p.NUM_THREADS)
     return batch
 
