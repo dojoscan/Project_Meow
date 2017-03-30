@@ -65,7 +65,7 @@ def squeeze(x, keep_prop, freeze_bool):
         h_fire7, save_var = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x3=256, name='Fire7', freeze=freeze_bool, var_dict=save_var)
         h_fire8, save_var = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x3=256, name='Fire8', freeze=freeze_bool, var_dict=save_var)
 
-        if p.APPLY_TL:
+        if freeze_bool:
             h_fire9,_ = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x3=384, name='Fire9', freeze=False, var_dict={} )
             h_fire10,_ = fire(h_fire9, 768, s1x1=96, e1x1=384, e3x3=384, name='Fire10', freeze=False, var_dict={})
 

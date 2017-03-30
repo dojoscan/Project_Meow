@@ -32,7 +32,7 @@ saver = tf.train.Saver()
 sess = tf.Session()
 
 # restore from checkpoint
-saver.restore(sess, tf.train.latest_checkpoint(p.PATH_TO_CKPT_TEST))
+saver.restore(sess, p.PATH_TO_CKPT_TEST + '17-03-31_sq100k_nopre/run-100000')
 
 # start queues
 coordinate = tf.train.Coordinator()
