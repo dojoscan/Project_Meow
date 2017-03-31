@@ -4,9 +4,8 @@ import parameters as p
 import network
 import interpretation as interp
 import loss as l
-import os
+import tools as t
 import time
-import numpy as np
 
 sec_ckpt = tf.train.get_checkpoint_state(p.PATH_TO_CKPT + 'sec/')
 prim_ckpt = tf.train.get_checkpoint_state(p.PATH_TO_CKPT + 'prim/')
@@ -73,14 +72,14 @@ with tf.variable_scope('Threads'):
 if prim_ckpt and not sec_ckpt:
     sess.run(tf.global_variables_initializer())
     sess.run(tf.trainable_variables())
+    restore_path, _ = t.get_last_ckpt(p.PATH_TO_CKPT + 'prim/')
     restore_path = tf.train.latest_checkpoint(p.PATH_TO_CKPT + 'prim/')
     prim_saver.restore(sess, restore_path)
     init_step = 0
     print("Restored from ImageNet trained network. Dir = " + restore_path)
 elif sec_ckpt:
-    restore_path = tf.train.latest_checkpoint(p.PATH_TO_CKPT +'sec/')
+    restore_path, init_step = t.get_last_ckpt(p.PATH_TO_CKPT + 'prim/')
     sec_saver.restore(sess, restore_path)
-    init_step = int(restore_path.split('/')[-1].split('-')[-1])
     print("Restored from ImageNet and KITTI trained network. Step %d, dir = " % init_step + restore_path)
 else:
     print("No checkpoints found.")

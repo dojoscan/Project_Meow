@@ -1,10 +1,9 @@
 import tensorflow as tf
 import imageNET_input as im
 import parameters as p
+import tools as t
 import network
-import os
 import time
-import numpy as np
 
 prim_ckpt = tf.train.get_checkpoint_state(p.PATH_TO_CKPT + 'prim/')
 prim_cont_ckpt = tf.train.get_checkpoint_state(p.PATH_TO_CKPT + 'prim_cont/')
@@ -62,9 +61,8 @@ with tf.variable_scope('Threads'):
 
 # initialise variables
 if prim_cont_ckpt:
-    restore_path = tf.train.latest_checkpoint(p.PATH_TO_CKPT + 'prim_cont/')
+    restore_path, init_step = t.get_last_ckpt(p.PATH_TO_CKPT + 'prim_cont/')
     prim_cont_saver.restore(sess, restore_path)
-    init_step = int(restore_path.split('/')[-1].split('-')[-1])
     print("Restored from ImageNet trained network. Step %d, Dir = " % init_step + restore_path)
 else:
     sess.run(tf.global_variables_initializer())

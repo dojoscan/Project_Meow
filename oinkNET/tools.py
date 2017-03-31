@@ -2,6 +2,7 @@
 
 import numpy as np
 import parameters as p
+import os
 
 def compute_iou(boxA,boxB):
     ''' Computes the intersection-over-union of an array of boxes and one box
@@ -38,8 +39,8 @@ def bbox_transform_inv(bbox):
     return out_box
 
 def bbox_transform(bbox):
-    """convert a bbox of form [cx, cy, w, h] to [xmin, ymin, xmax, ymax]. Works
-                                            for numpy array or list of tensors.
+    """
+    Convert a bbox of form [cx, cy, w, h] to [xmin, ymin, xmax, ymax]. Works for numpy array or list of tensors.
     """
     cx, cy, w, h = bbox
     out_box = [[]]*4
@@ -49,3 +50,12 @@ def bbox_transform(bbox):
     out_box[3] = cy+h/2
 
     return out_box
+
+def get_last_ckpt(path_to_dir):
+
+    rel_path = os.listdir(path_to_dir)[-1]
+    split_path = rel_path.split('.')[0]
+    init_step = int(split_path.split('-')[-1])
+    path_to_last_ckpt = path_to_dir+split_path
+
+    return path_to_last_ckpt, init_step

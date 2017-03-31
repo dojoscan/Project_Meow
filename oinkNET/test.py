@@ -6,10 +6,8 @@ import kitti_input as ki
 import parameters as p
 import interpretation as interp
 import filter_prediction as fp
-import os
+import tools as t
 import time
-import numpy as np
-cwd = os.getcwd()
 
 batch_size = tf.placeholder(dtype=tf.int32)
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
@@ -35,7 +33,7 @@ with tf.variable_scope('Threads'):
     threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 
 # restore from checkpoint
-restore_path = tf.train.latest_checkpoint(p.PATH_TO_CKPT +'sec/')
+restore_path, _ = t.get_last_ckpt(p.PATH_TO_CKPT + 'sec/')
 test_saver.restore(sess, restore_path)
 print("Restored from ImageNet and KITTI trained network. Ready for testing. Dir = " + restore_path)
 
@@ -43,7 +41,8 @@ print("Restored from ImageNet and KITTI trained network. Ready for testing. Dir 
 start_time = time.time()
 sum_time = 0
 for i in range(0, int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
-    image, fbox, fprobs, fclass, net_out = sess.run([image, final_boxes, final_probs, final_class, network_output], feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
+    image, fbox, fprobs, fclass, net_out = sess.run([image, final_boxes, final_probs, final_class, network_output],
+                                                    feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
     # Write labels
     fp.write_labels(fbox, fclass, fprobs, (i*p.TEST_BATCH_SIZE))
     print("Batch %d, Processing speed = %g fps" % (i, i*p.TEST_BATCH_SIZE/(time.time()-start_time)))

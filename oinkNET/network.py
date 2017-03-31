@@ -1,12 +1,16 @@
 import tensorflow as tf
 import parameters as p
 
+# VARIABLES
+
+
 def weight_variable(shape,name, freeze):
     if freeze:
-        weights=tf.Variable(tf.zeros(shape), trainable=False, name=name)
+        weights = tf.Variable(tf.zeros(shape), trainable=False, name=name)
     else:
         weights = tf.get_variable(name, shape, initializer=tf.contrib.layers.xavier_initializer(), trainable=True)
     return weights
+
 
 def gate_weight_variable(shape, name, freeze):
     if freeze:
@@ -15,13 +19,18 @@ def gate_weight_variable(shape, name, freeze):
         weights = tf.Variable(tf.random_normal(shape, stddev=0.01, mean=-0.02), name=name, trainable=True)
     return weights
 
+
 def bias_variable(shape,name, freeze):
     if freeze:
-        bias=tf.Variable(tf.zeros(shape), trainable=False, name=name)
+        bias = tf.Variable(tf.zeros(shape), trainable=False, name=name)
     else:
         initial = tf.constant(0.0, shape=shape)
         bias = tf.Variable(initial, name=name, trainable=True)
     return bias
+
+
+# MODULES
+
 
 def fire(x, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
     with tf.variable_scope(name):
@@ -46,6 +55,7 @@ def fire(x, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
         fire_dict = {v.op.name: v for v in [W_s, b_s, W_e1x1, b_e1x1, W_e3x3, b_e3x3]}
         var_dict.update(fire_dict)
         return output, var_dict
+
 
 def res_fire(x, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
     with tf.variable_scope(name):
@@ -105,9 +115,12 @@ def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
         var_dict.update(fire_dict)
         return output, var_dict
 
+
+# ARCHITECTURES
+
+
 def squeeze(x, keep_prop, freeze_bool):
     with tf.variable_scope('CNN'):
-        # in the weight and variables, if the last term is False, it means that they are intitialize randomly, but if it is True, they are restored from a previous run
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights', freeze_bool)
             b_conv1 = bias_variable([64], 'Bias', freeze_bool)
@@ -152,19 +165,18 @@ def squeeze(x, keep_prop, freeze_bool):
 
             with tf.variable_scope('Conv2'):
                 W_conv3 = weight_variable([3, 3, 512, p.PRIM_NR_CLASSES], 'Weights', False)
-                b_conv3 = bias_variable([ p.PRIM_NR_CLASSES], 'Bias', False)
+                b_conv3 = bias_variable([p.PRIM_NR_CLASSES], 'Bias', False)
                 h_conv3 = tf.nn.bias_add(tf.nn.conv2d(h_drop, W_conv3, strides=[1, 1, 1, 1], padding='SAME', name='Conv'), b_conv3, name='AddBias')
 
             h_pool4 = tf.nn.avg_pool(h_conv3, ksize=[1, 31, 31, 1], strides=[1, 1, 1, 1], padding='VALID',
                                      name='MaxPool4')
-            h_output=tf.squeeze(h_pool4)
-
+            h_output = tf.squeeze(h_pool4)
 
     return h_output, save_var
 
+
 def forget_squeeze_net(x, keep_prop, freeze_bool):
     with tf.variable_scope('CNN'):
-        # in the weight and variables, if the last term is False, it means that they are intitialize randomly, but if it is True, they are restored from a previous run
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights', freeze_bool)
             b_conv1 = bias_variable([64], 'Bias', freeze_bool)
@@ -214,14 +226,13 @@ def forget_squeeze_net(x, keep_prop, freeze_bool):
 
             h_pool4 = tf.nn.avg_pool(h_conv3, ksize=[1, 31, 31, 1], strides=[1, 1, 1, 1], padding='VALID',
                                      name='MaxPool4')
-            h_output=tf.squeeze(h_pool4)
-
+            h_output = tf.squeeze(h_pool4)
 
     return h_output, save_var
 
+
 def res_squeeze_net(x, keep_prop, freeze_bool):
     with tf.variable_scope('CNN'):
-        # in the weight and variables, if the last term is False, it means that they are intitialize randomly, but if it is True, they are restored from a previous run
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights', freeze_bool)
             b_conv1 = bias_variable([64], 'Bias', freeze_bool)
@@ -271,7 +282,6 @@ def res_squeeze_net(x, keep_prop, freeze_bool):
 
             h_pool4 = tf.nn.avg_pool(h_conv3, ksize=[1, 31, 31, 1], strides=[1, 1, 1, 1], padding='VALID',
                                      name='MaxPool4')
-            h_output=tf.squeeze(h_pool4)
-
+            h_output = tf.squeeze(h_pool4)
 
     return h_output, save_var
