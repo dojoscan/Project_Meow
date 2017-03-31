@@ -25,9 +25,11 @@ LAMBDA_CONF_NEG = 100.0
 WEIGHT_DECAY_FACTOR = 1E-4
 
 # Network Input
-NR_CLASSES = 9
-CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
-CLASSES_INV = {'0': 'Car', '1': 'Van', '2': 'Truck', '3': 'Pedestrian', '4': 'Person_sitting', '5': 'Cyclist', '6': 'Tram', '7': 'Misc', '8': 'DontCare'}
+NR_CLASSES = 3
+CLASSES={'Car': '0', 'Pedestrian': '1', 'Cyclist': '2', 'Van': '3', 'Truck': '4','Person_sitting': '5','Tram': '6', 'Misc': '7','DontCare': '8'}
+#CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
+#CLASSES_INV = {'0': 'Car', '1': 'Van', '2': 'Truck', '3': 'Pedestrian', '4': 'Person_sitting', '5': 'Cyclist', '6': 'Tram', '7': 'Misc', '8': 'DontCare'}
+CLASSES_INV={'0': 'Car', '1': 'Pedestrian', '2': 'Cyclist'}
 IMAGE_WIDTH = 1242
 IMAGE_HEIGHT = 375
 

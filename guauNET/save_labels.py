@@ -27,23 +27,26 @@ def read_labels(path_to_labels):
         line = data.split()
         # an array with the index of each image
         index_images.append(i)
+        j = 0
         for obj in range(0, len(line), 15):
             # extract ground truth coordinates [x,y,w,h] and class for each object
             annot = line[obj + 0]
-            cls = int(p.CLASSES[annot])  # CLASSES convert classes to a number, eg. 'Pedestrian' to 3
-            xmin = float(line[4 + obj])
-            ymin = float(line[5 + obj])
-            xmax = float(line[6 + obj])
-            ymax = float(line[7 + obj])
-            x, y, w, h = t.bbox_transform_inv([xmin, ymin, xmax, ymax])
-            # create a new classes and bboxes lists, if first object create new list
-            if obj == 0:
-                classes.append([cls])
-                bboxes.append([(x, y, w, h)])
-            else:
-                ind = index_images.index(i)
-                classes[ind].append(cls)
-                bboxes[ind].append((x, y, w, h))
+            cls = int(p.CLASSES[annot])  # CLASSES convert classes to a number, eg. 'Pedestrian' to 1
+            if cls < 3:
+                xmin = float(line[4 + obj])
+                ymin = float(line[5 + obj])
+                xmax = float(line[6 + obj])
+                ymax = float(line[7 + obj])
+                x, y, w, h = t.bbox_transform_inv([xmin, ymin, xmax, ymax])
+                # create a new classes and bboxes lists, if first object create new list
+                if j == 0:
+                    classes.append([cls])
+                    bboxes.append([(x, y, w, h)])
+                else:
+                    ind = index_images.index(i)
+                    classes[ind].append(cls)
+                    bboxes[ind].append((x, y, w, h))
+                j = j + 1
         i = i + 1
     return classes, bboxes
 
@@ -97,4 +100,4 @@ def create_label(path_to_labels):
     classes, bboxes = read_labels(path_to_labels)
     assign_gt_to_anchors(classes, bboxes)
 
-create_label("/Users/Donal/Desktop/debugLabels/label/")
+create_label('C:/Master Chalmers/2 year/volvo thesis/code0/training/label/')
