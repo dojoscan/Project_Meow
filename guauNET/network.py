@@ -4,14 +4,12 @@ from parameters import NR_CLASSES, NR_ANCHORS_PER_CELL
 # variables
 
 def weight_variable(shape, name):
-    weights = tf.get_variable(
-        name, shape, initializer=tf.contrib.layers.xavier_initializer())
+    weights = tf.get_variable(name, shape, initializer=tf.contrib.layers.xavier_initializer())
     tf.summary.histogram(name, weights)
     return weights
 
 def gate_weight_variable(shape, name):
-    weights = -1*tf.abs(tf.get_variable(
-        name, shape, initializer=tf.contrib.layers.xavier_initializer()))
+    weights = tf.Variable(tf.random_normal(shape, stddev=0.01, mean=-0.02), name="weights")
     tf.summary.histogram(name, weights)
     return weights
 
