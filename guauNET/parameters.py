@@ -5,8 +5,8 @@ import numpy as np
 # Training
 DATA_AUGMENT = True
 BATCH_SIZE = 2
-PRINT_FREQ = 100
-CKPT_FREQ = 5000
+PRINT_FREQ = 10
+CKPT_FREQ = 20
 
 # Optimisation
 LEARNING_RATE = 0.0001
@@ -26,10 +26,8 @@ WEIGHT_DECAY_FACTOR = 1E-4
 
 # Network Input
 NR_CLASSES = 3
-CLASSES={'Car': '0', 'Pedestrian': '1', 'Cyclist': '2', 'Van': '3', 'Truck': '4','Person_sitting': '5','Tram': '6', 'Misc': '7','DontCare': '8'}
-#CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
-#CLASSES_INV = {'0': 'Car', '1': 'Van', '2': 'Truck', '3': 'Pedestrian', '4': 'Person_sitting', '5': 'Cyclist', '6': 'Tram', '7': 'Misc', '8': 'DontCare'}
-CLASSES_INV={'0': 'Car', '1': 'Pedestrian', '2': 'Cyclist'}
+CLASSES = {'Car': '0', 'Pedestrian': '1', 'Cyclist': '2', 'Van': '3', 'Truck': '4','Person_sitting': '5','Tram': '6', 'Misc': '7','DontCare': '8'}
+CLASSES_INV = {'0': 'Car', '1': 'Pedestrian', '2': 'Cyclist'}
 IMAGE_WIDTH = 1242
 IMAGE_HEIGHT = 375
 
@@ -38,7 +36,7 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'LUCIA'
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'

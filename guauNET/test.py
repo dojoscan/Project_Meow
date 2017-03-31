@@ -5,12 +5,9 @@ import network as net
 import kitti_input as ki
 import parameters as p
 import interpretation as interp
-import loss as l
+import tools as t
 import filter_prediction as fp
-import os
 import time
-import numpy as np
-cwd = os.getcwd()
 
 # build input graph
 with tf.name_scope('InputPipeline'):
@@ -20,7 +17,7 @@ with tf.name_scope('InputPipeline'):
 
 # build CNN graph
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
-network_output = net.squeeze_net(x, keep_prop)
+network_output = net.forget_squeeze_net(x, keep_prop)
 
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)
@@ -32,7 +29,8 @@ saver = tf.train.Saver()
 sess = tf.Session()
 
 # restore from checkpoint
-saver.restore(sess, p.PATH_TO_CKPT_TEST + '17-03-31_sq100k_nopre/run-100000')
+restore_path, _ = t.get_last_ckpt(p.PATH_TO_CKPT)
+saver.restore(sess, restore_path)
 
 # start queues
 coordinate = tf.train.Coordinator()
@@ -49,4 +47,4 @@ for i in range(0, int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
     sum_time += time.time()-start_time
     start_time = time.time()
 
-print("average time taken per image = %g seconds" % (sum_time/p.NR_OF_TEST_IMAGES))
+print("Average time taken per image = %g seconds" % (sum_time/p.NR_OF_TEST_IMAGES))

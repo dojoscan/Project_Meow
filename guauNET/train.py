@@ -6,6 +6,7 @@ import kitti_input as ki
 import parameters as p
 import interpretation as interp
 import loss as l
+import tools as t
 import time
 
 ckpt = tf.train.get_checkpoint_state(p.PATH_TO_CKPT)
@@ -68,16 +69,15 @@ with tf.variable_scope('Threads'):
 
 # initialise variables
 if ckpt:
-    restore_path = tf.train.latest_checkpoint(p.PATH_TO_CKPT)
+    restore_path, init_step = t.get_last_ckpt(p.PATH_TO_CKPT)
     saver.restore(sess, restore_path)
-    init_step = int(restore_path.split('/')[-1].split('-')[-1])
-    print("Restored from checkpoint: step %d, dir = " % init_step + p.PATH_TO_CKPT)
+    print("Restored from latest checkpoint: step %d, dir = " % init_step + p.PATH_TO_CKPT)
 else:
     sess.run(tf.global_variables_initializer())
     init_step = 0
 
 # training
-print('Training initiated')
+print('Training initiated!')
 start_time = time.time()
 for i in range(init_step, p.NR_ITERATIONS):
     if i % p.CKPT_FREQ == 0 and i != init_step:

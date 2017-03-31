@@ -4,8 +4,6 @@ import numpy as np
 import time
 import tools as t
 import parameters as p
-import sys
-sys.path.append("/ProjectMeow/guauNET/")
 
 def read_labels(path_to_labels):
     """
