@@ -66,7 +66,7 @@ def create_files(index,path,data):
         np.save(temp_file, data)
 
 
-def assign_gt_to_anchors(classes, bboxes):
+def assign_gt_to_anchors(classes, bboxes, path_to_data):
     """
     Assigns ground truths to anchors and computes the labels for each anchor
     """
@@ -86,18 +86,18 @@ def assign_gt_to_anchors(classes, bboxes):
         pre_label = np.array([im_label[i] for i in obj_idx_for_anchor[:]])
         label = np.zeros((p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES))
         label[np.arange(p.NR_ANCHORS_PER_IMAGE), pre_label] = 1
-        create_files(image_idx, p.PATH_TO_MASK, mask)
-        create_files(image_idx, p.PATH_TO_DELTAS, deltas)
-        create_files(image_idx, p.PATH_TO_COORDS, coords)
-        create_files(image_idx, p.PATH_TO_CLASSES, label)
+        create_files(image_idx, path_to_data +'mask/', mask)
+        create_files(image_idx, path_to_data + 'delta/', deltas)
+        create_files(image_idx, path_to_data + 'coord/', coords)
+        create_files(image_idx, path_to_data + 'class/', label)
 
-def create_label(path_to_labels):
+def create_label(path_to_data):
     """ Creates and saves binary files of labels (deltas, masks, coordinates, and classes)
     Args:
         path_to_labels: full path to input labels folder
     """
 
-    classes, bboxes = read_labels(path_to_labels)
-    assign_gt_to_anchors(classes, bboxes)
+    classes, bboxes = read_labels(path_to_data + 'label/')
+    assign_gt_to_anchors(classes, bboxes, path_to_data)
 
-create_label('C:/Master Chalmers/2 year/volvo thesis/code0/training/label/')
+create_label(p.PATH_TO_DATA + 'training/')
