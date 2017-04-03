@@ -1,3 +1,5 @@
+# CONTAINS DIFFERENT NETWORK ARCHITECTURES BASED ON SQUEEZEDET
+
 import tensorflow as tf
 import parameters as p
 
@@ -16,6 +18,7 @@ def gate_weight_variable(shape, name, freeze):
     if freeze:
         weights=tf.Variable(tf.zeros(shape), trainable=False, name=name)
     else:
+        # Negative initialisation to encourage information skipping (see HighwayNet paper)
         weights = tf.Variable(tf.random_normal(shape, stddev=0.01, mean=-0.02), name=name, trainable=True)
     return weights
 
@@ -31,7 +34,7 @@ def bias_variable(shape,name, freeze):
 
 # MODULES
 
-
+# Original fire module
 def fire(x, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
     with tf.variable_scope(name):
 
@@ -57,6 +60,7 @@ def fire(x, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
         return output, var_dict
 
 
+# Fire module w/ residual connections
 def res_fire(x, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
     with tf.variable_scope(name):
 
@@ -81,7 +85,7 @@ def res_fire(x, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
         var_dict.update(fire_dict)
         return output, var_dict
 
-
+# Fire module w/ gated residual connection
 def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
     with tf.variable_scope(name):
 

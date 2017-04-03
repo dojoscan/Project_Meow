@@ -1,3 +1,5 @@
+# TRAIN A NETWORK ON KITTI THAT HAS BEEN PRE-TRAINED IN IMAGENET
+
 import tensorflow as tf
 import kitti_input as ki
 import parameters as p

@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0a08750b-90c7-47c1-b583-f705ad600433" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/filter_prediction.py" afterPath="$PROJECT_DIR$/guauNET/filter_prediction.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/interpretation.py" afterPath="$PROJECT_DIR$/guauNET/interpretation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/kitti_input.py" afterPath="$PROJECT_DIR$/guauNET/kitti_input.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/loss.py" afterPath="$PROJECT_DIR$/guauNET/loss.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/network.py" afterPath="$PROJECT_DIR$/guauNET/network.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/parameters.py" afterPath="$PROJECT_DIR$/guauNET/parameters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/save_labels.py" afterPath="$PROJECT_DIR$/guauNET/save_labels.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/test.py" afterPath="$PROJECT_DIR$/guauNET/test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/tools.py" afterPath="$PROJECT_DIR$/guauNET/tools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/train.py" afterPath="$PROJECT_DIR$/guauNET/train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/test.py" afterPath="$PROJECT_DIR$/oinkNET/test.py" />
-    </list>
+    <list default="true" id="0a08750b-90c7-47c1-b583-f705ad600433" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,54 +18,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="save_labels.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/guauNET/save_labels.py">
+      <file leaf-file-name="test.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/oinkNET/test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1385">
-              <caret line="85" column="33" lean-forward="true" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
+            <state relative-caret-position="328">
+              <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/guauNET/test.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
-              <caret line="46" column="54" lean-forward="false" selection-start-line="46" selection-start-column="54" selection-end-line="46" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="train.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/guauNET/train.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-199">
-              <caret line="69" column="37" lean-forward="false" selection-start-line="69" selection-start-column="37" selection-end-line="69" selection-end-column="37" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tools.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/guauNET/tools.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="738">
-              <caret line="43" column="71" lean-forward="false" selection-start-line="43" selection-start-column="71" selection-end-line="43" selection-end-column="71" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="network.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/guauNET/network.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1628">
-              <caret line="116" column="15" lean-forward="false" selection-start-line="116" selection-start-column="15" selection-end-line="116" selection-end-column="15" />
-              <folding>
-                <element signature="e#64#87#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -161,15 +106,7 @@
         <option value="$PROJECT_DIR$/guauNET/DELETE.py" />
         <option value="$PROJECT_DIR$/oinkNET/train_transfer.py" />
         <option value="$PROJECT_DIR$/oinkNET/loss.py" />
-        <option value="$PROJECT_DIR$/oinkNET/interpretation.py" />
-        <option value="$PROJECT_DIR$/oinkNET/kitti_input.py" />
-        <option value="$PROJECT_DIR$/oinkNET/imageNET_input.py" />
-        <option value="$PROJECT_DIR$/oinkNET/parameters.py" />
         <option value="$PROJECT_DIR$/../../squeezeDet-master/squeezeDet-master/src/config/kitti_model_config.py" />
-        <option value="$PROJECT_DIR$/oinkNET/tools.py" />
-        <option value="$PROJECT_DIR$/oinkNET/prim_train.py" />
-        <option value="$PROJECT_DIR$/oinkNET/sec_train.py" />
-        <option value="$PROJECT_DIR$/oinkNET/network.py" />
         <option value="$PROJECT_DIR$/oinkNET/test.py" />
         <option value="$PROJECT_DIR$/guauNET/filter_prediction.py" />
         <option value="$PROJECT_DIR$/guauNET/interpretation.py" />
@@ -181,6 +118,15 @@
         <option value="$PROJECT_DIR$/guauNET/tools.py" />
         <option value="$PROJECT_DIR$/guauNET/train.py" />
         <option value="$PROJECT_DIR$/guauNET/network.py" />
+        <option value="$PROJECT_DIR$/oinkNET/filter_prediction.py" />
+        <option value="$PROJECT_DIR$/oinkNET/interpretation.py" />
+        <option value="$PROJECT_DIR$/oinkNET/kitti_input.py" />
+        <option value="$PROJECT_DIR$/oinkNET/network.py" />
+        <option value="$PROJECT_DIR$/oinkNET/parameters.py" />
+        <option value="$PROJECT_DIR$/oinkNET/tools.py" />
+        <option value="$PROJECT_DIR$/oinkNET/imageNET_input.py" />
+        <option value="$PROJECT_DIR$/oinkNET/prim_train.py" />
+        <option value="$PROJECT_DIR$/oinkNET/sec_train.py" />
       </list>
     </option>
   </component>
@@ -188,7 +134,7 @@
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1382" />
-    <option name="height" value="754" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -205,8 +151,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -263,6 +207,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -499,8 +445,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19494048" sideWeight="0.49346405" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850242" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -557,7 +503,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../../squeezeDet-master/squeezeDet-master/src/nn_skeleton.py" />
     <entry file="file://$USER_HOME$/Documents/TFun/AutoEnc/train.py" />
     <entry file="file://$USER_HOME$/Documents/TFun/AutoEnc/gated_coder.py" />
     <entry file="file://$PROJECT_DIR$/guauNET/pre-processing/save_labels.py" />
@@ -590,13 +535,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/oinkNET/train_kitti.py" />
-    <entry file="file://$PROJECT_DIR$/oinkNET/interpretation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="26" column="55" lean-forward="false" selection-start-line="26" selection-start-column="55" selection-end-line="26" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/oinkNET/train_transfer.py" />
     <entry file="file://$PROJECT_DIR$/meowNET/train_transfer_learning.py" />
     <entry file="file://$PROJECT_DIR$/meowNET/input.py">
@@ -620,88 +558,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/oinkNET/loss.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2278">
-          <caret line="137" column="0" lean-forward="false" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/oinkNET/parameters.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="3" column="10" lean-forward="false" selection-start-line="3" selection-start-column="10" selection-end-line="3" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/oinkNET/kitti_input.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="25" column="44" lean-forward="false" selection-start-line="25" selection-start-column="44" selection-end-line="25" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/oinkNET/save_labels.py" />
-    <entry file="file://$PROJECT_DIR$/oinkNET/imageNET_input.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="79" column="43" lean-forward="false" selection-start-line="79" selection-start-column="43" selection-end-line="79" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../squeezeDet-master/squeezeDet-master/src/config/config.py" />
     <entry file="file://$PROJECT_DIR$/../../squeezeDet-master/squeezeDet-master/src/config/kitti_model_config.py" />
     <entry file="file://$PROJECT_DIR$/../../squeezeDet-master/squeezeDet-master/src/config/kitti_squeezeDet_config.py" />
     <entry file="file://$PROJECT_DIR$/../../squeezeDet-master/squeezeDet-master/src/nets/squeezeDet.py" />
-    <entry file="file://$PROJECT_DIR$/oinkNET/tools.py">
+    <entry file="file://$PROJECT_DIR$/guauNET/save_labels.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="22" lean-forward="false" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+        <state relative-caret-position="1360">
+          <caret line="95" column="33" lean-forward="false" selection-start-line="95" selection-start-column="33" selection-end-line="95" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/oinkNET/sec_train.py">
+    <entry file="file://$PROJECT_DIR$/guauNET/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1188">
-          <caret line="73" column="38" lean-forward="false" selection-start-line="73" selection-start-column="38" selection-end-line="73" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#23#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/oinkNET/prim_train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1044">
-          <caret line="63" column="4" lean-forward="false" selection-start-line="63" selection-start-column="4" selection-end-line="63" selection-end-column="76" />
-          <folding>
-            <element signature="e#0#23#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/oinkNET/network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2124">
-          <caret line="119" column="0" lean-forward="false" selection-start-line="119" selection-start-column="0" selection-end-line="119" selection-end-column="0" />
+        <state relative-caret-position="663">
+          <caret line="47" column="38" lean-forward="false" selection-start-line="47" selection-start-column="38" selection-end-line="47" selection-end-column="38" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/oinkNET/test.py">
+    <entry file="file://$PROJECT_DIR$/guauNET/train.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="9" />
-          <folding>
-            <element signature="e#30#53#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="17">
+          <caret line="69" column="22" lean-forward="false" selection-start-line="69" selection-start-column="22" selection-end-line="69" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/guauNET/filter_prediction.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state relative-caret-position="-1355">
+          <caret line="0" column="54" lean-forward="true" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/filter_prediction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-918">
           <caret line="0" column="54" lean-forward="false" selection-start-line="0" selection-start-column="54" selection-end-line="0" selection-end-column="54" />
           <folding />
         </state>
@@ -709,77 +605,137 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/guauNET/interpretation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="46" column="104" lean-forward="false" selection-start-line="46" selection-start-column="104" selection-end-line="46" selection-end-column="104" />
+        <state relative-caret-position="261">
+          <caret line="47" column="7" lean-forward="true" selection-start-line="45" selection-start-column="4" selection-end-line="47" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/interpretation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="46" column="8" lean-forward="false" selection-start-line="46" selection-start-column="8" selection-end-line="46" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/guauNET/kitti_input.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-717">
-          <caret line="60" column="52" lean-forward="true" selection-start-line="60" selection-start-column="52" selection-end-line="60" selection-end-column="52" />
+        <state relative-caret-position="-1488">
+          <caret line="11" column="36" lean-forward="true" selection-start-line="11" selection-start-column="36" selection-end-line="11" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/kitti_input.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1488">
+          <caret line="11" column="68" lean-forward="false" selection-start-line="11" selection-start-column="68" selection-end-line="11" selection-end-column="68" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/guauNET/loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2268">
-          <caret line="129" column="4" lean-forward="false" selection-start-line="129" selection-start-column="4" selection-end-line="129" selection-end-column="4" />
+        <state relative-caret-position="567">
+          <caret line="129" column="0" lean-forward="true" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/guauNET/parameters.py">
+    <entry file="file://$PROJECT_DIR$/oinkNET/loss.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1314">
-          <caret line="73" column="18" lean-forward="false" selection-start-line="73" selection-start-column="18" selection-end-line="73" selection-end-column="18" />
-          <folding>
-            <element signature="e#2190#3168#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/guauNET/save_labels.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1385">
-          <caret line="85" column="33" lean-forward="true" selection-start-line="85" selection-start-column="33" selection-end-line="85" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/guauNET/test.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="46" column="54" lean-forward="false" selection-start-line="46" selection-start-column="54" selection-end-line="46" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/guauNET/tools.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="43" column="71" lean-forward="false" selection-start-line="43" selection-start-column="71" selection-end-line="43" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/guauNET/train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-199">
-          <caret line="69" column="37" lean-forward="false" selection-start-line="69" selection-start-column="37" selection-end-line="69" selection-end-column="37" />
+        <state relative-caret-position="-1529">
+          <caret line="0" column="34" lean-forward="true" selection-start-line="0" selection-start-column="34" selection-end-line="0" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/guauNET/network.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1628">
-          <caret line="116" column="15" lean-forward="false" selection-start-line="116" selection-start-column="15" selection-end-line="116" selection-end-column="15" />
+        <state relative-caret-position="-1661">
+          <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1369">
+          <caret line="36" column="22" lean-forward="false" selection-start-line="36" selection-start-column="22" selection-end-line="36" selection-end-column="22" />
           <folding>
             <element signature="e#64#87#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/guauNET/parameters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="74" column="82" lean-forward="true" selection-start-line="74" selection-start-column="2" selection-end-line="74" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/parameters.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="83" column="2" lean-forward="false" selection-start-line="83" selection-start-column="2" selection-end-line="83" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/guauNET/tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="64" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/tools.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="64" column="0" lean-forward="false" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+          <folding>
+            <element signature="e#56#74#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/imageNET_input.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="5" column="0" lean-forward="false" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/prim_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="101" column="28" lean-forward="true" selection-start-line="101" selection-start-column="28" selection-end-line="101" selection-end-column="28" />
+          <folding>
+            <element signature="e#70#93#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/sec_train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="549">
+          <caret line="121" column="0" lean-forward="true" selection-start-line="121" selection-start-column="0" selection-end-line="121" selection-end-column="0" />
+          <folding>
+            <element signature="e#66#89#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="42" column="0" lean-forward="false" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

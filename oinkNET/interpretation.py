@@ -5,11 +5,12 @@ import parameters as p
 
 def interpret(network_output, batch_size):
     '''
-    Converts the output tensor of the network to form that can be easily manipulated to calculate the loss
+    Converts the output tensor of the network to a form that can be easily manipulated to calculate the loss
     Args:
         network_output: a 4d tensor outputted from the CNN [batch_sz,height,width,depth]
     Return:
-        class_scores: a 3d tensor containing the Conf(Cl|Obj) dist. for each anchor [batch_sz, no_anchors_per_image, no_classes]
+        class_scores: a 3d tensor containing the Conf(Cl|Obj) distribution for each anchor
+                                                [batch_sz, no_anchors_per_image, no_classes]
         confidence_scores: a 2d tensor containing the Conf(Obj)*IOU for each anchor [batch_sz, no_anchors_per_image]
         bbox_deltas: a 3d tensor containing the parameterised offsets for each anchor [batch_sz, no_anchors_per_image,4]
     '''
@@ -42,6 +43,9 @@ def interpret(network_output, batch_size):
 
 
 def tensor_iou(boxPred, boxGT):
+    """
+        Calculates the intersection-over-union between two sets of bounding boxes in form (x_c, y_c, w, h)
+    """
 
     with tf.variable_scope("IOU"):
 

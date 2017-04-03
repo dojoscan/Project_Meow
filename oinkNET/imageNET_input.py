@@ -1,8 +1,8 @@
+# INPUT PIPELINE FOR IMAGENET
+
 import tensorflow as tf
 import parameters as p
 import os
-
-
 
 def read_image(filename):
     """

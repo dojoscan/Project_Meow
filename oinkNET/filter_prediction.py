@@ -1,4 +1,4 @@
-# SELECT TOP K BOXES PER IMAGE AND APPLY NMS
+# SELECT TOP K BOXES PER IMAGE AND APPLY NMS PER CLASS
 
 import tensorflow as tf
 import parameters as p

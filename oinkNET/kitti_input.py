@@ -9,7 +9,7 @@ def read_image(filename, mode):
     Args:
         filename: a scalar string tensor.
     Returns:
-        image_tensor: decoded image
+        image_tensor: decoded image (which is distorted if training)
     """
 
     with tf.variable_scope('ReadImage'):

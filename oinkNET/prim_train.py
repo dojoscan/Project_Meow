@@ -1,3 +1,5 @@
+# TRAIN A CLASSIFICATION NETWORK FROM SCRATCH USING IMAGENET DATASET
+
 import tensorflow as tf
 import imageNET_input as im
 import parameters as p
