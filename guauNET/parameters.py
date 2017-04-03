@@ -72,6 +72,7 @@ PATH_TO_VAL_COORDS = PATH_TO_DATA + "validation/coord/"
 PATH_TO_VAL_CLASSES = PATH_TO_DATA + "validation/class/"
 
 def set_anchors():
+  # Dimensions of anchors copied from original SqueezeDet implementation for KITTI
   H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL
   anchor_shapes = np.reshape(
       [np.array(
@@ -112,4 +113,4 @@ NR_ANCHORS_PER_IMAGE = len(ANCHORS)
 
 EPSILON = 0.0001
 
-NUM_THREADS = 2
+NUM_THREADS = 4

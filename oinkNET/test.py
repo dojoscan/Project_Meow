@@ -12,7 +12,7 @@ import time
 batch_size = tf.placeholder(dtype=tf.int32)
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
 
-# Testing
+# testing
 with tf.device("/cpu:0"):
     batch = ki.create_batch(batch_size=batch_size, mode='Train')
 image = batch[0]

@@ -1,4 +1,4 @@
-# TRAINING PIPELINE FOR KITTI
+# TRAINING PIPELINE FOR KITTI (NO PRE-TRAINING)
 
 import tensorflow as tf
 import network as net
@@ -29,7 +29,7 @@ t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss = l.loss_functio
                         (t_mask, t_delta, t_coord, t_class,  t_bbox_delta, t_conf_scores, t_class_scores, True)
 l.add_loss_summaries('Train_', t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss)
 
-# build training graph
+# build optimisation graph
 with tf.variable_scope('Optimisation'):
     global_step = tf.Variable(0, name='GlobalStep', trainable=False)
     train_step = tf.train.AdamOptimizer(p.LEARNING_RATE, name='TrainStep')
@@ -67,7 +67,7 @@ with tf.variable_scope('Threads'):
     coordinate = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 
-# initialise variables
+# initialise variables if ckpt exists
 if ckpt:
     restore_path, init_step = t.get_last_ckpt(p.PATH_TO_CKPT)
     saver.restore(sess, restore_path)

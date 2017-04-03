@@ -1,3 +1,5 @@
+# GENERATION OF LABELS WHICH ARE SAVED TO DISK BEFORE TRAINING
+
 import tensorflow as tf
 import os
 import numpy as np
@@ -7,6 +9,7 @@ import parameters as p
 
 def read_labels(path_to_labels):
     """
+    Reads txt file labels in KITTI format
     Args:
         path_to_labels: full path to labels file
     Returns:
@@ -21,22 +24,23 @@ def read_labels(path_to_labels):
     i = 0
     for file in [path_to_labels + s for s in label_list]:
         data = open(file, 'r').read()
-        # separate the values for each image, every image can have more than one object
+        # separate the values for each object in an image
         line = data.split()
-        # an array with the index of each image
         index_images.append(i)
         j = 0
         for obj in range(0, len(line), 15):
-            # extract ground truth coordinates [x,y,w,h] and class for each object
+            # extract ground truth coordinates [x,y,w,h] and class
             annot = line[obj + 0]
-            cls = int(p.CLASSES[annot])  # CLASSES convert classes to a number, eg. 'Pedestrian' to 1
+            # convert classes to a number, eg. 'Pedestrian' to 1
+            cls = int(p.CLASSES[annot])
+            # only consider cars, pedestrians, cyclists
             if cls < 3:
                 xmin = float(line[4 + obj])
                 ymin = float(line[5 + obj])
                 xmax = float(line[6 + obj])
                 ymax = float(line[7 + obj])
                 x, y, w, h = t.bbox_transform_inv([xmin, ymin, xmax, ymax])
-                # create a new classes and bboxes lists, if first object create new list
+                # if first object in image create new list
                 if j == 0:
                     classes.append([cls])
                     bboxes.append([(x, y, w, h)])
@@ -49,6 +53,9 @@ def read_labels(path_to_labels):
     return classes, bboxes
 
 def compute_deltas(coords):
+    """
+    Converts GT (x_c, y_c, w, h) to deltas (eq. 3 SqueezeDet paper)
+    """
     coords = np.array(coords)
     anchors = np.array(p.ANCHORS)
     delta_x = (coords[:, 0] - anchors[:, 0]) / anchors[:, 2]
@@ -59,14 +66,17 @@ def compute_deltas(coords):
     return deltas
 
 def create_files(index,path,data):
-    filename = ('%06d'%index)+'.txt'
+    """
+    Write labels to disk
+    """
+    filename = ('%06d' % index)+'.txt'
     with open(os.path.join(path, filename), 'wb') as temp_file:
         np.save(temp_file, data)
 
 
 def assign_gt_to_anchors(classes, bboxes, path_to_data):
     """
-    Assigns ground truths to anchors and computes the labels for each anchor
+    Assigns ground truths to anchors, computes and prints the labels for each anchor
     """
     for image_idx in range(0, len(classes)):
         ious = []

@@ -1,4 +1,4 @@
-# CONTAINS IOU, BOX TRANSFORM FUNCTIONS
+# CONTAINS IOU, BOX TRANSFORM, GET LAST CKPT FUNCTIONS
 
 import numpy as np
 import parameters as p
@@ -26,7 +26,8 @@ def compute_iou(boxA,boxB):
     return intersection / (union + p.EPSILON)
 
 def bbox_transform_inv(bbox):
-    """ Convert a bbox of form [xmin, ymin, xmax, ymax] to [cx, cy, w, h]
+    """
+    Convert a bbox of form (x_min, y_min, x_max, y_max) to (x_c, y_c, w, h)
     """
     xmin, ymin, xmax, ymax = bbox
     out_box = [[]]*4
@@ -40,7 +41,7 @@ def bbox_transform_inv(bbox):
 
 def bbox_transform(bbox):
     """
-    Convert a bbox of form [cx, cy, w, h] to [xmin, ymin, xmax, ymax]. Works for numpy array or list of tensors.
+    Convert a bbox of form (x_c, y_c, w, h) to (x_min, y_min, x_max, y_max). Works for numpy array or list of tensors.
     """
     cx, cy, w, h = bbox
     out_box = [[]]*4
@@ -52,7 +53,9 @@ def bbox_transform(bbox):
     return out_box
 
 def get_last_ckpt(path_to_dir):
-
+    """
+    Find the latest checkpoint in a directory (ckpt name must contain global step)
+    """
     rel_path = os.listdir(path_to_dir)[-1]
     split_path = rel_path.split('.')[0]
     init_step = int(split_path.split('-')[-1])
