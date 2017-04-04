@@ -24,25 +24,28 @@ else:
     PATH_TO_LABELS = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/train/labels.txt"
     PATH_TO_TEST_IMAGES = "C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/test/images/"
     PATH_TO_LOGS = "C:/log_ckpt_thesis/MEOW/logs/"
-    PATH_TO_CKPT="C:/log_ckpt_thesis/MEOW/ckpt/"
+    PATH_TO_CKPT = "C:/log_ckpt_thesis/MEOW/ckpt/"
 cwd = os.getcwd()
 
 # build input graph
 batch_size = tf.placeholder(dtype=tf.int32)
-batch = input.create_batch(PATH_TO_IMAGES, PATH_TO_LABELS, batch_size, TRAIN)
+with tf.device('\cpu:0'):
+    batch = input.create_batch(PATH_TO_IMAGES, PATH_TO_LABELS, batch_size, TRAIN)
 x = batch[0]
 y_ = tf.one_hot(batch[1], NO_CLASSES, dtype=tf.int32)
 
-h_pool3 = nf.squeeze_net(x)
+with tf.variable_scope('CNN'):
+    h_pool3 = nf.squeeze_net(x)
 
 if TRAIN:
 
     # build training graph
-    cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=h_pool3, labels=y_))
-    train_step = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
-    correct_prediction = tf.equal(tf.argmax(h_pool3, 1), tf.argmax(y_, 1))
-    accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
-    summary_op = tf.summary.scalar("Accuracy", accuracy)
+    with tf.variable_scope('LossAndOptimisation'):
+        cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=h_pool3, labels=y_))
+        train_step = tf.train.AdamOptimizer(LEARNING_RATE).minimize(cross_entropy)
+        correct_prediction = tf.equal(tf.argmax(h_pool3, 1), tf.argmax(y_, 1))
+        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        summary_op = tf.summary.scalar("Accuracy", accuracy)
 
     # saver for creating checkpoints
     saver = tf.train.Saver()

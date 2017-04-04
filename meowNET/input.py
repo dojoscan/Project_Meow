@@ -10,10 +10,10 @@ def read_image(filename):
     Returns:
         image_tensor: decoded image
     """
-
-    file_contents = tf.read_file(filename)
-    image = tf.image.decode_png(file_contents, channels=3)
-    image = tf.image.resize_images(image, [IM_SIZE, IM_SIZE])
+    with tf.variable_scope('ReadImage'):
+        file_contents = tf.read_file(filename)
+        image = tf.image.decode_png(file_contents, channels=3)
+        image = tf.image.resize_images(image, [IM_SIZE, IM_SIZE])
     return image
 
 def read_labels(path_to_labels):
@@ -55,15 +55,15 @@ def create_batch(path_to_images, path_to_labels, batch_size, train):
     """
     image_list = create_image_list(path_to_images)
     no_samples = len(image_list)
-    image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
+    image_list = tf.convert_to_tensor(image_list, dtype=tf.string, name='ImageList')
     if train:
         labels = read_labels(path_to_labels)
     else:   # Create fake labels for testing data
         labels = [0]*no_samples
-    labels = tf.convert_to_tensor(labels, dtype=tf.int32)
-    input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=False)
+    labels = tf.convert_to_tensor(labels, dtype=tf.int32, name='Labels')
+    input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=True, name='InputQueue')
     images = read_image(input_queue[0])
     # Dequeue mini-batch
-    batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size)
+    batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size, name='Batch')
     return batch
 
