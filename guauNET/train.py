@@ -59,7 +59,7 @@ with tf.variable_scope('Validation'):
     val_summ = l.add_loss_summaries('Val_', t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss)
 
 # saver for creating checkpoints
-saver = tf.train.Saver(name='Saver', max_to_keep=10)
+saver = tf.train.Saver(name='Saver', max_to_keep=5)
 sess = tf.Session()
 
 # start input queue threads

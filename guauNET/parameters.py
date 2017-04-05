@@ -4,9 +4,9 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 2
-PRINT_FREQ = 10
-CKPT_FREQ = 20
+BATCH_SIZE = 20
+PRINT_FREQ = 200
+CKPT_FREQ = 10000
 
 # Optimisation
 LEARNING_RATE = 0.0001
@@ -47,6 +47,9 @@ elif USER == 'LUCIA':
 elif USER == 'BILL':
     PATH_TO_DATA = "/Users/LDIEGO/Documents/KITTI/data/"
     PATH_TO_OUTPUT = "/Users/LDIEGO/Documents/KITTI/output/"
+elif USER == 'LIL HENRIK':
+    PATH_TO_DATA = "/Users/ADTOOL-2/Documents/DONALLUCIA/KITTIdata/"
+    PATH_TO_OUTPUT = "/Users/ADTOOL-2/Documents/DONALLUCIA/Output/"
 else:
     PATH_TO_DATA = "/home/ad-tool-wd-1/Documents/DONALLUCIA/KITTIdata/"
     PATH_TO_OUTPUT = "/home/ad-tool-wd-1/Documents/DONALLUCIA/Output/"

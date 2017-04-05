@@ -1,4 +1,5 @@
 guauNET: a convolutional neural network-based object detector that processing single images and outputs bounding box predictions. Requires TensorFlow 1.0 and Python 3.5.
+Based on SqueezeDet method
 
 test.py - Evaluates a pre-trained network on KITTI
 train.py - Trains a network on KITTI
@@ -16,24 +17,10 @@ pre-processing:
 Instructions:
 1. Ensure that Python 3.5 and TensorFlow 1.0 are installed
 2. Download the KITTI training data and labels at http://www.cvlibs.net/datasets/kitti/eval_object.php ('left colour images' and 'training labels')
-2. In parameters.py change the paths to direct to
-	PATH_TO_IMAGES: folder containing training images
-    	PATH_TO_LABELS: folder containing training labels
-	[see kitti_input.create_batch for description of the following labels]
-    	PATH_TO_DELTAS: folder for storing the deltas
-    	PATH_TO_MASK: folder for storing masks
-    	PATH_TO_COORDS: folder for storing coordinates
-    	PATH_TO_CLASSES: folder for storing class labels
-    	PATH_TO_CKPT: folder for storing TF checkpoints
-    	PATH_TO_LOGS: folder for storing TF logs
-    	PATH_TO_TEST_IMAGES: folder containing test images
-    	PATH_TO_TEST_OUTPUT: folder for storing the test predictions
+2. In parameters.py change the paths (necessary to replicate directory structure) 
 3. Run pre-processing/save_labels to generate the deltas, masks, coordinates, and classes for the training data
 4. Run train.py
 5. Run test.py
-
-NOTES:
-1. Must be atleast one object per training image
 	
 
 B. Wu, F. Iandola, P. H. Jin, K. Keutzer, SqueezeDet: Unified, Small, LowPower Fully Convolutional Neural Networks for Real-Time Object Detectionfor Autonomous Driving, in CVPR, 2017.
