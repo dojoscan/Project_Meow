@@ -22,13 +22,14 @@ end
 
 function guauViewer_OpeningFcn(hObject, eventdata, handles, varargin)
 
-global path_to_images path_to_labels class_dict plot_colours ...
+global path_to_images path_to_labels im_idx no_img class_dict plot_colours ...
     conf_thresh plot_bool class_array slide_bool
 
 handles.output = hObject;
 
 path_to_images = 'C:\Users\Donal\Dropbox\KITTI\data\testing\image\';
 path_to_labels = 'C:\Users\Donal\Dropbox\KITTI\output\predictions\';
+im_idx = 0;
 conf_thresh = 0.0;
 slide_bool = 0;
 
@@ -44,7 +45,7 @@ class_array = [plot_bool classes];
 set(handles.classPopUp,'String',class_array);
  
 % Display first image and index
-dirInit(handles)
+dirInit()
 
 guidata(hObject, handles);
 
@@ -264,28 +265,24 @@ plotImage(handles)
 end
 
 
-function dirBtn_Callback(hObject, eventdata, handles)
+function imDirBtn_Callback(hObject, eventdata, handles)
 
-global path_to_images path_to_labels
-
-p_t_i = path_to_images;
-p_t_l = path_to_labels;
+global path_to_images
 path_to_images = uigetdir('','Set image directory');
+
+end
+
+
+function labelDirBtn_Callback(hObject, eventdata, handles)
+
+global path_to_labels 
 path_to_labels = uigetdir('','Set labels directory');
-if path_to_images == 0 || path_to_labels == 0 
-    disp('Directory unchaged!!!')
-    path_to_images = p_t_i;
-    path_to_labels = p_t_l;
-end
-dirInit(handles)
 
 end
 
+function dirInit()
 
-function dirInit(handles)
-
-global path_to_images no_img im_idx
-im_idx = 0;
+global path_to_images 
 D = dir([path_to_images, '\*.png']);
 no_img = length(D(not([D.isdir])));
 plotImage(handles)
