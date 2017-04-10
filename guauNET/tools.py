@@ -3,6 +3,7 @@
 import numpy as np
 import parameters as p
 import os
+import glob
 
 def compute_iou(boxA,boxB):
     ''' Computes the intersection-over-union of an array of boxes and one box
@@ -56,8 +57,9 @@ def get_last_ckpt(path_to_dir):
     """
     Find the latest checkpoint in a directory (ckpt name must contain global step)
     """
-    rel_path = os.listdir(path_to_dir)[-1]
-    split_path = rel_path.split('.')[0]
+
+    newest = max(glob.iglob(path_to_dir+'*.meta'), key=os.path.getctime)
+    split_path = newest.split('.')[0]
     init_step = int(split_path.split('-')[-1])
     path_to_last_ckpt = path_to_dir+split_path
 
