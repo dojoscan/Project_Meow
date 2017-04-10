@@ -31,8 +31,9 @@ saver = tf.train.Saver()
 sess = tf.Session()
 
 # restore variables from checkpoint
-restore_path, _ = t.get_last_ckpt(p.PATH_TO_CKPT+'170406_squeeze_100k/')
+restore_path, _ = t.get_last_ckpt(p.PATH_TO_CKPT_TEST)
 saver.restore(sess, restore_path)
+print('Restored variables from ' + restore_path)
 
 # start queues
 coordinate = tf.train.Coordinator()
@@ -42,9 +43,11 @@ threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 start_time = time.time()
 sum_time = 0
 for i in range(0, int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
-    image, fbox, fprobs, fclass, net_out , id= sess.run([x, final_boxes, final_probs, final_class, network_output, input_filename], feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
+    image, fbox, fprobs, fclass, net_out, id = sess.run([x, final_boxes, final_probs, final_class, network_output,
+                                                         input_filename], feed_dict={batch_size: p.TEST_BATCH_SIZE,
+                                                                                     keep_prop: 1})
     # Write labels
-    fp.write_labels(fbox, fclass, fprobs, id)
+    #fp.write_labels(fbox, fclass, fprobs, id)
     print("Batch %d, Processing speed = %g fps" % (i, p.TEST_BATCH_SIZE/(time.time()-start_time)))
     sum_time += time.time()-start_time
     start_time = time.time()

@@ -57,10 +57,8 @@ def get_last_ckpt(path_to_dir):
     """
     Find the latest checkpoint in a directory (ckpt name must contain global step)
     """
-
-    newest = max(glob.iglob(path_to_dir+'*.meta'), key=os.path.getctime)
+    newest = max(glob.iglob(path_to_dir+'*.meta'), key=os.path.getmtime)
     split_path = newest.split('.')[0]
     init_step = int(split_path.split('-')[-1])
-    path_to_last_ckpt = path_to_dir+split_path
 
-    return path_to_last_ckpt, init_step
+    return split_path, init_step
