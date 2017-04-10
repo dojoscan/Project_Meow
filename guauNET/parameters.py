@@ -36,7 +36,7 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'LUCIA'
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'

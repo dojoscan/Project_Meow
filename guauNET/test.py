@@ -8,7 +8,6 @@ import interpretation as interp
 import tools as t
 import filter_prediction as fp
 import time
-import numpy as np
 
 # build input graph
 with tf.name_scope('InputPipeline'):

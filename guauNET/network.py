@@ -13,7 +13,7 @@ def weight_variable(shape, name):
 def gate_weight_variable(shape, name):
     # Negative initialisation to encourage information skipping (see HighwayNet paper)
     weights = tf.Variable(tf.random_normal(shape, stddev=0.01, mean=-0.02), name="weights")
-    tf.summary.histogram(name, weights)
+    #tf.summary.histogram(name, weights)
     return weights
 
 def bias_variable(shape, name):
@@ -61,6 +61,7 @@ def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name):
             b_f = bias_variable([1], 'Bias1x1')
             h_f_out = tf.nn.bias_add(conv2d(h_f_in, W_f), b_f)
             h_f_sig = tf.sigmoid(h_f_out)
+            tf.summary.histogram('ForgetGateAct', h_f_sig)
             output = x_prev*(1 - h_f_sig) + x_curr*h_f_sig
 
         tf.summary.histogram('Activation', output)
