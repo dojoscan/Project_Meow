@@ -36,14 +36,14 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'DONAL'
+USER = 'LUCIA'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
     PATH_TO_OUTPUT = '/Users/Donal/Desktop/output/'
 elif USER == 'LUCIA':
     PATH_TO_DATA = '/Master Chalmers/2 year/volvo thesis/code0/'
-    PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/output/'
+    PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/lil_henrik/'
 elif USER == 'BILL':
     PATH_TO_DATA = "/Users/LDIEGO/Documents/KITTI/data/"
     PATH_TO_OUTPUT = "/Users/LDIEGO/Documents/KITTI/output/"

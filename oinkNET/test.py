@@ -16,6 +16,7 @@ keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
 with tf.device("/cpu:0"):
     batch = ki.create_batch(batch_size=batch_size, mode='Train')
 image = batch[0]
+input_filename = batch[5]
 
 # CNN graph
 network_output, _ = network.squeeze(image, keep_prop, True)
@@ -41,10 +42,10 @@ print("Restored from ImageNet and KITTI trained network. Ready for testing. Dir 
 start_time = time.time()
 sum_time = 0
 for i in range(0, int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
-    image, fbox, fprobs, fclass, net_out = sess.run([image, final_boxes, final_probs, final_class, network_output],
+    image, fbox, fprobs, fclass, net_out,  id = sess.run([image, final_boxes, final_probs, final_class, network_output, input_filename],
                                                     feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
     # Write labels
-    fp.write_labels(fbox, fclass, fprobs, (i*p.TEST_BATCH_SIZE))
+    fp.write_labels(fbox, fclass, fprobs, id)
     print("Batch %d, Processing speed = %g fps" % (i, i*p.TEST_BATCH_SIZE/(time.time()-start_time)))
     sum_time += time.time()-start_time
     start_time = time.time()

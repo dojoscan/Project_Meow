@@ -92,13 +92,16 @@ def filter(class_scores, confidence_scores, bbox_delta):
 
     return final_boxes, final_probs, final_class
 
-def write_labels(fbox, fclass, fprobs, index):
+def write_labels(fbox, fclass, fprobs, id):
     """
         Write network predictions to txt file in KITTI format
     """
     for i in range(0, len(fbox)):
         nr_objects = len(fclass[i])
-        filename = ('%06d' % (i+index)) + '.txt'
+        id_decode = id[i].decode(encoding='UTF-8', errors='strict')
+        split_id_path = id_decode.split('.')[0]
+        im_number = int(split_id_path.split('image/')[-1])
+        filename = ('%06d' % im_number) + '.txt'
         place_text = os.path.join(p.PATH_TO_WRITE_LABELS, filename)
         with open(place_text, 'w') as a:
             for j in range(0, nr_objects):
