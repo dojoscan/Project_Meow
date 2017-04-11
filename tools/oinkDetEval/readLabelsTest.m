@@ -36,5 +36,5 @@ for img_idx = 1:nr_img
     end
     
     image(img_idx).object = objects;
-    
+    image(img_idx).nr_object = numel(C{1});
 end
