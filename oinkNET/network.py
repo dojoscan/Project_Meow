@@ -14,20 +14,20 @@ def weight_variable(shape,name, freeze):
     return weights
 
 
-def gate_weight_variable(shape, name, freeze):
-    if freeze:
-        weights=tf.Variable(tf.zeros(shape), trainable=False, name=name)
-    else:
-        # Negative initialisation to encourage information skipping (see HighwayNet paper)
-        weights = tf.Variable(tf.random_normal(shape, stddev=0.01, mean=-0.02), name=name, trainable=True)
-    return weights
-
-
 def bias_variable(shape,name, freeze):
     if freeze:
         bias = tf.Variable(tf.zeros(shape), trainable=False, name=name)
     else:
         initial = tf.constant(0.0, shape=shape)
+        bias = tf.Variable(initial, name=name, trainable=True)
+    return bias
+
+
+def gated_bias_variable(shape,name, freeze):
+    if freeze:
+        bias = tf.Variable(tf.zeros(shape), trainable=False, name=name)
+    else:
+        initial = tf.constant(-1.0, shape=shape)
         bias = tf.Variable(initial, name=name, trainable=True)
     return bias
 
@@ -109,8 +109,8 @@ def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
 
         with tf.variable_scope('Forget'):
             h_f_in = tf.concat([x_prev, x_curr], 3, name='Concatenate')
-            W_f = gate_weight_variable([3, 3, input_depth + 2 * e3x3, 1], 'Weights3x3', freeze)
-            b_f = bias_variable([1], 'Bias3x3', freeze)
+            W_f = weight_variable([3, 3, input_depth + 2 * e3x3, 1], 'Weights3x3', freeze)
+            b_f = gated_bias_variable([1], 'Bias3x3', freeze)
             h_f_out = tf.nn.bias_add(tf.nn.conv2d(h_f_in, W_f, strides=[1, 1, 1, 1], padding='SAME', name='Conv3x3'), b_f)
             h_f_sig = tf.sigmoid(h_f_out, name='Sigmoid')
             output = x_prev*(1 - h_f_sig) + x_curr*h_f_sig
