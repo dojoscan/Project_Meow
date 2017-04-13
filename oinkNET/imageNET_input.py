@@ -4,6 +4,7 @@ import tensorflow as tf
 import parameters as p
 import os
 
+
 def read_image(filename):
     """
     Args:
@@ -24,8 +25,9 @@ def read_image(filename):
             else:
                 image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
                 image = tf.image.random_brightness(image, max_delta=50. / 255.)
-        image = tf.image.resize_image_with_crop_or_pad(image, p.PRIM_IMAGE_HEIGHT , p.PRIM_IMAGE_WIDTH )
+        image = tf.image.resize_image_with_crop_or_pad(image, p.PRIM_IMAGE_HEIGHT, p.PRIM_IMAGE_WIDTH)
     return image
+
 
 def read_labels(path_to_labels):
     """
@@ -41,17 +43,41 @@ def read_labels(path_to_labels):
         labels.append(int(line))
     return labels
 
-def create_image_list(path_to_images):
+
+def create_input_list_val(path_to_images):
     """
     Args:
-        path_to_images: full path to image folder
+        path_to_images: full path to validation image folder
     Returns:
-        image_list: a tensor of all files in that folder
+        image_list: a list of all files in that folder
     """
 
     image_list = os.listdir(path_to_images)
     image_list = [path_to_images + s for s in image_list]
     return image_list
+
+
+def create_input_list_train(path_to_images):
+    """
+    Args:
+        path_to_images: full path to training image folder
+    Returns:
+        image_list: a list of all files in that folder
+    """
+
+    image_list = []
+    labels = []
+    ind = -1
+    for path, subdirs, files in os.walk(path_to_images):
+        for name in files:
+            image_list.append(path + '/' + name)
+        for sd in subdirs:
+            ind += 1
+            file_list = os.listdir(path + '/' + sd)
+            for file in file_list:
+                labels.append(ind)
+    return image_list, labels
+
 
 def create_batch(batch_size, mode):
     """
@@ -64,17 +90,19 @@ def create_batch(batch_size, mode):
         batch: list of images as a 4d tensor sz = [batch_sz, im_h, im_w, im_d]
         and labels as a 1d tensor sz = [batch_sz]
     """
+
     with tf.variable_scope('KITTIInputPipeline'):
-        if mode=='Train':
-            # CHANGE IMAGES TO IMAGE, KEEP CONSITENT :)
+        # CHANGE THESE FOLDER NAMES!!!!!
+        # HOW TO GET VAL LABELS!!!!!
+        if mode == 'Train':
             path_to_images = p.PATH_TO_PRIM_DATA + 'training/images/'
-            path_to_labels = p.PATH_TO_PRIM_DATA + 'training/labels.txt'
+            image_list, labels = create_input_list_train(path_to_images)
         else:
             path_to_images = p.PATH_TO_PRIM_DATA + 'validation/images/'
             path_to_labels = p.PATH_TO_PRIM_DATA + 'validation/labels.txt'
-        image_list = create_image_list(path_to_images)
+            image_list = create_input_list_val(path_to_images)
+            labels = read_labels(path_to_labels)
         image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
-        labels = read_labels(path_to_labels)
         labels = tf.convert_to_tensor(labels, dtype=tf.int32)
         input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=True,  name='InputProducer')
         images = read_image(input_queue[0])
