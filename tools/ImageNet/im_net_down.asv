@@ -8,6 +8,12 @@ while ischar(tline)
 
     url = ['http://www.image-net.org/download/synset?wnid=' tline(1:9) '&username=' username '&accesskey=' accesskey '&release=latest&src=stanford'];
     untar(url,[save_dir '\' tline(1:9)])
+    
+    D = dir([save_dir '\' tline(1:9) '\*.JPEG']);
+    total_nr_images = length(D(not([D.isdir])));
+    nr_images = total_nr_images-former_nr_images;
+    former_nr_images = total_nr_images;
+    
     tline = fgets(fid);
     
 end

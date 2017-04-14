@@ -48,8 +48,7 @@ for im_idx = 1:nr_img
             if strcmp(gt_class,det_class)   % predicted correct class
                 sort_label_gt(sort_asgn(det_idx)) = det_idx;
             elseif strcmp(gt_class,'DontCare') || confuse_vec(class_dict(gt_class))...
-                   == confuse_vec(class_dict(det_class)) || bb_det(sort_idx(det_idx),4) ...
-                   -bb_det(sort_idx(det_idx),2) < min_height  % gt is DC or confused or too small
+                   == confuse_vec(class_dict(det_class)) ||  % gt is DC or confused or too small
                 sort_label_det(det_idx) = 0;    % not incl. in eval.
             else
                 sort_label_det(det_idx) = 1;    % misclassification (subclass of FP)

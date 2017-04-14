@@ -29,7 +29,8 @@ for img_idx = 1:nr_img
         
         if gtBool
             objects(o).truncation = C{2}(o); % truncated pixel ratio ([0..1])
-            objects(o).occlusion  = C{3}(o); % 0 = visible, 1 = partly occluded, 2 = fully occluded, 3 = unknown7
+            objects(o).occlusion  = C{3}(o); % 0 = visible, 1 = partly occluded, 2 = fully occluded, 3 = unknown
+            objects(o).distance = C{12}(o);
         else
             objects(o).conf = C{16}(o); % confidence score
         end

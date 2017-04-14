@@ -193,7 +193,7 @@ for obj_idx=1:numel(objects)
     object = objects(obj_idx);
     if object.conf >= conf_thresh && (strcmp(plot_bool,object.type) || strcmp(plot_bool,'All'))
         drawBox2DGuau(handles.ImagePane,objects(obj_idx),class_dict,plot_colours)
-    elseif isnan(object.conf)
+    else if isnan(object.conf)
         drawBox2DGuau(handles.ImagePane,objects(obj_idx),class_dict,plot_colours)
     end
 end

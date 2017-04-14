@@ -47,7 +47,7 @@ for i in range(0, int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
                                                          input_filename], feed_dict={batch_size: p.TEST_BATCH_SIZE,
                                                                                      keep_prop: 1})
     # Write labels
-    #fp.write_labels(fbox, fclass, fprobs, id)
+    fp.write_labels(fbox, fclass, fprobs, id)
     print("Batch %d, Processing speed = %g fps" % (i, p.TEST_BATCH_SIZE/(time.time()-start_time)))
     sum_time += time.time()-start_time
     start_time = time.time()
