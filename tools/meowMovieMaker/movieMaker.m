@@ -23,6 +23,7 @@ for img_idx = 1:no_img
     im_data = image_list(img_idx);
     det_data = det_list(img_idx);
     im = imread([im_data.folder '/' im_data.name]);
+    im = imresize(im,im_size);
     objects = readLabelsMeow([det_data.folder '/' det_data.name]);
 
     for obj_idx=1:numel(objects)
@@ -32,7 +33,6 @@ for img_idx = 1:no_img
         end
     end
     
-    im = imresize(im,im_size);
     frame = im2frame(im);
     writeVideo(vid, frame);
     

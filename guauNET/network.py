@@ -33,6 +33,7 @@ def max_pool_3x3(x):
 
 # blocks
 
+
 # Fire module w/ gated residual connection
 def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name):
     with tf.variable_scope(name):
@@ -67,6 +68,7 @@ def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name):
         tf.summary.histogram('Activation', output)
         return output
 
+
 # Fire module w/ residual connections
 def res_fire(x, input_depth, s1x1, e1x1, e3x3, name):
     with tf.variable_scope(name):
@@ -90,6 +92,7 @@ def res_fire(x, input_depth, s1x1, e1x1, e3x3, name):
         output = tf.add(tf.concat([h_e1x1, h_e3x3], 3, name='Concatenate'), x, 'Residual')
         tf.summary.histogram('Activation', output)
         return output
+
 
 # Original fire module
 def fire(x, input_depth, s1x1, e1x1, e3x3, name):
@@ -117,8 +120,9 @@ def fire(x, input_depth, s1x1, e1x1, e3x3, name):
 
 # ARCHITECTURES
 
-def forget_squeeze_net(x, keep_prop):
-    with tf.variable_scope('CNN'):
+
+def forget_squeeze_net(x, keep_prop, reuse):
+    with tf.variable_scope('CNN', reuse=reuse):
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights')
             b_conv1 = bias_variable([64], 'Bias')
@@ -151,8 +155,8 @@ def forget_squeeze_net(x, keep_prop):
     return h_conv3
 
 
-def res_squeeze_net(x, keep_prop):
-    with tf.variable_scope('CNN'):
+def res_squeeze_net(x, keep_prop, reuse):
+    with tf.variable_scope('CNN', reuse=reuse):
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights')
             b_conv1 = bias_variable([64], 'Bias')
@@ -184,8 +188,9 @@ def res_squeeze_net(x, keep_prop):
 
     return h_conv3
 
-def squeeze_net(x, keep_prop):
-    with tf.variable_scope('CNN'):
+
+def squeeze_net(x, keep_prop, reuse):
+    with tf.variable_scope('CNN', reuse=reuse):
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights')
             b_conv1 = bias_variable([64], 'Bias')
