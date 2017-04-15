@@ -9,14 +9,15 @@ CKPT_FREQ = 25
 
 # Optimisation
 LEARNING_RATE = 0.0001
-NR_ITERATIONS = 100
+NR_ITERATIONS = 200
 
-# PRIMARY (imageNET)
+# PRIMARY (ImageNet)
 PRIM_NR_CLASSES = 1000
 PRIM_IMAGE_WIDTH = 256
 PRIM_IMAGE_HEIGHT = 256
 
 # SECONDARY (KITTI)
+
 # Testing
 NR_OF_TEST_IMAGES = 50
 TEST_BATCH_SIZE = 2
@@ -30,9 +31,10 @@ LAMBDA_CONF_NEG = 100.0
 WEIGHT_DECAY_FACTOR = 1E-4
 
 # Network Input
-SEC_NR_CLASSES = 9
-CLASSES = {'Car': '0', 'Van': '1', 'Truck': '2', 'Pedestrian': '3', 'Person_sitting': '4', 'Cyclist': '5', 'Tram': '6', 'Misc': '7', 'DontCare': '8'}
-CLASSES_INV = {'0': 'Car', '1': 'Van', '2': 'Truck', '3': 'Pedestrian', '4': 'Person_sitting', '5': 'Cyclist', '6': 'Tram', '7': 'Misc', '8': 'DontCare'}
+SEC_NR_CLASSES = 3
+CLASSES = {'Car': '0', 'Pedestrian': '1', 'Cyclist': '2', 'Van': '3', 'Truck': '4', 'Person_sitting': '5', 'Tram': '6',
+           'Misc': '7', 'DontCare': '8'}
+CLASSES_INV = {'0': 'Car', '1': 'Pedestrian', '2': 'Cyclist'}
 SEC_IMAGE_WIDTH = 1242
 SEC_IMAGE_HEIGHT = 375
 
@@ -41,12 +43,12 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'LUCIA'
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
     PATH_TO_OUTPUT = '/Users/Donal/Desktop/output/'
-    PATH_TO_PRIM_DATA ='/Users/Donal/Dropbox/KITTI/data/'
+    PATH_TO_PRIM_DATA = '/Users/Donal/Desktop/Thesis/Data/ImageNet/'
 elif USER == 'LUCIA':
     PATH_TO_DATA = '/Master Chalmers/2 year/volvo thesis/code0/'
     PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/transfer_learning/'
@@ -58,7 +60,7 @@ elif USER == 'BILL':
 else:
     PATH_TO_DATA = "/home/ad-tool-wd-1/Documents/DONALLUCIA/KITTIdata/"
     PATH_TO_OUTPUT = "/home/ad-tool-wd-1/Documents/DONALLUCIA/Output/"
-    PATH_TO_PRIM_DATA ='/Users/Donal/Dropbox/KITTI/data/'
+    PATH_TO_PRIM_DATA = '/Users/Donal/Dropbox/KITTI/data/'
 
 # training
 PATH_TO_IMAGES = PATH_TO_DATA + "training/image/"

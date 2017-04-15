@@ -1,6 +1,6 @@
 username = 'dojoscan';
 accesskey = '5f697d45aba2d38f80c85dbc823ec354dc69d72d';
-save_dir = 'C:\Users\Donal\Desktop\Thesis\Data\ImageNet\images';
+save_dir = 'C:\Users\Donal\Desktop\Thesis\Data\ImageNet\training';
 fid = fopen('im_net_ids.txt');
 tline = fgets(fid);
 

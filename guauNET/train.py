@@ -56,7 +56,7 @@ with tf.variable_scope('Validation'):
     v_class_scores, v_conf_scores, v_bbox_delta = interp.interpret(v_network_output, batch_size)
     v_total_loss, v_bbox_loss, v_conf_loss, v_class_loss, v_l2_loss = l.loss_function\
                         (v_mask, v_delta, v_coord, v_class,  v_bbox_delta, v_conf_scores, v_class_scores, True)
-    val_summ = l.add_loss_summaries('Val_', t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss)
+    val_summ = l.add_loss_summaries('Val_', v_total_loss, v_bbox_loss, v_conf_loss, v_class_loss, v_l2_loss)
 
 # saver for creating checkpoints
 saver = tf.train.Saver(name='Saver', max_to_keep=5)

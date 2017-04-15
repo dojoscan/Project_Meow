@@ -22,10 +22,10 @@ t_class = tf.one_hot(t_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 t_network_output, variables_to_save = network.squeeze(t_image, keep_prop, False)
 t_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=t_network_output, labels=t_class))
 t_l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()
-                                                    if 'Bias' not in v.name])
+                                                                        if 'Bias' not in v.name])
 t_total_loss = t_cross_entropy + t_l2_loss
 tf.summary.merge([tf.summary.scalar('TrainCrossEntropy', t_cross_entropy), tf.summary.scalar('TrainL2Loss', t_l2_loss),
-                  tf.summary.scalar('TrainTotalLoss',t_total_loss)], name='Train_loss_summary')
+                  tf.summary.scalar('TrainTotalLoss', t_total_loss)], name='Train_loss_summary')
 merged_summaries = tf.summary.merge_all()
 
 # build training graph
@@ -69,10 +69,10 @@ if prim_cont_ckpt:
 else:
     sess.run(tf.global_variables_initializer())
     init_step = 0
-    print("Initialize Xavier Weights and zero Bias.")
+    print("Initialised with Xavier weights and zero bias.")
 
 # training
-print('Training initiated')
+print('Training initiated!')
 start_time = time.time()
 for i in range(init_step, p.NR_ITERATIONS):
     if i % p.CKPT_FREQ == 0 and i != init_step:
@@ -86,7 +86,7 @@ for i in range(init_step, p.NR_ITERATIONS):
         summary_writer.add_summary(val_summary, global_step=i)
         # evaluate loss for training mini-batch and apply one step of opt
         t_loss, summary, _ = sess.run([t_total_loss, merged_summaries, gradient_op], feed_dict={batch_size:
-                                                                p.BATCH_SIZE, keep_prop: 0.5})
+                                                                                p.BATCH_SIZE, keep_prop: 0.5})
         print("Step %d, Total loss = %g, Speed = %g fps" % (i, t_loss, p.PRINT_FREQ *
                                                             p.BATCH_SIZE/(time.time() - start_time)))
         print("----------------------------------------------------------------------------")

@@ -26,7 +26,8 @@ WEIGHT_DECAY_FACTOR = 1E-4
 
 # Network Input
 NR_CLASSES = 3
-CLASSES = {'Car': '0', 'Pedestrian': '1', 'Cyclist': '2', 'Van': '3', 'Truck': '4','Person_sitting': '5','Tram': '6', 'Misc': '7','DontCare': '8'}
+CLASSES = {'Car': '0', 'Pedestrian': '1', 'Cyclist': '2', 'Van': '3', 'Truck': '4', 'Person_sitting': '5', 'Tram': '6',
+           'Misc': '7', 'DontCare': '8'}
 CLASSES_INV = {'0': 'Car', '1': 'Pedestrian', '2': 'Cyclist'}
 IMAGE_WIDTH = 1242
 IMAGE_HEIGHT = 375

@@ -122,7 +122,8 @@ def create_batch(batch_size, mode):
                 classes = read_file(input_queue[4])
                 classes = tf.reshape(classes, [p.NR_ANCHORS_PER_IMAGE, p.NR_CLASSES], name='ClassLabels')
 
-        id = input_queue[0]
-        batch = tf.train.batch([image, mask, delta, coord, classes, id], batch_size=batch_size, name='Batch', num_threads=p.NUM_THREADS)
+        sample_id = input_queue[0]
+        batch = tf.train.batch([image, mask, delta, coord, classes, sample_id], batch_size=batch_size, name='Batch',
+                               num_threads=p.NUM_THREADS)
 
     return batch

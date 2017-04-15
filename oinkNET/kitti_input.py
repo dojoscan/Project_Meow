@@ -4,6 +4,7 @@ import tensorflow as tf
 import os
 import parameters as p
 
+
 def read_image(filename, mode):
     """
     Args:
@@ -17,8 +18,8 @@ def read_image(filename, mode):
         image = tf.image.decode_png(file_contents, channels=3, name='Image')
         with tf.variable_scope('DistortImage'):
             if mode == 'Train':
-                bin = tf.random_shuffle([0, 1])
-                if bin[0] == 0:
+                binary = tf.random_shuffle([0, 1])
+                if binary[0] == 0:
                     image = tf.image.random_brightness(image, max_delta=50. / 255.)
                     image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
                 else:
@@ -27,6 +28,7 @@ def read_image(filename, mode):
         image = tf.image.resize_images(image, [p.SEC_IMAGE_HEIGHT, p.SEC_IMAGE_WIDTH])
         image = tf.subtract(image, tf.reduce_mean(image))
     return image
+
 
 def read_file(filename):
     """
@@ -122,7 +124,8 @@ def create_batch(batch_size, mode):
                 classes = read_file(input_queue[4])
                 classes = tf.reshape(classes, [p.NR_ANCHORS_PER_IMAGE, p.SEC_NR_CLASSES], name='ClassLabels')
 
-        id = input_queue[0]
-        batch = tf.train.batch([image, mask, delta, coord, classes, id], batch_size=batch_size, name='Batch', num_threads=p.NUM_THREADS)
+        sample_id = input_queue[0]
+        batch = tf.train.batch([image, mask, delta, coord, classes, sample_id], batch_size=batch_size, name='Batch',
+                               num_threads=p.NUM_THREADS)
 
     return batch
