@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0a08750b-90c7-47c1-b583-f705ad600433" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tools/ImageNet/im_net_down.asv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tools/guauViewer/guauViewer.asv" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tools/oinkDetEval/main.asv" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/kitti_input.py" afterPath="$PROJECT_DIR$/guauNET/kitti_input.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/parameters.py" afterPath="$PROJECT_DIR$/guauNET/parameters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/train.py" afterPath="$PROJECT_DIR$/guauNET/train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/imageNET_input.py" afterPath="$PROJECT_DIR$/oinkNET/imageNET_input.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/kitti_input.py" afterPath="$PROJECT_DIR$/oinkNET/kitti_input.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/loss.py" afterPath="$PROJECT_DIR$/oinkNET/loss.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/network.py" afterPath="$PROJECT_DIR$/oinkNET/network.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/parameters.py" afterPath="$PROJECT_DIR$/oinkNET/parameters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/prim_train.py" afterPath="$PROJECT_DIR$/oinkNET/prim_train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/sec_train.py" afterPath="$PROJECT_DIR$/oinkNET/sec_train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tools/ImageNet/im_net_down.m" afterPath="$PROJECT_DIR$/tools/ImageNet/im_net_down.m" />
-    </list>
+    <list default="true" id="0a08750b-90c7-47c1-b583-f705ad600433" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -531,15 +516,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1748512" sideWeight="0.49346405" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850242" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24637681" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31400967" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36553946" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.36553946" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28663447" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928678" sideWeight="0.50653595" order="2" side_tool="true" content_ui="tabs" />
