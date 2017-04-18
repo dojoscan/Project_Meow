@@ -19,7 +19,7 @@ with tf.name_scope('InputPipeline'):
 
 # build CNN graph
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
-network_output = net.squeeze_net(x, keep_prop)
+network_output = net.res_squeeze_net(x, keep_prop, False)
 
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)

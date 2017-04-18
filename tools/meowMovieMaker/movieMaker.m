@@ -11,10 +11,10 @@ plot_colours = ['y','m','c','r','g','b','w','k','w','k'];
 
 % Directories
 image_list = [dir([path_to_images, '\*.png']);dir([path_to_images, '\*.jpg'])];
-no_img = length(D(not([image_list.isdir])));
+no_img = length(image_list(not([image_list.isdir])));
 det_list = dir([path_to_dets, '\*.txt']);
 
-vid = VideoWriter('guau.avi');
+vid = VideoWriter('C:\Users\Donal\Desktop\guau.avi');
 vid.FrameRate = 8;
 open(vid)
 

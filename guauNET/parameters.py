@@ -66,7 +66,7 @@ PATH_TO_LOGS = PATH_TO_OUTPUT + "logs/"
 PATH_TO_CKPT = PATH_TO_OUTPUT + "ckpt/"
 # testing
 PATH_TO_TEST_IMAGES = PATH_TO_DATA + "testing/image/"
-PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/sq/"
+PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/"
 PATH_TO_WRITE_LABELS = PATH_TO_OUTPUT + "predictions/"
 # validation
 PATH_TO_VAL_IMAGES = PATH_TO_DATA + "validation/image/"

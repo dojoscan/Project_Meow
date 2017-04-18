@@ -16,6 +16,8 @@ def read_image(filename):
         file_contents = tf.read_file(filename)
         image = tf.image.decode_jpeg(file_contents, channels=3)
         image = tf.cast(image, tf.float32)
+        image = tf.image.resize_image_with_crop_or_pad(image, 300, 300)
+        image = tf.image.resize_images(image, p.PRIM_IMAGE_HEIGHT, p.PRIM_IMAGE_WIDTH)
         with tf.variable_scope('DistortImage'):
             binary = tf.random_shuffle([0, 1])
             image = tf.image.random_flip_left_right(image)
@@ -25,7 +27,6 @@ def read_image(filename):
             else:
                 image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
                 image = tf.image.random_brightness(image, max_delta=50. / 255.)
-        image = tf.image.resize_image_with_crop_or_pad(image, p.PRIM_IMAGE_HEIGHT, p.PRIM_IMAGE_WIDTH)
     return image
 
 
