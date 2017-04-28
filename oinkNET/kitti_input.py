@@ -126,6 +126,6 @@ def create_batch(batch_size, mode):
 
         sample_id = input_queue[0]
         batch = tf.train.batch([image, mask, delta, coord, classes, sample_id], batch_size=batch_size, name='Batch',
-                               num_threads=p.NUM_THREADS)
+                               num_threads=p.NUM_THREADS, allow_smaller_final_batch=True)
 
     return batch

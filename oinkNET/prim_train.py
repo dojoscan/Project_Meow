@@ -19,7 +19,7 @@ with tf.device("/cpu:0"):
 t_image = t_batch[0]
 t_class = tf.one_hot(t_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
-t_network_output, variables_to_save = network.squeeze(t_image, keep_prop, False, None)
+t_network_output, variables_to_save = network.squeeze(t_image, keep_prop, False, False)
 t_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=t_network_output, labels=t_class))
 t_l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()
                                                                         if 'Bias' not in v.name])
