@@ -4,8 +4,8 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 2
-PRINT_FREQ = 5
+BATCH_SIZE = 20
+PRINT_FREQ = 200
 CKPT_FREQ = 10000
 
 # Optimisation
@@ -13,8 +13,8 @@ LEARNING_RATE = 0.0001
 NR_ITERATIONS = 100000
 
 # Testing
-NR_OF_TEST_IMAGES = 50
-TEST_BATCH_SIZE = 2
+NR_OF_TEST_IMAGES = 7518
+TEST_BATCH_SIZE = 20
 NR_TOP_DETECTIONS = 64
 NMS_THRESHOLD = 0.05
 
@@ -37,7 +37,7 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'DONAL'
+USER = 'LIL HENRIK'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
@@ -66,8 +66,8 @@ PATH_TO_LOGS = PATH_TO_OUTPUT + "logs/"
 PATH_TO_CKPT = PATH_TO_OUTPUT + "ckpt/"
 # testing
 PATH_TO_TEST_IMAGES = PATH_TO_DATA + "testing/image/"
-PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/"
-PATH_TO_WRITE_LABELS = PATH_TO_OUTPUT + "predictions/"
+PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/no_pre/forget_squeeze/"
+PATH_TO_WRITE_LABELS = PATH_TO_OUTPUT + "predictions/kitti_sub/"
 # validation
 PATH_TO_VAL_IMAGES = PATH_TO_DATA + "validation/image/"
 PATH_TO_VAL_DELTAS = PATH_TO_DATA + "validation/delta/"
@@ -117,4 +117,4 @@ NR_ANCHORS_PER_IMAGE = len(ANCHORS)
 
 EPSILON = 0.0001
 
-NUM_THREADS = 4
+NUM_THREADS = 6

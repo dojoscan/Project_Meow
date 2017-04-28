@@ -92,7 +92,6 @@ def filter(class_scores, confidence_scores, bbox_delta):
 
     return final_boxes, final_probs, final_class
 
-
 def write_labels(fbox, fclass, fprobs, id):
     """
         Write network predictions to txt file in KITTI format
