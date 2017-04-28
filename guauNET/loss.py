@@ -122,13 +122,13 @@ def loss_function(gt_mask, gt_deltas, gt_coords, gt_class, net_deltas, net_confi
         class_loss = classification_regression(gt_mask, gt_class, net_class_score, nr_objects)
         l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()
                                                     if 'Bias' not in v.name])
-        total_loss = bbox_loss + conf_loss + class_loss + l2_loss
+        total_loss = l2_loss + bbox_loss + conf_loss + class_loss
 
     return total_loss, bbox_loss, conf_loss, class_loss, l2_loss
 
 def add_loss_summaries(set, total_loss, bbox_loss, conf_loss, class_loss, l2_loss):
 
-    tot_loss = tf.summary.scalar(set+'Total_loss', total_loss-l2_loss)
+    tot_loss = tf.summary.scalar(set+'Total_loss', total_loss)
     b_loss = tf.summary.scalar(set+'Bounding_box_loss', bbox_loss)
     co_loss = tf.summary.scalar(set+'Object_confidence_loss', conf_loss)
     cl_loss = tf.summary.scalar(set+'Classification_loss', class_loss)

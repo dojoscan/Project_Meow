@@ -123,8 +123,8 @@ def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
 # ARCHITECTURES
 
 
-def squeeze(x, keep_prop, freeze_bool, reuse):
-    with tf.variable_scope('CNN', reuse=reuse):
+def squeeze(x, keep_prop, freeze_bool):
+    with tf.variable_scope('CNN'):
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights', freeze_bool)
             b_conv1 = bias_variable([64], 'Bias', freeze_bool)
@@ -178,8 +178,8 @@ def squeeze(x, keep_prop, freeze_bool, reuse):
     return h_output, save_var
 
 
-def forget_squeeze_net(x, keep_prop, freeze_bool, reuse):
-    with tf.variable_scope('CNN', reuse=reuse):
+def forget_squeeze_net(x, keep_prop, freeze_bool):
+    with tf.variable_scope('CNN'):
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights', freeze_bool)
             b_conv1 = bias_variable([64], 'Bias', freeze_bool)
@@ -233,8 +233,8 @@ def forget_squeeze_net(x, keep_prop, freeze_bool, reuse):
     return h_output, save_var
 
 
-def res_squeeze_net(x, keep_prop, freeze_bool, reuse):
-    with tf.variable_scope('CNN', reuse=reuse):
+def res_squeeze_net(x, keep_prop, freeze_bool):
+    with tf.variable_scope('CNN'):
         with tf.variable_scope('Conv1'):
             W_conv1 = weight_variable([3, 3, 3, 64], 'Weights', freeze_bool)
             b_conv1 = bias_variable([64], 'Bias', freeze_bool)

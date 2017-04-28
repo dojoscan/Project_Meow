@@ -17,7 +17,7 @@ def read_image(filename):
         image = tf.image.decode_jpeg(file_contents, channels=3)
         image = tf.cast(image, tf.float32)
         image = tf.image.resize_image_with_crop_or_pad(image, 300, 300)
-        image = tf.image.resize_images(image, [p.PRIM_IMAGE_HEIGHT, p.PRIM_IMAGE_WIDTH])
+        image = tf.image.resize_images(image, p.PRIM_IMAGE_HEIGHT, p.PRIM_IMAGE_WIDTH)
         with tf.variable_scope('DistortImage'):
             binary = tf.random_shuffle([0, 1])
             image = tf.image.random_flip_left_right(image)
@@ -70,7 +70,6 @@ def create_image_list_train(path_to_images):
     for path, subdirs, files in os.walk(path_to_images):
         for name in files:
             image_list.append(path + '/' + name)
-
     return image_list
 
 
@@ -88,7 +87,7 @@ def create_batch(batch_size, mode):
 
     with tf.variable_scope('KITTIInputPipeline'):
         if mode == 'Train':
-            path_to_images = p.PATH_TO_PRIM_DATA + 'training/image'
+            path_to_images = p.PATH_TO_PRIM_DATA + 'training/image/'
             path_to_labels = p.PATH_TO_PRIM_DATA + 'training/labels.txt'
             image_list = create_image_list_train(path_to_images)
         else:
@@ -100,6 +99,6 @@ def create_batch(batch_size, mode):
         labels = tf.convert_to_tensor(labels, dtype=tf.int32)
         input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=True,  name='InputProducer')
         images = read_image(input_queue[0])
-        batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size, name='Batch', num_threads=p.NUM_THREADS, allow_smaller_final_batch = True)
+        batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size, name='Batch', num_threads=p.NUM_THREADS)
     return batch
 

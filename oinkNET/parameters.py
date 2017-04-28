@@ -3,13 +3,13 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 64
-PRINT_FREQ = 500
-CKPT_FREQ = 50000
+BATCH_SIZE = 2
+PRINT_FREQ = 10
+CKPT_FREQ = 25
 
 # Optimisation
 LEARNING_RATE = 0.0001
-NR_ITERATIONS = 1000000
+NR_ITERATIONS = 200
 
 # PRIMARY (ImageNet)
 PRIM_NR_CLASSES = 1000
@@ -43,7 +43,7 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'LIL HENRIK'
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
@@ -57,10 +57,6 @@ elif USER == 'BILL':
     PATH_TO_DATA = "/Users/LDIEGO/Documents/KITTI/data/"
     PATH_TO_OUTPUT = "/Users/LDIEGO/Documents/KITTI/output/"
     PATH_TO_PRIM_DATA = '/Users/Donal/Dropbox/KITTI/data/'
-elif USER == 'LIL HENRIK':
-    PATH_TO_DATA = "/Users/ADTOOL-2/Documents/DONALLUCIA/KITTIdata/"
-    PATH_TO_OUTPUT = "/Users/ADTOOL-2/Documents/DONALLUCIA/Output/"
-    PATH_TO_PRIM_DATA = "/Users/ADTOOL-2/Documents/DONALLUCIA/ImageNet/"
 else:
     PATH_TO_DATA = "/home/ad-tool-wd-1/Documents/DONALLUCIA/KITTIdata/"
     PATH_TO_OUTPUT = "/home/ad-tool-wd-1/Documents/DONALLUCIA/Output/"
