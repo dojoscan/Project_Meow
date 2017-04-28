@@ -101,7 +101,7 @@ def write_labels(fbox, fclass, fprobs, id):
         nr_objects = len(fclass[i])
         id_decode = id[i].decode(encoding='UTF-8', errors='strict')
         split_id_path = id_decode.split('.')[0]
-        im_number = int(split_id_path.split('image/')[-1])
+        im_number = int(split_id_path.split('/')[-1])
         filename = ('%06d' % im_number) + '.txt'
         place_text = os.path.join(p.PATH_TO_WRITE_LABELS, filename)
         with open(place_text, 'w') as a:

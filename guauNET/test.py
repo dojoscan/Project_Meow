@@ -19,7 +19,7 @@ with tf.name_scope('InputPipeline'):
 
 # build CNN graph
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
-network_output = net.res_squeeze_net(x, keep_prop, False)
+network_output = net.forget_squeeze_net(x, keep_prop, False)
 
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)
@@ -43,11 +43,11 @@ threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 start_time = time.time()
 sum_time = 0
 for i in range(0, int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
-    image, fbox, fprobs, fclass, net_out, id = sess.run([x, final_boxes, final_probs, final_class, network_output,
+    image, fbox, fprobs, fclass, net_out, image_id = sess.run([x, final_boxes, final_probs, final_class, network_output,
                                                          input_filename], feed_dict={batch_size: p.TEST_BATCH_SIZE,
                                                                                      keep_prop: 1})
     # Write labels
-    fp.write_labels(fbox, fclass, fprobs, id)
+    fp.write_labels(fbox, fclass, fprobs, image_id)
     print("Batch %d, Processing speed = %g fps" % (i, p.TEST_BATCH_SIZE/(time.time()-start_time)))
     sum_time += time.time()-start_time
     start_time = time.time()

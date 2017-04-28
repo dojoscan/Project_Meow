@@ -13,10 +13,10 @@ LEARNING_RATE = 0.0001
 NR_ITERATIONS = 100000
 
 # Testing
-NR_OF_TEST_IMAGES = 50
-TEST_BATCH_SIZE = 2
+NR_OF_TEST_IMAGES = 1106
+TEST_BATCH_SIZE = 1
 NR_TOP_DETECTIONS = 64
-NMS_THRESHOLD = 0.05
+NMS_THRESHOLD = 0.4
 
 # Loss
 LAMBDA_BBOX = 5.0
@@ -64,10 +64,12 @@ PATH_TO_COORDS = PATH_TO_DATA + "training/coord/"
 PATH_TO_CLASSES = PATH_TO_DATA + "training/class/"
 PATH_TO_LOGS = PATH_TO_OUTPUT + "logs/"
 PATH_TO_CKPT = PATH_TO_OUTPUT + "ckpt/"
+
 # testing
-PATH_TO_TEST_IMAGES = PATH_TO_DATA + "testing/image/"
+#PATH_TO_TEST_IMAGES = PATH_TO_DATA + "testing/image/"
+PATH_TO_TEST_IMAGES = "/Users/Donal/Desktop/Thesis/Data/KITTI/2011_10_03_drive_0047/"
 PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/"
-PATH_TO_WRITE_LABELS = PATH_TO_OUTPUT + "predictions/"
+PATH_TO_WRITE_LABELS = PATH_TO_OUTPUT + "predictions/forget_squeeze/rawKITTI/2011_10_03_drive_0047/"
 # validation
 PATH_TO_VAL_IMAGES = PATH_TO_DATA + "validation/image/"
 PATH_TO_VAL_DELTAS = PATH_TO_DATA + "validation/delta/"

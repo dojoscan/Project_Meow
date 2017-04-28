@@ -19,7 +19,7 @@ with tf.device("/cpu:0"):
 t_image = t_batch[0]
 t_class = tf.one_hot(t_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
-t_network_output, variables_to_save = network.squeeze(t_image, keep_prop, False)
+t_network_output, variables_to_save = network.squeeze(t_image, keep_prop, False, None)
 t_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=t_network_output, labels=t_class))
 t_l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()
                                                                         if 'Bias' not in v.name])
@@ -40,16 +40,14 @@ with tf.variable_scope('Optimisation'):
 summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_graph())
 
 # Validation
-with tf.variable_scope('Validation'):
+with tf.device("/cpu:0"):
+    v_batch = im.create_batch(batch_size, 'Val')
+v_image = v_batch[0]
+v_class = tf.one_hot(v_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
-    with tf.device("/cpu:0"):
-        v_batch = im.create_batch(batch_size, 'Val')
-    v_image = v_batch[0]
-    v_class = tf.one_hot(v_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
-
-    v_network_output, _ = network.squeeze(v_image, keep_prop, False)
-    v_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=v_network_output, labels=v_class))
-    val_summ = tf.summary.scalar('Validation_Cross_entropy', v_cross_entropy)
+v_network_output, _ = network.squeeze(v_image, keep_prop, False, True)
+v_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=v_network_output, labels=v_class))
+val_summ = tf.summary.scalar('Validation_Cross_entropy', v_cross_entropy)
 
 # saver for creating checkpoints and store specific variables
 prim_saver = tf.train.Saver(variables_to_save)
