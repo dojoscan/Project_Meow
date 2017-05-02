@@ -128,7 +128,7 @@ def loss_function(gt_mask, gt_deltas, gt_coords, gt_class, net_deltas, net_confi
 
 def add_loss_summaries(set, total_loss, bbox_loss, conf_loss, class_loss, l2_loss):
 
-    tot_loss = tf.summary.scalar(set+'Total_loss', total_loss)
+    tot_loss = tf.summary.scalar(set+'Total_loss', total_loss-l2_loss)
     b_loss = tf.summary.scalar(set+'Bounding_box_loss', bbox_loss)
     co_loss = tf.summary.scalar(set+'Object_confidence_loss', conf_loss)
     cl_loss = tf.summary.scalar(set+'Classification_loss', class_loss)
