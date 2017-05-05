@@ -3,13 +3,13 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 64
-PRINT_FREQ = 500
-CKPT_FREQ = 50000
+BATCH_SIZE = 2
+PRINT_FREQ = 1
+CKPT_FREQ = 10000
 
 # Optimisation
 LEARNING_RATE = 0.0001
-NR_ITERATIONS = 500000
+NR_ITERATIONS = 100000
 
 # PRIMARY (ImageNet)
 PRIM_NR_CLASSES = 1000
@@ -43,7 +43,7 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'LIL HENRIK'
+USER = 'LUCIA'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
@@ -51,15 +51,16 @@ if USER == 'DONAL':
     PATH_TO_PRIM_DATA = '/Users/Donal/Desktop/Thesis/Data/ImageNet/'
 elif USER == 'LUCIA':
     PATH_TO_DATA = '/Master Chalmers/2 year/volvo thesis/code0/'
-    PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/transfer_learning/'
+    PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/mi_ordenador/pre/'
     PATH_TO_PRIM_DATA = 'C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/'
 elif USER == 'BILL':
     PATH_TO_DATA = "/Users/LDIEGO/Documents/KITTI/data/"
     PATH_TO_OUTPUT = "/Users/LDIEGO/Documents/KITTI/output/"
     PATH_TO_PRIM_DATA = '/Users/Donal/Dropbox/KITTI/data/'
 elif USER == 'LIL HENRIK':
-    PATH_TO_DATA = "/Users/ADTOOL-2/Documents/DONALLUCIA/KITTIdata/"
+    PATH_TO_DATA = "/Users/ADTOOL-2/Documents/DONALLUCIA/KITTIdata/pre_train/"
     PATH_TO_OUTPUT = "/Users/ADTOOL-2/Documents/DONALLUCIA/Output/"
+    PATH_TO_PRIM_DATA = "/Users/ADTOOL-2/Documents/DONALLUCIA/ImageNet/"
 else:
     PATH_TO_DATA = "/home/ad-tool-wd-1/Documents/DONALLUCIA/KITTIdata/"
     PATH_TO_OUTPUT = "/home/ad-tool-wd-1/Documents/DONALLUCIA/Output/"
@@ -127,4 +128,4 @@ NR_ANCHORS_PER_IMAGE = len(ANCHORS)
 
 EPSILON = 0.0001
 
-NUM_THREADS = 6
+NUM_THREADS = 4

@@ -8,7 +8,7 @@ import parameters as p
 
 def weight_variable(shape, name, freeze):
     if freeze:
-        weights = tf.Variable(tf.zeros(shape), trainable=False, name=name)
+        weights = tf.get_variable(name, shape, initializer=tf.contrib.layers.xavier_initializer(), trainable=False)
     else:
         weights = tf.get_variable(name, shape, initializer=tf.contrib.layers.xavier_initializer(), trainable=True)
     return weights
@@ -16,19 +16,21 @@ def weight_variable(shape, name, freeze):
 
 def bias_variable(shape, name, freeze):
     if freeze:
-        bias = tf.Variable(tf.zeros(shape), trainable=False, name=name)
+        initial = tf.constant(0.0, shape=shape)
+        bias = tf.get_variable(name,initializer=initial, trainable=False)
     else:
         initial = tf.constant(0.0, shape=shape)
-        bias = tf.Variable(initial, name=name, trainable=True)
+        bias = tf.get_variable(name, initializer=initial, trainable=True)
     return bias
 
 
 def gated_bias_variable(shape, name, freeze):
     if freeze:
-        bias = tf.Variable(tf.zeros(shape), trainable=False, name=name)
+        initial = tf.constant(-1.0, shape=shape)
+        bias = tf.get_variable(name, initializer=initial, trainable=False)
     else:
         initial = tf.constant(-1.0, shape=shape)
-        bias = tf.Variable(initial, name=name, trainable=True)
+        bias = tf.get_variable(name,initializer=initial, trainable=True)
     return bias
 
 

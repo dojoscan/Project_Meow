@@ -17,7 +17,7 @@ def read_image(filename):
         image = tf.image.decode_jpeg(file_contents, channels=3)
         image = tf.cast(image, tf.float32)
         image = tf.image.resize_image_with_crop_or_pad(image, 300, 300)
-        image = tf.image.resize_images(image, p.PRIM_IMAGE_HEIGHT, p.PRIM_IMAGE_WIDTH)
+        image = tf.image.resize_images(image, [p.PRIM_IMAGE_HEIGHT, p.PRIM_IMAGE_WIDTH])
         with tf.variable_scope('DistortImage'):
             binary = tf.random_shuffle([0, 1])
             image = tf.image.random_flip_left_right(image)
@@ -97,7 +97,7 @@ def create_batch(batch_size, mode):
         labels = read_labels(path_to_labels)
         image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
         labels = tf.convert_to_tensor(labels, dtype=tf.int32)
-        input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=True,  name='InputProducer')
+        input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=False,  name='InputProducer')
         images = read_image(input_queue[0])
         batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size, name='Batch', num_threads=p.NUM_THREADS)
     return batch

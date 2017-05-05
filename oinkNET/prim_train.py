@@ -19,7 +19,7 @@ with tf.device("/cpu:0"):
 t_image = t_batch[0]
 t_class = tf.one_hot(t_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
-t_network_output, variables_to_save = network.squeeze(t_image, keep_prop, False, False)
+t_network_output, variables_to_save = network.forget_squeeze_net(t_image, keep_prop, False, False)
 t_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=t_network_output, labels=t_class))
 t_l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()
                                                                         if 'Bias' not in v.name])
@@ -45,7 +45,7 @@ with tf.device("/cpu:0"):
 v_image = v_batch[0]
 v_class = tf.one_hot(v_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
-v_network_output, _ = network.squeeze(v_image, keep_prop, False, True)
+v_network_output, _ = network.forget_squeeze_net(v_image, keep_prop, False, True)
 v_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=v_network_output, labels=v_class))
 val_summ = tf.summary.scalar('Validation_Cross_entropy', v_cross_entropy)
 
@@ -80,7 +80,7 @@ for i in range(init_step, p.NR_ITERATIONS):
         print("----------------------------------------------------------------------------")
     if i % p.PRINT_FREQ == 0:
         # evaluate loss for validation mini-batch
-        val_summary = sess.run(val_summ, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
+        val_summary, val_peso = sess.run(val_summ, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
         summary_writer.add_summary(val_summary, global_step=i)
         # evaluate loss for training mini-batch and apply one step of opt
         t_loss, summary, _ = sess.run([t_total_loss, merged_summaries, gradient_op], feed_dict={batch_size:

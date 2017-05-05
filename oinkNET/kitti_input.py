@@ -26,7 +26,7 @@ def read_image(filename, mode):
                     image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
                     image = tf.image.random_brightness(image, max_delta=50. / 255.)
         image = tf.image.resize_images(image, [p.SEC_IMAGE_HEIGHT, p.SEC_IMAGE_WIDTH])
-        image = tf.subtract(image, tf.reduce_mean(image))
+        #image = tf.subtract(image, tf.reduce_mean(image))
     return image
 
 
@@ -126,6 +126,6 @@ def create_batch(batch_size, mode):
 
         sample_id = input_queue[0]
         batch = tf.train.batch([image, mask, delta, coord, classes, sample_id], batch_size=batch_size, name='Batch',
-                               num_threads=p.NUM_THREADS, allow_smaller_final_batch=True)
+                               num_threads=p.NUM_THREADS)
 
     return batch

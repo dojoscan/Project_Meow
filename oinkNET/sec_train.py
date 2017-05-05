@@ -25,7 +25,7 @@ t_delta = t_batch[2]
 t_coord = t_batch[3]
 t_class = t_batch[4]
 
-t_network_output, variables_to_save = network.squeeze(t_image, keep_prop, True, reuse=False)
+t_network_output, variables_to_save = network.forget_squeeze_net(t_image, keep_prop, True, reuse=False)
 t_class_scores, t_conf_scores, t_bbox_delta = interp.interpret(t_network_output, batch_size)
 t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss = l.loss_function\
                                 (t_mask, t_delta, t_coord, t_class,  t_bbox_delta, t_conf_scores, t_class_scores, True)
@@ -52,10 +52,10 @@ v_delta = v_batch[2]
 v_coord = v_batch[3]
 v_class = v_batch[4]
 
-v_network_output, _ = network.squeeze(v_image, keep_prop, True, reuse=True)
+v_network_output, _ = network.forget_squeeze_net(v_image, keep_prop, True, reuse=True)
 v_class_scores, v_conf_scores, v_bbox_delta = interp.interpret(v_network_output, batch_size)
 v_total_loss, v_bbox_loss, v_conf_loss, v_class_loss, v_l2_loss = l.loss_function\
-                                (v_mask, v_delta, v_coord, v_class,  v_bbox_delta, v_conf_scores, v_class_scores, True)
+    (v_mask, v_delta, v_coord, v_class,  v_bbox_delta, v_conf_scores, v_class_scores, True)
 val_summ = l.add_loss_summaries('Val_', v_total_loss, v_bbox_loss, v_conf_loss, v_class_loss, v_l2_loss)
 
 # saver for creating checkpoints and store specific variables
@@ -73,7 +73,6 @@ if prim_ckpt and not sec_ckpt:
     sess.run(tf.global_variables_initializer())
     sess.run(tf.trainable_variables())
     restore_path, _ = t.get_last_ckpt(p.PATH_TO_CKPT + 'prim/')
-    restore_path = tf.train.latest_checkpoint(p.PATH_TO_CKPT + 'prim/')
     prim_saver.restore(sess, restore_path)
     init_step = 0
     print("Restored from ImageNet trained network. Dir = " + restore_path)
