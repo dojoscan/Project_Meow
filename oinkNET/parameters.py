@@ -3,16 +3,16 @@ import numpy as np
 
 # Training
 DATA_AUGMENT = True
-BATCH_SIZE = 2
-PRINT_FREQ = 1
-CKPT_FREQ = 10000
+BATCH_SIZE = 5
+PRINT_FREQ = 50
+CKPT_FREQ = 1000
 
 # Optimisation
 LEARNING_RATE = 0.0001
 NR_ITERATIONS = 100000
 
 # PRIMARY (ImageNet)
-PRIM_NR_CLASSES = 1000
+PRIM_NR_CLASSES = 6
 PRIM_IMAGE_WIDTH = 256
 PRIM_IMAGE_HEIGHT = 256
 
@@ -43,12 +43,12 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'LUCIA'
+USER = 'DONAL'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
     PATH_TO_OUTPUT = '/Users/Donal/Desktop/output/'
-    PATH_TO_PRIM_DATA = '/Users/Donal/Desktop/Thesis/Data/ImageNet/'
+    PATH_TO_PRIM_DATA = '/Users/Donal/Desktop/Thesis/Data/TinyImageNet/'
 elif USER == 'LUCIA':
     PATH_TO_DATA = '/Master Chalmers/2 year/volvo thesis/code0/'
     PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/mi_ordenador/pre/'

@@ -20,12 +20,15 @@ t_image = t_batch[0]
 t_class = tf.one_hot(t_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
 t_network_output, variables_to_save = network.forget_squeeze_net(t_image, keep_prop, False, False)
+t_correct_prediction = tf.equal(tf.argmax(t_network_output, 1), tf.argmax(t_class, 1))
+t_accuracy = tf.reduce_mean(tf.cast(t_correct_prediction, tf.float32))
+tf.summary.scalar('T_accuracy', t_accuracy)
 t_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=t_network_output, labels=t_class))
 t_l2_loss = p.WEIGHT_DECAY_FACTOR * tf.add_n([tf.nn.l2_loss(v) for v in tf.trainable_variables()
                                                                         if 'Bias' not in v.name])
 t_total_loss = t_cross_entropy + t_l2_loss
-tf.summary.merge([tf.summary.scalar('TrainCrossEntropy', t_cross_entropy), tf.summary.scalar('TrainL2Loss', t_l2_loss),
-                  tf.summary.scalar('TrainTotalLoss', t_total_loss)], name='Train_loss_summary')
+tf.summary.merge([tf.summary.scalar('T_cross_entropy', t_cross_entropy), tf.summary.scalar('T_L2_loss', t_l2_loss),
+                  tf.summary.scalar('T_total_loss', t_total_loss)], name='T_loss_summary')
 merged_summaries = tf.summary.merge_all()
 
 # build training graph
@@ -46,8 +49,11 @@ v_image = v_batch[0]
 v_class = tf.one_hot(v_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
 v_network_output, _ = network.forget_squeeze_net(v_image, keep_prop, False, True)
+v_correct_prediction = tf.equal(tf.argmax(v_network_output, 1), tf.argmax(v_class, 1))
+v_accuracy = tf.reduce_mean(tf.cast(v_correct_prediction, tf.float32))
 v_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=v_network_output, labels=v_class))
-val_summ = tf.summary.scalar('Validation_Cross_entropy', v_cross_entropy)
+val_summ = tf.summary.merge([tf.summary.scalar('V_cross_entropy', v_cross_entropy),
+                             tf.summary.scalar('V_accuracy', v_accuracy)], name='V_loss_summaries')
 
 # saver for creating checkpoints and store specific variables
 prim_saver = tf.train.Saver(variables_to_save)
@@ -80,13 +86,15 @@ for i in range(init_step, p.NR_ITERATIONS):
         print("----------------------------------------------------------------------------")
     if i % p.PRINT_FREQ == 0:
         # evaluate loss for validation mini-batch
-        val_summary, val_peso = sess.run(val_summ, feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
+        v_cross, val_summary, v_acc = sess.run([v_cross_entropy, val_summ, v_accuracy],
+                                               feed_dict={batch_size: p.BATCH_SIZE, keep_prop: 0.5})
         summary_writer.add_summary(val_summary, global_step=i)
-        # evaluate loss for training mini-batch and apply one step of opt
-        t_loss, summary, _ = sess.run([t_total_loss, merged_summaries, gradient_op], feed_dict={batch_size:
-                                                                                p.BATCH_SIZE, keep_prop: 0.5})
-        print("Step %d, Total loss = %g, Speed = %g fps" % (i, t_loss, p.PRINT_FREQ *
-                                                            p.BATCH_SIZE/(time.time() - start_time)))
+        # evaluate loss for training mini-batch and apply one step of op
+        t_cross, summary, _, t_acc = sess.run([t_cross_entropy, merged_summaries, gradient_op, t_accuracy],
+                                              feed_dict={batch_size:p.BATCH_SIZE, keep_prop: 0.5})
+        print("Step %d, Speed = %g fps" % (i, p.PRINT_FREQ *p.BATCH_SIZE/(time.time() - start_time)))
+        print("Cross entropy: train = %g, val = %g" % (t_cross, v_cross))
+        print("Accuracy: train = %g, val = %g" % (t_acc, v_acc))
         print("----------------------------------------------------------------------------")
         # write summaries to log file
         summary_writer.add_summary(summary, global_step=i)

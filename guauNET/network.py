@@ -11,14 +11,14 @@ def weight_variable(shape, name):
     return weights
 
 def bias_variable(shape, name):
-    initial = tf.constant(0.0, shape=shape, name=name)
-    bias = tf.Variable(initial)
+    initial = tf.constant(0.0, shape=shape)
+    bias = tf.get_variable(name, initializer=initial, trainable=True)
     #tf.summary.histogram(name, bias)
     return bias
 
 def gated_bias_variable(shape, name):
-    initial = tf.constant(-1.0, shape=shape, name=name)
-    bias = tf.Variable(initial)
+    initial = tf.constant(-1.0, shape=shape)
+    bias = tf.get_variable(name, initializer=initial, trainable=True)
     #tf.summary.histogram(name, bias)
     return bias
 

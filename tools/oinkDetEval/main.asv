@@ -7,7 +7,7 @@ path_to_det_dir = 'C:/Users/Donal/Desktop/output/predictions/fs_fifty';
 %path_to_gt_dir = 'C:/Master Chalmers/2 year/volvo thesis/code0/training/label';
 %path_to_det_dir = 'C:/log_ckpt_thesis/output/predictions';
 path_to_gt_dir = 'F:\no_pre_val_pred\val_labels';
-path_to_det_dir = 'F:\no_pre_val_pred\forget_squeeze_val';
+path_to_det_dir = 'C:/Users/Donal/Desktop/output/predictions/fs_fifty';
 min_height = 25;
 
 D_gt = dir([path_to_gt_dir, '\*.txt']);
@@ -112,7 +112,7 @@ end
 function plotHist(data, dist_bins, max_dist, lbl)
     figure()
     histogram('BinEdges',[dist_bins max_dist],'BinCounts',data);
-    xlabel('Distance From Ego-Vehicle (m)')
+    xlabel('Distance From Ego-Vehicle')
     ylabel(lbl)
 end
 

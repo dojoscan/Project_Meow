@@ -1,11 +1,11 @@
-function image = readLabelsTest(label_dir, nr_img, gtBool)
+function image = readLabelsTest(nr_img, folder, dir, gtBool)
 
 image = [];
 
 for img_idx = 1:nr_img
     
     % parse input file
-    fid = fopen(sprintf('%s/%06d.txt',label_dir,img_idx-1),'r');
+    fid = fopen([folder '/' dir(img_idx).name],'r');
     if gtBool
         C   = textscan(fid,'%s %f %d %f %f %f %f %f %f %f %f %f %f %f %f','delimiter', ' ');
     else
@@ -27,10 +27,17 @@ for img_idx = 1:nr_img
         objects(o).x2 = C{7}(o); % right
         objects(o).y2 = C{8}(o); % bottom
         
+        % prevent zero height or width (for iou calc)
+        if objects(o).x1 == objects(o).x2
+            objects(o).x2 = objects(o).x2 + 0.001;
+        elseif objects(o).y1 == objects(o).y2
+            objects(o).y2 = objects(o).y2 + 0.001;
+        end
+        
         if gtBool
             objects(o).truncation = C{2}(o); % truncated pixel ratio ([0..1])
             objects(o).occlusion  = C{3}(o); % 0 = visible, 1 = partly occluded, 2 = fully occluded, 3 = unknown
-            objects(o).distance = C{12}(o);
+            objects(o).distance = C{14}(o);
         else
             objects(o).conf = C{16}(o); % confidence score
         end

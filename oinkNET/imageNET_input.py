@@ -27,6 +27,7 @@ def read_image(filename):
             else:
                 image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
                 image = tf.image.random_brightness(image, max_delta=50. / 255.)
+        image = tf.subtract(image, tf.reduce_mean(image))
     return image
 
 
@@ -41,7 +42,7 @@ def read_labels(path_to_labels):
     f = open(path_to_labels, 'r')
     labels = []
     for line in f:
-        labels.append(int(line))
+        labels.append(int(line)-1)
     return labels
 
 
@@ -97,7 +98,7 @@ def create_batch(batch_size, mode):
         labels = read_labels(path_to_labels)
         image_list = tf.convert_to_tensor(image_list, dtype=tf.string)
         labels = tf.convert_to_tensor(labels, dtype=tf.int32)
-        input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=False,  name='InputProducer')
+        input_queue = tf.train.slice_input_producer([image_list, labels], shuffle=True,  name='InputProducer')
         images = read_image(input_queue[0])
         batch = tf.train.batch([images, input_queue[1]], batch_size=batch_size, name='Batch', num_threads=p.NUM_THREADS)
     return batch

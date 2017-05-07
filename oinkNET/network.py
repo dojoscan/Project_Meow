@@ -11,16 +11,18 @@ def weight_variable(shape, name, freeze):
         weights = tf.get_variable(name, shape, initializer=tf.contrib.layers.xavier_initializer(), trainable=False)
     else:
         weights = tf.get_variable(name, shape, initializer=tf.contrib.layers.xavier_initializer(), trainable=True)
+    tf.summary.histogram(name, weights)
     return weights
 
 
 def bias_variable(shape, name, freeze):
     if freeze:
         initial = tf.constant(0.0, shape=shape)
-        bias = tf.get_variable(name,initializer=initial, trainable=False)
+        bias = tf.get_variable(name, initializer=initial, trainable=False)
     else:
         initial = tf.constant(0.0, shape=shape)
         bias = tf.get_variable(name, initializer=initial, trainable=True)
+    tf.summary.histogram(name, bias)
     return bias
 
 
@@ -30,7 +32,8 @@ def gated_bias_variable(shape, name, freeze):
         bias = tf.get_variable(name, initializer=initial, trainable=False)
     else:
         initial = tf.constant(-1.0, shape=shape)
-        bias = tf.get_variable(name,initializer=initial, trainable=True)
+        bias = tf.get_variable(name, initializer=initial, trainable=True)
+    tf.summary.histogram(name, bias)
     return bias
 
 
@@ -115,6 +118,7 @@ def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
             b_f = gated_bias_variable([1], 'Bias3x3', freeze)
             h_f_out = tf.nn.bias_add(tf.nn.conv2d(h_f_in, W_f, strides=[1, 1, 1, 1], padding='SAME', name='Conv3x3'), b_f)
             h_f_sig = tf.sigmoid(h_f_out, name='Sigmoid')
+            tf.summary.histogram('Mask', h_f_sig)
             output = x_prev*(1 - h_f_sig) + x_curr*h_f_sig
 
         fire_dict = {v.op.name: v for v in [W_s, b_s, W_e1x1, b_e1x1, W_e3x3, b_e3x3, W_f, b_f]}

@@ -1,7 +1,7 @@
-path_to_images = 'C:\Users\Donal\Desktop\Thesis\Data\KITTI\2011_10_03_drive_0047\';
-path_to_dets = 'C:\Users\Donal\Desktop\output\predictions\forget_squeeze\rawKITTI\2011_10_03_drive_0047\';
+path_to_images = 'C:\Users\Donal\Desktop\Thesis\Data\CrowdAI\images\';
+path_to_dets = 'C:\Users\Donal\Desktop\Thesis\Data\CrowdAI\predictions\no_pre_fs\';
 conf_thresh = 0.75;
-im_size = [375, 1242];
+%im_size = [375, 1242];
 frame_rate = 10;
 
 % Create dictionary for plotting
@@ -15,7 +15,7 @@ image_list = [dir([path_to_images, '\*.png']);dir([path_to_images, '\*.jpg'])];
 no_img = length(image_list(not([image_list.isdir])));
 det_list = dir([path_to_dets, '\*.txt']);
 
-vid = VideoWriter('C:\Users\Donal\Desktop\forget_nopre_100k_2011_10_03_drive_0047.avi');
+vid = VideoWriter('C:\Users\Donal\Desktop\forget_nopre_100k_crowdAI.avi');
 vid.FrameRate = frame_rate;
 open(vid)
 
@@ -23,9 +23,10 @@ for img_idx = 1:no_img
     
     im_data = image_list(img_idx);
     det_data = det_list(img_idx);
-    im = imread([im_data.folder '/' im_data.name]);
-    im = imresize(im,im_size);
-    objects = readLabelsMeow([det_data.folder '/' det_data.name]);
+    im = imread([path_to_images im_data.name]);
+    %im = imresize(im,im_size);
+    im = im(300:900,:,:);
+    objects = readLabelsMeow([path_to_dets det_data.name]);
 
     for obj_idx=1:numel(objects)
         object = objects(obj_idx);
