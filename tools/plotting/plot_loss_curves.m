@@ -1,5 +1,9 @@
-filename = 'C:\Users\Donal\Desktop\frgt_sq_train.xlsx';
-mark_ind = 1:20:500;
+close all
+clear all
+clc
+
+filename = 'C:\Master Chalmers\2 year\volvo thesis\excel\acc.xlsx';
+mark_ind = 1:20:1000;
 data = xlsread(filename);
 figure
 %semilogy(data(:,1),data(:,2),'r--',data(:,1),data(:,3),'g--',data(:,1),data(:,4),'b--')

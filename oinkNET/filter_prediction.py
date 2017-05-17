@@ -46,7 +46,7 @@ def nms(probs, boxes, class_index):
             probs_image = tf.reshape(probs[i, :], [-1], name='ExtractProbsPerIm')
             class_image = tf.reshape(class_index[i, :], [-1], name='ExtractProbsPerIm')
             count = 0
-            for j in range(0, p.NR_CLASSES):
+            for j in range(0, p.SEC_NR_CLASSES):
                 class_bool = tf.equal(class_image, tf.constant(j, dtype=tf.int32))
                 class_indx = tf.cast(tf.where(class_bool), dtype=tf.int32)
                 boxes_class = tf.reshape(tf.gather(boxes_image, class_indx), [-1, 4], name='ExtractBoxesPerClass')

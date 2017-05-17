@@ -26,7 +26,7 @@ def read_image(filename, mode):
                     image = tf.image.random_saturation(image, lower=0.75, upper=1.25)
                     image = tf.image.random_brightness(image, max_delta=50. / 255.)
         image = tf.image.resize_images(image, [p.SEC_IMAGE_HEIGHT, p.SEC_IMAGE_WIDTH])
-        #image = tf.subtract(image, tf.reduce_mean(image))
+        image = tf.subtract(image, tf.reduce_mean(image))
     return image
 
 

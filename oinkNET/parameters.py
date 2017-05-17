@@ -20,9 +20,9 @@ PRIM_IMAGE_HEIGHT = 256
 
 # Testing
 NR_OF_TEST_IMAGES = 50
-TEST_BATCH_SIZE = 2
+TEST_BATCH_SIZE = 1
 NR_TOP_DETECTIONS = 64
-NMS_THRESHOLD = 0.05
+NMS_THRESHOLD = 0.4
 
 # Loss
 LAMBDA_BBOX = 5.0
@@ -43,7 +43,7 @@ OUTPUT_WIDTH = 76
 OUTPUT_HEIGHT = 22
 NR_ANCHORS_PER_CELL = 9
 
-USER = 'DONAL'
+USER = 'LUCIA'
 
 if USER == 'DONAL':
     PATH_TO_DATA = '/Users/Donal/Dropbox/KITTI/data/'
@@ -51,7 +51,7 @@ if USER == 'DONAL':
     PATH_TO_PRIM_DATA = '/Users/Donal/Desktop/Thesis/Data/TinyImageNet/'
 elif USER == 'LUCIA':
     PATH_TO_DATA = '/Master Chalmers/2 year/volvo thesis/code0/'
-    PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/mi_ordenador/pre/'
+    PATH_TO_OUTPUT = 'C:/log_ckpt_thesis/lil_henrik/'
     PATH_TO_PRIM_DATA = 'C:/Master Chalmers/2 year/volvo thesis/code0/MEOW/Data/'
 elif USER == 'BILL':
     PATH_TO_DATA = "/Users/LDIEGO/Documents/KITTI/data/"
@@ -76,8 +76,8 @@ PATH_TO_CLASSES = PATH_TO_DATA + "training/class/"
 PATH_TO_LOGS = PATH_TO_OUTPUT + "logs/"
 PATH_TO_CKPT = PATH_TO_OUTPUT + "ckpt/"
 # testing
-PATH_TO_TEST_IMAGES = PATH_TO_DATA + "testing/image/"
-PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/"
+PATH_TO_TEST_IMAGES = PATH_TO_DATA + "training/image/"
+PATH_TO_CKPT_TEST = PATH_TO_OUTPUT + "ckpt/pre/sec/gated_half/run-10000"
 PATH_TO_WRITE_LABELS = PATH_TO_OUTPUT + "predictions/"
 # validation
 PATH_TO_VAL_IMAGES = PATH_TO_DATA + "validation/image/"
