@@ -140,18 +140,18 @@ def squeeze(x, keep_prop, freeze_bool, reuse):
 
         save_var = {v.op.name: v for v in [W_conv1, b_conv1]}
 
-        h_fire1, save_var = fire(h_pool1, 64, s1x1=16, e1x1=64, e3x3=64, name='Fire1', freeze=freeze_bool, var_dict=save_var)
-        h_fire2, save_var = fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=freeze_bool, var_dict=save_var)
+        h_fire1, save_var = fire(h_pool1, 64, s1x1=16, e1x1=64, e3x3=64, name='Fire1', freeze=False, var_dict=save_var)
+        h_fire2, save_var = fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=False, var_dict=save_var)
         h_pool2 = tf.nn.max_pool(h_fire2, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool2')
 
-        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=freeze_bool,var_dict=save_var)
-        h_fire4, save_var = fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=freeze_bool, var_dict=save_var)
+        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False,var_dict=save_var)
+        h_fire4, save_var = fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=False, var_dict=save_var)
         h_pool3 = tf.nn.max_pool(h_fire4, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool3')
 
-        h_fire5, save_var = fire(h_pool3, 256, s1x1=48, e1x1=192, e3x3=192, name='Fire5', freeze=freeze_bool, var_dict=save_var)
-        h_fire6, save_var = fire(h_fire5, 384, s1x1=48, e1x1=192, e3x3=192, name='Fire6', freeze=freeze_bool, var_dict=save_var)
-        h_fire7, save_var = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x3=256, name='Fire7', freeze=freeze_bool, var_dict=save_var)
-        h_fire8, save_var = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x3=256, name='Fire8', freeze=freeze_bool, var_dict=save_var)
+        h_fire5, save_var = fire(h_pool3, 256, s1x1=48, e1x1=192, e3x3=192, name='Fire5', freeze=False, var_dict=save_var)
+        h_fire6, save_var = fire(h_fire5, 384, s1x1=48, e1x1=192, e3x3=192, name='Fire6', freeze=False, var_dict=save_var)
+        h_fire7, save_var = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x3=256, name='Fire7', freeze=False, var_dict=save_var)
+        h_fire8, save_var = fire(h_fire7, 512, s1x1=64, e1x1=256, e3x3=256, name='Fire8', freeze=False, var_dict=save_var)
 
         if freeze_bool:
             h_fire9, _ = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x3=384, name='Fire9', freeze=False, var_dict={})
@@ -195,18 +195,18 @@ def forget_squeeze_net(x, keep_prop, freeze_bool, reuse):
 
         save_var = {v.op.name: v for v in [W_conv1, b_conv1]}
 
-        h_fire1, save_var = fire(h_pool1, 64, s1x1=16, e1x1=64, e3x3=64, name='Fire1', freeze=freeze_bool, var_dict=save_var)
-        h_fire2, save_var = forget_fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=freeze_bool, var_dict=save_var)
+        h_fire1, save_var = fire(h_pool1, 64, s1x1=16, e1x1=64, e3x3=64, name='Fire1', freeze=False, var_dict=save_var)
+        h_fire2, save_var = forget_fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=False, var_dict=save_var)
         h_pool2 = tf.nn.max_pool(h_fire2, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool2')
 
-        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=freeze_bool,var_dict=save_var)
-        h_fire4, save_var = forget_fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=freeze_bool, var_dict=save_var)
+        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False,var_dict=save_var)
+        h_fire4, save_var = forget_fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=False, var_dict=save_var)
         h_pool3 = tf.nn.max_pool(h_fire4, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool3')
 
-        h_fire5, save_var = fire(h_pool3, 256, s1x1=48, e1x1=192, e3x3=192, name='Fire5', freeze=freeze_bool, var_dict=save_var)
-        h_fire6, save_var = forget_fire(h_fire5, 384, s1x1=48, e1x1=192, e3x3=192, name='Fire6', freeze=freeze_bool, var_dict=save_var)
-        h_fire7, save_var = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x3=256, name='Fire7', freeze=freeze_bool, var_dict=save_var)
-        h_fire8, save_var = forget_fire(h_fire7, 512, s1x1=64, e1x1=256, e3x3=256, name='Fire8', freeze=freeze_bool, var_dict=save_var)
+        h_fire5, save_var = fire(h_pool3, 256, s1x1=48, e1x1=192, e3x3=192, name='Fire5', freeze=False, var_dict=save_var)
+        h_fire6, save_var = forget_fire(h_fire5, 384, s1x1=48, e1x1=192, e3x3=192, name='Fire6', freeze=False, var_dict=save_var)
+        h_fire7, save_var = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x3=256, name='Fire7', freeze=False, var_dict=save_var)
+        h_fire8, save_var = forget_fire(h_fire7, 512, s1x1=64, e1x1=256, e3x3=256, name='Fire8', freeze=False, var_dict=save_var)
 
         if freeze_bool:
             h_fire9,_ = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x3=384, name='Fire9', freeze=False, var_dict={} )
@@ -229,7 +229,7 @@ def forget_squeeze_net(x, keep_prop, freeze_bool, reuse):
 
             with tf.variable_scope('Conv2'):
                 W_conv3 = weight_variable([3, 3, 512, p.PRIM_NR_CLASSES], 'Weights', False)
-                b_conv3 = bias_variable([ p.PRIM_NR_CLASSES], 'Bias', False)
+                b_conv3 = bias_variable([p.PRIM_NR_CLASSES], 'Bias', False)
                 h_conv3 = tf.nn.bias_add(tf.nn.conv2d(h_drop, W_conv3, strides=[1, 1, 1, 1], padding='SAME',
                                                       name='Conv'), b_conv3, name='AddBias')
             h_pool4 = tf.nn.avg_pool(h_conv3, ksize=[1, 15, 15, 1], strides=[1, 1, 1, 1], padding='VALID',
@@ -249,18 +249,18 @@ def res_squeeze_net(x, keep_prop, freeze_bool, reuse):
             h_pool1 = tf.nn.max_pool(h_conv1, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool1')
         save_var = {v.op.name: v for v in [W_conv1, b_conv1]}
 
-        h_fire1, save_var = fire(h_pool1, 64, s1x1=16, e1x1=64, e3x3=64, name='Fire1', freeze=freeze_bool, var_dict=save_var)
-        h_fire2, save_var = res_fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=freeze_bool, var_dict=save_var)
+        h_fire1, save_var = fire(h_pool1, 64, s1x1=16, e1x1=64, e3x3=64, name='Fire1', freeze=False, var_dict=save_var)
+        h_fire2, save_var = res_fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=False, var_dict=save_var)
         h_pool2 = tf.nn.max_pool(h_fire2, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool2')
 
-        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=freeze_bool,var_dict=save_var)
-        h_fire4, save_var = res_fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=freeze_bool, var_dict=save_var)
+        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False,var_dict=save_var)
+        h_fire4, save_var = res_fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=False, var_dict=save_var)
         h_pool3 = tf.nn.max_pool(h_fire4, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool3')
 
-        h_fire5, save_var = fire(h_pool3, 256, s1x1=48, e1x1=192, e3x3=192, name='Fire5', freeze=freeze_bool, var_dict=save_var)
-        h_fire6, save_var = res_fire(h_fire5, 384, s1x1=48, e1x1=192, e3x3=192, name='Fire6', freeze=freeze_bool, var_dict=save_var)
-        h_fire7, save_var = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x3=256, name='Fire7', freeze=freeze_bool, var_dict=save_var)
-        h_fire8, save_var = res_fire(h_fire7, 512, s1x1=64, e1x1=256, e3x3=256, name='Fire8', freeze=freeze_bool, var_dict=save_var)
+        h_fire5, save_var = fire(h_pool3, 256, s1x1=48, e1x1=192, e3x3=192, name='Fire5', freeze=False, var_dict=save_var)
+        h_fire6, save_var = res_fire(h_fire5, 384, s1x1=48, e1x1=192, e3x3=192, name='Fire6', freeze=False, var_dict=save_var)
+        h_fire7, save_var = fire(h_fire6, 384, s1x1=64, e1x1=256, e3x3=256, name='Fire7', freeze=False, var_dict=save_var)
+        h_fire8, save_var = res_fire(h_fire7, 512, s1x1=64, e1x1=256, e3x3=256, name='Fire8', freeze=False, var_dict=save_var)
 
         if freeze_bool:
             h_fire9,_ = fire(h_fire8, 512, s1x1=96, e1x1=384, e3x3=384, name='Fire9', freeze=False, var_dict={} )
