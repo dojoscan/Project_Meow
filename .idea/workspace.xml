@@ -2,19 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0a08750b-90c7-47c1-b583-f705ad600433" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Project_Meow.iml" afterPath="$PROJECT_DIR$/.idea/Project_Meow.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/filter_prediction.py" afterPath="$PROJECT_DIR$/oinkNET/filter_prediction.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/interpretation.py" afterPath="$PROJECT_DIR$/oinkNET/interpretation.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/kitti_input.py" afterPath="$PROJECT_DIR$/oinkNET/kitti_input.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/loss.py" afterPath="$PROJECT_DIR$/oinkNET/loss.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/network.py" afterPath="$PROJECT_DIR$/oinkNET/network.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/parameters.py" afterPath="$PROJECT_DIR$/oinkNET/parameters.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/prim_train.py" afterPath="$PROJECT_DIR$/oinkNET/prim_train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/sec_train.py" afterPath="$PROJECT_DIR$/oinkNET/sec_train.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/test.py" afterPath="$PROJECT_DIR$/oinkNET/test.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/oinkNET/tools.py" afterPath="$PROJECT_DIR$/oinkNET/tools.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/guauNET/README.txt" afterPath="$PROJECT_DIR$/guauNET/README.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,10 +20,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="network.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="network.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/oinkNET/network.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4590">
+            <state relative-caret-position="-171">
               <caret line="256" column="104" lean-forward="false" selection-start-line="256" selection-start-column="104" selection-end-line="256" selection-end-column="104" />
               <folding />
             </state>
@@ -84,7 +72,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tools.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="tools.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/oinkNET/tools.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="126">
@@ -557,7 +545,7 @@
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21502976" sideWeight="0.49346405" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.0" sideWeight="0.49346405" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850242" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32724252" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24637681" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -806,14 +794,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/oinkNET/network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4590">
-          <caret line="256" column="104" lean-forward="false" selection-start-line="256" selection-start-column="104" selection-end-line="256" selection-end-column="104" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/oinkNET/parameters.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1584">
@@ -852,6 +832,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="10" column="4" lean-forward="false" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/oinkNET/network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-171">
+          <caret line="256" column="104" lean-forward="false" selection-start-line="256" selection-start-column="104" selection-end-line="256" selection-end-column="104" />
           <folding />
         </state>
       </provider>

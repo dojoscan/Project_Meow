@@ -1,4 +1,4 @@
-% Evaluation script for KITTI
+% Evaluation script for KITTI for the predictions from multiple runs
 
 function mainMultiple()
 
@@ -21,7 +21,7 @@ overlap_thresh = [0.7, 0.5, 0.5, 0.5, 0.5, 0.7, 1, 1, 1];
 confuse_vec = [1, 2, 3, 4, 2, 1, 5, 6, 7];
 dist_bins = 0:5:100;
 nr_bins = size(dist_bins,2)-1;
-nr_methods = 3;
+nr_methods = size(path_to_det_dir_array,2);
 nr_imp_classes = 3; % car, pedestrian, cyclists
 gt_freq = zeros(nr_methods, nr_imp_classes, nr_bins); % gt's in each dist bin
 tp_freq = gt_freq;    % nr. tp in each dist bin
