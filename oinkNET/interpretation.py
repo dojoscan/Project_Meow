@@ -3,6 +3,7 @@
 import tensorflow as tf
 import parameters as p
 
+
 def interpret(network_output, batch_size):
     '''
     Converts the output tensor of the network to a form that can be easily manipulated to calculate the loss

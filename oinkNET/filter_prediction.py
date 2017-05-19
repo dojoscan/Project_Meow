@@ -5,6 +5,7 @@ import parameters as p
 import loss as l
 import os
 
+
 def find_k_best(det_probs, det_boxes, det_class):
 
     """ Find the top k predictions in each image based on the class multiplied by obj conf scores
@@ -29,6 +30,7 @@ def find_k_best(det_probs, det_boxes, det_class):
         boxes = tf.reshape(boxes, [p.TEST_BATCH_SIZE, p.NR_TOP_DETECTIONS, 4], name='ReshapeTopBoxes')
         class_index = tf.reshape(class_index, [p.TEST_BATCH_SIZE, p.NR_TOP_DETECTIONS], name='ReshapeTopClasses')
     return probs, boxes, class_index
+
 
 def nms(probs, boxes, class_index):
     """Apply non maximum suppression per class to the boxes for each image in the batch
@@ -65,6 +67,7 @@ def nms(probs, boxes, class_index):
             final_class.append(tf.gather(class_image, final_idx))
     return final_boxes, final_probs, final_class
 
+
 def filter(class_scores, confidence_scores, bbox_delta):
 
     """ Calculates the bounding boxes and their corresponding confidence score (probability) and class, from the CNN
@@ -92,23 +95,24 @@ def filter(class_scores, confidence_scores, bbox_delta):
 
     return final_boxes, final_probs, final_class
 
-def write_labels(fbox, fclass, fprobs, id):
+
+def write_labels(fbox, fclass, fprobs, image_id):
     """
         Write network predictions to txt file in KITTI format
     """
     for i in range(0, len(fbox)):
         nr_objects = len(fclass[i])
-        id_decode = id[i].decode(encoding='UTF-8', errors='strict')
+        id_decode = image_id[i].decode(encoding='UTF-8', errors='strict')
         split_id_path = id_decode.split('.')[0]
         im_number = int(split_id_path.split('image/')[-1])
         filename = ('%06d' % im_number) + '.txt'
         place_text = os.path.join(p.PATH_TO_WRITE_LABELS, filename)
         with open(place_text, 'w') as a:
             for j in range(0, nr_objects):
-                wr = p.CLASSES_INV[('%s' % fclass[i][j])] + (' ') + ('%s' % -1) + (' ') + ('%s' % -1) + (' ') + \
-                     ('%s' % -10) + (' ') + ('%.2f' % fbox[i][j, 0]) + (' ') + ('%.2f' % fbox[i][j, 1]) + (' ') +\
-                     ('%.2f' % fbox[i][j, 2]) + (' ') + ('%.2f' % fbox[i][j, 3]) + (' ') + ('%s %s %s' % (-1, -1, -1)) +\
-                     (' ') + ('%s %s %s' % (-1000, -1000, -1000)) + (' ') + ('%s' % -10) + (' ') +\
+                wr = p.CLASSES_INV[('%s' % fclass[i][j])] + ' ' + ('%s' % -1) + ' ' + ('%s' % -1) + ' ' + \
+                     ('%s' % -10) + ' ' + ('%.2f' % fbox[i][j, 0]) + ' ' + ('%.2f' % fbox[i][j, 1]) + ' ' +\
+                     ('%.2f' % fbox[i][j, 2]) + ' ' + ('%.2f' % fbox[i][j, 3]) + ' ' + ('%s %s %s' % (-1, -1, -1)) +\
+                     ' ' + ('%s %s %s' % (-1000, -1000, -1000)) + ' ' + ('%s' % -10) + ' ' +\
                      ('%.2f' % fprobs[i][j]) + ('\n')
                 a.write(wr)
             a.close()

@@ -31,7 +31,7 @@ t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss = l.loss_functio
                                 (t_mask, t_delta, t_coord, t_class,  t_bbox_delta, t_conf_scores, t_class_scores, True)
 l.add_loss_summaries('Train_', t_total_loss, t_bbox_loss, t_conf_loss, t_class_loss, t_l2_loss)
 
-# build training graph
+# Optimisation
 with tf.variable_scope('Optimisation'):
     global_step = tf.Variable(0, name='GlobalStep', trainable=False)
     train_step = tf.train.AdamOptimizer(p.LEARNING_RATE, name='TrainStep')

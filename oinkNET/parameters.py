@@ -17,7 +17,6 @@ PRIM_IMAGE_WIDTH = 256
 PRIM_IMAGE_HEIGHT = 256
 
 # SECONDARY (KITTI)
-
 # Testing
 NR_OF_TEST_IMAGES = 50
 TEST_BATCH_SIZE = 1
@@ -86,17 +85,18 @@ PATH_TO_VAL_MASK = PATH_TO_DATA + "validation/mask/"
 PATH_TO_VAL_COORDS = PATH_TO_DATA + "validation/coord/"
 PATH_TO_VAL_CLASSES = PATH_TO_DATA + "validation/class/"
 
+
 def set_anchors():
-  # Dimensions of anchors copied from original SqueezeDet implementation for KITTI
-  H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL
-  anchor_shapes = np.reshape(
+    # Dimensions of anchors copied from original SqueezeDet implementation for KITTI
+    H, W, B = OUTPUT_HEIGHT, OUTPUT_WIDTH, NR_ANCHORS_PER_CELL
+    anchor_shapes = np.reshape(
       [np.array(
-          [[  36.,  37.], [ 366., 174.], [ 115.,  59.],
-           [ 162.,  87.], [  38.,  90.], [ 258., 173.],
-           [ 224., 108.], [  78., 170.], [  72.,  43.]])] * H * W,
+          [[36.,  37.], [366., 174.], [115.,  59.],
+           [162.,  87.], [38.,  90.], [258., 173.],
+           [224., 108.], [78., 170.], [72.,  43.]])] * H * W,
       (H, W, B, 2)
-  )
-  center_x = np.reshape(
+    )
+    center_x = np.reshape(
       np.transpose(
           np.reshape(
               np.array([np.arange(1, W+1)*float(SEC_IMAGE_WIDTH)/(W+1)]*H*B),
@@ -105,8 +105,8 @@ def set_anchors():
           (1, 2, 0)
       ),
       (H, W, B, 1)
-  )
-  center_y = np.reshape(
+    )
+    center_y = np.reshape(
       np.transpose(
           np.reshape(
               np.array([np.arange(1, H+1)*float(SEC_IMAGE_HEIGHT)/(H+1)]*W*B),
@@ -115,13 +115,13 @@ def set_anchors():
           (2, 1, 0)
       ),
       (H, W, B, 1)
-  )
-  anchors = np.reshape(
+    )
+    anchors = np.reshape(
       np.concatenate((center_x, center_y, anchor_shapes), axis=3),
       (-1, 4)
-  )
+    )
 
-  return anchors
+    return anchors
 
 ANCHORS = set_anchors()
 NR_ANCHORS_PER_IMAGE = len(ANCHORS)

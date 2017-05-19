@@ -25,15 +25,14 @@ with tf.name_scope('InputPipeline'):
 network_output, _ = network.forget_squeeze_net(x, keep_prop, True, False)
 class_scores, conf_scores, bbox_delta = interp.interpret(network_output, batch_size)
 
-# build filtering graph
+# Filter predictions
 final_boxes, final_probs, final_class = fp.filter(class_scores, conf_scores, bbox_delta)
 
 test_saver = tf.train.Saver()
 sess = tf.Session()
 
 # restore from checkpoint
-#restore_path, _ = t.get_last_ckpt(p.PATH_TO_CKPT + 'sec/')
-restore_path = p.PATH_TO_CKPT_TEST
+restore_path, _ = t.get_last_ckpt(p.PATH_TO_CKPT + 'sec/')
 test_saver.restore(sess, restore_path)
 print("Restored from ImageNet and KITTI trained network. Ready for testing. Dir = " + restore_path)
 

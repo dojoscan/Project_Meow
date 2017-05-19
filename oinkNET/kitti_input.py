@@ -9,6 +9,7 @@ def read_image(filename, mode):
     """
     Args:
         filename: a scalar string tensor.
+        mode: 'Train', 'Test', or 'Val'
     Returns:
         image_tensor: decoded image (which is distorted if training)
     """
@@ -48,7 +49,7 @@ def read_file(filename):
 def create_file_list(path_to_folder):
     """
     Args:
-        path_to_images: full path to image folder
+        path_to_folder: full path to folder
     Returns:
         image_list: a tensor of all files in that folder
     """

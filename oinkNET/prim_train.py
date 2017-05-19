@@ -19,7 +19,7 @@ with tf.device("/cpu:0"):
 t_image = t_batch[0]
 t_class = tf.one_hot(t_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
-t_network_output, variables_to_save = network.forget_squeeze_net(t_image, keep_prop, False, False)
+t_network_output, variables_to_save = network.forget_squeeze_net(t_image, keep_prop, False, reuse=False)
 t_correct_prediction = tf.equal(tf.argmax(t_network_output, 1), tf.argmax(t_class, 1))
 t_accuracy = tf.reduce_mean(tf.cast(t_correct_prediction, tf.float32))
 tf.summary.scalar('T_accuracy', t_accuracy)
@@ -31,7 +31,7 @@ tf.summary.merge([tf.summary.scalar('T_cross_entropy', t_cross_entropy), tf.summ
                   tf.summary.scalar('T_total_loss', t_total_loss)], name='T_loss_summary')
 merged_summaries = tf.summary.merge_all()
 
-# build training graph
+# Optimisation
 with tf.variable_scope('Optimisation'):
     global_step = tf.Variable(0, name='GlobalStep', trainable=False)
     train_step = tf.train.AdamOptimizer(p.LEARNING_RATE, name='TrainStep')
@@ -48,7 +48,7 @@ with tf.device("/cpu:0"):
 v_image = v_batch[0]
 v_class = tf.one_hot(v_batch[1], p.PRIM_NR_CLASSES, dtype=tf.int32)
 
-v_network_output, _ = network.forget_squeeze_net(v_image, keep_prop, False, True)
+v_network_output, _ = network.forget_squeeze_net(v_image, keep_prop, False, reuse=True)
 v_correct_prediction = tf.equal(tf.argmax(v_network_output, 1), tf.argmax(v_class, 1))
 v_accuracy = tf.reduce_mean(tf.cast(v_correct_prediction, tf.float32))
 v_cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits=v_network_output, labels=v_class))

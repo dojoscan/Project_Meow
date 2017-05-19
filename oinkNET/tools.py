@@ -5,15 +5,17 @@ import parameters as p
 import os
 import glob
 
+
 def compute_iou(boxA,boxB):
-    ''' Computes the intersection-over-union of an array of boxes and one box
+    """
+    Computes the intersection-over-union of an array of boxes and one box
     Args:
         boxA: a 1D or 2D array encoding the top left, top right, width and height, sz = [no_boxes,4]
         boxB: a 1D or 2D array encoding the top left, top right, width and height, sz = [no_boxes,4]
         Note - atleast one of boxA and boxB be a vector of size [1,4]
     Returns:
          iou: arrays of IOUs between a box (or set of boxes) and another box
-    '''
+    """
 
     x_min = np.maximum(boxA[0], boxB[0])
     y_min = np.maximum(boxA[1], boxB[1])
@@ -26,19 +28,21 @@ def compute_iou(boxA,boxB):
 
     return intersection / (union + p.EPSILON)
 
+
 def bbox_transform_inv(bbox):
     """
     Convert a bbox of form (x_min, y_min, x_max, y_max) to (x_c, y_c, w, h)
     """
     xmin, ymin, xmax, ymax = bbox
     out_box = [[]]*4
-    width       = xmax - xmin + 1.0
-    height      = ymax - ymin + 1.0
-    out_box[0]  = xmin + 0.5*width
-    out_box[1]  = ymin + 0.5*height
-    out_box[2]  = width
-    out_box[3]  = height
+    width = xmax - xmin + 1.0
+    height = ymax - ymin + 1.0
+    out_box[0] = xmin + 0.5*width
+    out_box[1] = ymin + 0.5*height
+    out_box[2] = width
+    out_box[3] = height
     return out_box
+
 
 def bbox_transform(bbox):
     """
@@ -52,6 +56,7 @@ def bbox_transform(bbox):
     out_box[3] = cy+h/2
 
     return out_box
+
 
 def get_last_ckpt(path_to_dir):
     """

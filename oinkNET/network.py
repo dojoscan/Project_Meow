@@ -1,4 +1,4 @@
-# CONTAINS DIFFERENT NETWORK ARCHITECTURES BASED ON SQUEEZEDET
+# CONTAINS DIFFERENT NETWORK ARCHITECTURES BASED ON SQUEEZEDET FOR TRANSFER LEARNING
 
 import tensorflow as tf
 import parameters as p
@@ -90,6 +90,7 @@ def res_fire(x, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
         var_dict.update(fire_dict)
         return output, var_dict
 
+
 # Fire module w/ gated residual connection
 def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name, freeze, var_dict):
     with tf.variable_scope(name):
@@ -144,7 +145,7 @@ def squeeze(x, keep_prop, freeze_bool, reuse):
         h_fire2, save_var = fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=False, var_dict=save_var)
         h_pool2 = tf.nn.max_pool(h_fire2, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool2')
 
-        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False,var_dict=save_var)
+        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False, var_dict=save_var)
         h_fire4, save_var = fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=False, var_dict=save_var)
         h_pool3 = tf.nn.max_pool(h_fire4, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool3')
 
@@ -199,7 +200,7 @@ def forget_squeeze_net(x, keep_prop, freeze_bool, reuse):
         h_fire2, save_var = forget_fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=False, var_dict=save_var)
         h_pool2 = tf.nn.max_pool(h_fire2, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool2')
 
-        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False,var_dict=save_var)
+        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False, var_dict=save_var)
         h_fire4, save_var = forget_fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=False, var_dict=save_var)
         h_pool3 = tf.nn.max_pool(h_fire4, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool3')
 
@@ -253,7 +254,7 @@ def res_squeeze_net(x, keep_prop, freeze_bool, reuse):
         h_fire2, save_var = res_fire(h_fire1, 128, s1x1=16, e1x1=64, e3x3=64, name='Fire2', freeze=False, var_dict=save_var)
         h_pool2 = tf.nn.max_pool(h_fire2, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool2')
 
-        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False,var_dict=save_var)
+        h_fire3, save_var = fire(h_pool2, 128, s1x1=32, e1x1=128, e3x3=128, name='Fire3', freeze=False, var_dict=save_var)
         h_fire4, save_var = res_fire(h_fire3, 256, s1x1=32, e1x1=128, e3x3=128, name='Fire4', freeze=False, var_dict=save_var)
         h_pool3 = tf.nn.max_pool(h_fire4, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool3')
 
