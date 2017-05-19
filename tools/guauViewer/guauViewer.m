@@ -23,13 +23,14 @@ end
 function guauViewer_OpeningFcn(hObject, eventdata, handles, varargin)
 
 global path_to_images path_to_labels class_dict plot_colours ...
-    conf_thresh plot_bool class_array slide_bool im_size
+    conf_thresh plot_bool class_array slide_bool im_size im_list lab_list
 
 handles.output = hObject;
 
-im_size = [375, 1242];
-path_to_images = 'C:\Users\Donal\Dropbox\KITTI\data\testing\image\';
-path_to_labels = 'C:\Users\Donal\Dropbox\KITTI\output\predictions\';
+%im_size = [375, 1242];
+im_size = [600, 1920];
+path_to_images = 'C:\Users\Donal\Desktop\Thesis\Data\CrowdAI\images';
+path_to_labels = 'C:\Users\Donal\Desktop\Thesis\Data\CrowdAI\predictions\downsample';
 conf_thresh = 0.0;
 slide_bool = 0;
 
@@ -45,6 +46,8 @@ class_array = [plot_bool classes];
 set(handles.classPopUp,'String',class_array);
  
 % Display first image and index
+im_list = [dir([path_to_images, '\*.png']);dir([path_to_images, '\*.jpg'])];
+lab_list = dir([path_to_labels, '\*.txt']);
 dirInit(handles)
 
 guidata(hObject, handles);
@@ -179,17 +182,18 @@ end
 function plotImage(handles)
 
 global path_to_images path_to_labels im_idx no_img class_dict plot_colours ...
-    conf_thresh plot_bool im_size
+    conf_thresh plot_bool im_size im_list lab_list
 
 set(handles.curImTxt, 'String', [num2str(im_idx) '/' num2str(no_img-1)])
-im = imread(sprintf('%s/%06d.png',path_to_images,im_idx));
-im = imresize(im,im_size);
+im = imread([path_to_images '/' im_list(im_idx+1).name]);
+%im = imresize(im,im_size);
+im = im(300:900,:,:);
 axes(handles.ImagePane)
 image(im)
 axis off
 axis image
 
-objects = readLabelsGuau(path_to_labels,im_idx);
+objects = readLabelsGuau(path_to_labels,im_idx, lab_list);
 
 for obj_idx=1:numel(objects)
     object = objects(obj_idx);
@@ -205,17 +209,17 @@ end
 function plotImageTimer(handles)
 
 global path_to_images path_to_labels im_idx no_img class_dict plot_colours ...
-    conf_thresh plot_bool
+    conf_thresh plot_bool im_list lab_list
 
 im_idx = im_idx+1;
-set(handles.curImTxt, 'String', [num2str(im_idx) '/' num2str(no_img-1)])
-im = imread(sprintf('%s/%06d.png',path_to_images,im_idx));
+set(handles.curImTxt, 'String', [num2str(im_idx) '\' num2str(no_img-1)])
+im = imread([path_to_images '/' im_list(im_idx+1).name]);
 axes(handles.ImagePane)
 image(im)
 axis off
 axis image
 
-objects = readLabelsGuau(path_to_labels,im_idx);
+objects = readLabelsGuau(path_to_labels,im_idx, lab_list);
 
 for obj_idx=1:numel(objects)
     object = objects(obj_idx);
@@ -287,7 +291,7 @@ function dirInit(handles)
 
 global path_to_images no_img im_idx
 im_idx = 0;
-D = dir([path_to_images, '\*.png']);
+D = [dir([path_to_images, '\*.png']);dir([path_to_images, '\*.jpg'])];
 no_img = length(D(not([D.isdir])));
 plotImage(handles)
 set(handles.curImTxt, 'String', ['0/' num2str(no_img-1)])

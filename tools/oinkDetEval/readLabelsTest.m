@@ -5,6 +5,7 @@ image = [];
 for img_idx = 1:nr_img
     
     % parse input file
+    
     fid = fopen([folder '/' dir(img_idx).name],'r');
     if gtBool
         C   = textscan(fid,'%s %f %d %f %f %f %f %f %f %f %f %f %f %f %f','delimiter', ' ');

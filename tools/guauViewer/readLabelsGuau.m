@@ -1,7 +1,7 @@
-function objects = readLabelsGuau(label_dir,img_idx)
+function objects = readLabelsGuau(label_dir,img_idx,lab_list)
 
 % parse input file
-fid = fopen(sprintf('%s/%06d.txt',label_dir,img_idx),'r');
+fid = fopen([label_dir '/' lab_list(img_idx+1).name],'r');
 C   = textscan(fid,'%s %d %d %f %f %f %f %f %f %f %f %f %f %f %f %f','delimiter', ' ');
 fclose(fid);
 

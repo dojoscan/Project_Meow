@@ -5,16 +5,19 @@ from parameters import NR_CLASSES, NR_ANCHORS_PER_CELL
 
 # VARIABLES
 
+
 def weight_variable(shape, name):
     weights = tf.get_variable(name, shape, initializer=tf.contrib.layers.xavier_initializer())
     #tf.summary.histogram(name, weights)
     return weights
+
 
 def bias_variable(shape, name):
     initial = tf.constant(0.0, shape=shape)
     bias = tf.get_variable(name, initializer=initial, trainable=True)
     #tf.summary.histogram(name, bias)
     return bias
+
 
 def gated_bias_variable(shape, name):
     initial = tf.constant(-1.0, shape=shape)
@@ -24,14 +27,15 @@ def gated_bias_variable(shape, name):
 
 # OPERATIONS
 
+
 def conv2d(x, W):
     return tf.nn.conv2d(x, W, strides=[1, 1, 1, 1], padding='SAME', name='Conv')
 
-def max_pool_3x3(x):
-    return tf.nn.max_pool(x, ksize=[1, 3, 3, 1],
-                            strides=[1, 2, 2, 1], padding='VALID', name='MaxPool')
 
-# blocks
+def max_pool_3x3(x):
+    return tf.nn.max_pool(x, ksize=[1, 3, 3, 1], strides=[1, 2, 2, 1], padding='VALID', name='MaxPool')
+
+# BLOCKS
 
 
 # Fire module w/ gated residual connection
@@ -62,7 +66,6 @@ def forget_fire(x_prev, input_depth, s1x1, e1x1, e3x3, name):
             b_f = gated_bias_variable([1], 'Bias1x1')
             h_f_out = tf.nn.bias_add(conv2d(h_f_in, W_f), b_f)
             h_f_sig = tf.sigmoid(h_f_out)
-            tf.summary.histogram('ForgetGateAct', h_f_sig)
             output = x_prev*(1 - h_f_sig) + x_curr*h_f_sig
 
         tf.summary.histogram('Activation', output)
@@ -89,8 +92,9 @@ def res_fire(x, input_depth, s1x1, e1x1, e3x3, name):
             h_e3x3 = tf.nn.bias_add(conv2d(h_s, W_e3x3), b_e3x3)
             h_e3x3 = tf.nn.relu(h_e3x3)
 
+        tf.summary.histogram('Skip', x)
+        tf.summary.histogram('Activation', tf.concat([h_e1x1, h_e3x3], 3, name='Concatenate'))
         output = tf.add(tf.concat([h_e1x1, h_e3x3], 3, name='Concatenate'), x, 'Residual')
-        tf.summary.histogram('Activation', output)
         return output
 
 

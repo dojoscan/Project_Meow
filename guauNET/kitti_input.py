@@ -4,10 +4,12 @@ import tensorflow as tf
 import os
 import parameters as p
 
+
 def read_image(filename, mode):
     """
     Args:
         filename: a scalar string tensor.
+        mode: 'Test', 'Train', or 'Val'
     Returns:
         image_tensor: decoded image (which is distorted if training)
     """
@@ -27,6 +29,7 @@ def read_image(filename, mode):
         image = tf.image.resize_images(image, [p.IMAGE_HEIGHT, p.IMAGE_WIDTH])
         image = tf.subtract(image, tf.reduce_mean(image))
     return image
+
 
 def read_file(filename):
     """
@@ -74,6 +77,7 @@ def create_batch(batch_size, mode):
             image_list = create_file_list(p.PATH_TO_TEST_IMAGES)
 
             no_samples = len(image_list)
+            # create dummy labels
             mask_list = delta_list = coord_list = class_list = tf.convert_to_tensor(['0']*no_samples, dtype=tf.string)
             input_queue = tf.train.slice_input_producer([image_list, mask_list, delta_list, coord_list, class_list],
                                                         shuffle=False, name='InputQueue')

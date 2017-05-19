@@ -5,11 +5,13 @@ import parameters as p
 import interpretation as interp
 import tools as t
 
+
 def transform_deltas_to_bbox(net_deltas, train):
     """ Transform the deltas given by the network to x,y,w,h format
     Args:
        net_deltas: a 3d tensor containing the network-predicted parametrised bbox offsets for each anchor
                                                 sz=[batch_sz, no_anchors_per_image,4]
+       train: Boolean
     Returns:
        if Train = True
        pred_coords: a 3d tensor containing the transformation of the deltas to x, y, w, h representation,
@@ -40,6 +42,7 @@ def transform_deltas_to_bbox(net_deltas, train):
             pred_coords = [xmin, ymin, xmax, ymax]
             pred_coords = tf.transpose(tf.stack(pred_coords, axis=1), perm=[0, 2, 1], name='BboxCoords')
     return pred_coords
+
 
 def bbox_regression(gt_mask, gt_deltas, net_deltas, nr_objects):
     """ Calculate bbox regression
@@ -74,6 +77,7 @@ def confidence_score_regression(gt_mask, gt_confidence_scores, net_conf_scores, 
             name='ConfidenceLoss'
         )
     return conf_loss
+
 
 def classification_regression(gt_mask, gt_class, net_class_scores, nr_objects):
     """ Calculates the classification regression.
@@ -126,12 +130,13 @@ def loss_function(gt_mask, gt_deltas, gt_coords, gt_class, net_deltas, net_confi
 
     return total_loss, bbox_loss, conf_loss, class_loss, l2_loss
 
-def add_loss_summaries(set, total_loss, bbox_loss, conf_loss, class_loss, l2_loss):
 
-    tot_loss = tf.summary.scalar(set+'Total_loss', total_loss-l2_loss)
-    b_loss = tf.summary.scalar(set+'Bounding_box_loss', bbox_loss)
-    co_loss = tf.summary.scalar(set+'Object_confidence_loss', conf_loss)
-    cl_loss = tf.summary.scalar(set+'Classification_loss', class_loss)
-    l_loss = tf.summary.scalar(set+'Weight_decay_loss', l2_loss)
+def add_loss_summaries(mode, total_loss, bbox_loss, conf_loss, class_loss, l2_loss):
 
-    return tf.summary.merge([tot_loss, b_loss, co_loss, cl_loss, l_loss], name=set+'loss_summary')
+    tot_loss = tf.summary.scalar(mode+'Total_loss', total_loss-l2_loss)
+    b_loss = tf.summary.scalar(mode+'Bounding_box_loss', bbox_loss)
+    co_loss = tf.summary.scalar(mode+'Object_confidence_loss', conf_loss)
+    cl_loss = tf.summary.scalar(mode+'Classification_loss', class_loss)
+    l_loss = tf.summary.scalar(mode+'Weight_decay_loss', l2_loss)
+
+    return tf.summary.merge([tot_loss, b_loss, co_loss, cl_loss, l_loss], name=mode+'loss_summary')

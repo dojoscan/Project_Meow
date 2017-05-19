@@ -17,9 +17,11 @@ with tf.name_scope('InputPipeline'):
     x = batch[0]
     input_filename = batch[5]
 
+tf.summary.image('InputImage', x, max_outputs=5)
+
 # build CNN graph
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
-network_output = net.forget_squeeze_net(x, keep_prop, False)
+network_output = net.res_squeeze_net(x, keep_prop, False)
 
 # build interpretation graph
 class_scores, confidence_scores, bbox_delta = interp.interpret(network_output, batch_size)
@@ -39,14 +41,17 @@ print('Restored variables from ' + restore_path)
 coordinate = tf.train.Coordinator()
 threads = tf.train.start_queue_runners(sess=sess, coord=coordinate)
 
+merged_summaries = tf.summary.merge_all()
+summary_writer = tf.summary.FileWriter(p.PATH_TO_LOGS, graph=tf.get_default_graph())
+
 # run testing
 start_time = time.time()
 sum_time = 0
 for i in range(0, int(round(p.NR_OF_TEST_IMAGES/p.TEST_BATCH_SIZE))):
-    image, fbox, fprobs, fclass, net_out, image_id = sess.run([x, final_boxes, final_probs, final_class, network_output,
-                                                         input_filename], feed_dict={batch_size: p.TEST_BATCH_SIZE,
-                                                                                     keep_prop: 1})
-    # Write labels
+    summ, fbox, fprobs, fclass, image_id = sess.run([merged_summaries, final_boxes, final_probs, final_class, input_filename],
+                                                    feed_dict={batch_size: p.TEST_BATCH_SIZE, keep_prop: 1})
+    summary_writer.add_summary(summ)
+    # Write labels in KITTI format
     fp.write_labels(fbox, fclass, fprobs, image_id)
     print("Batch %d, Processing speed = %g fps" % (i, p.TEST_BATCH_SIZE/(time.time()-start_time)))
     sum_time += time.time()-start_time

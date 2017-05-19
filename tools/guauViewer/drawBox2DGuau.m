@@ -4,7 +4,7 @@ axes(h)
 % show rectangular bounding boxes
 pos = [object.x1,object.y1,object.x2-object.x1+1,object.y2-object.y1+1];
 rectangle('Position',pos,'EdgeColor',plotColours(classDict(object.type)),...
-        'LineWidth',1)
+        'LineWidth',2)
 %rectangle('Position',pos,'EdgeColor','b', 'parent', h.axes)
 
 % draw label

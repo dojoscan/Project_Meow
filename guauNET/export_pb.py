@@ -1,16 +1,18 @@
 import tensorflow as tf
 import network as net
 import tools as t
+import interpretation as interp
 from tensorflow.python.framework import graph_util
 
-PATH_TO_MODEL_CKPT = '/Users/Donal/Desktop/output/ckpt/'
-EXPORT_PATH = '/Users/Donal/Desktop/output/model/'
-NAME = 'forget_squeeze_70k'
+PATH_TO_MODEL_CKPT = '/Users/Donal/Desktop/output/ckpt/no_pre/gat_sq/'
+EXPORT_PATH = '/Users/Donal/Desktop/output/model'
+NAME = 'no_pre_gated_squeeze_100k'
 
 
 image = tf.placeholder(dtype=tf.float32, name='InputImage')
 keep_prop = tf.placeholder(dtype=tf.float32, name='KeepProp')
 network_output = net.forget_squeeze_net(image, keep_prop, False)
+class_scores, conf_scores, bbox_delta = interp.interpret(network_output, batch_size=1)
 
 saver = tf.train.Saver()
 sess = tf.Session()
